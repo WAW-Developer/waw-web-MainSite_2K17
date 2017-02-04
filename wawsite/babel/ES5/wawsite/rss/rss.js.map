@@ -1,0 +1,1 @@
+{"version":3,"sources":["rss/rss.js"],"names":["_rss","module","exports"],"mappings":"AAAA;;;;;;;;;;AAGIA,U,GAAO;;AAEP,qBAAa;;AAFN,O;;;AAOXC,aAAOC,OAAP,GAAiBF,IAAjB","file":"rss.js","sourcesContent":["\"use strict\";\r\n\r\n\r\nlet _rss = {\r\n  \r\n    '_someData': 'data'\r\n        \r\n};\r\n\r\n\r\nmodule.exports = _rss;"],"sourceRoot":"src/"}

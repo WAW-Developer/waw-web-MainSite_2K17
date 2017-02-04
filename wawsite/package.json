@@ -1,0 +1,56 @@
+{
+  "name": "wawsite",
+  "version": "0.0.1-alpha00-build001",
+  "description": "WAW site",
+  "author": "WAW developer <wawdeveloper@gmail.com>",
+  "main": "dist/wawsite/wawsite.js",
+  "files": [
+    "src/",
+    "docs/",
+    ".gitignore",
+    "package.json",
+    "readme.md",
+    "jsdoc_conf.json",
+    "gulpfile.js",
+    "Gruntfile.js",
+    "bower.json",
+    ".babelrc"
+  ],
+  "keywords": [
+    "st.forbrowser",
+    "st",
+    "IoT",
+    "SomeThings",
+    "sensor",
+    "actuator"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "babel-plugin-transform-es2015-modules-systemjs": "^6.22.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.14.0",
+    "browserify": "^13.1.0",
+    "del": "2.2.0",
+    "gulp": "3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-if-else": "^1.0.3",
+    "gulp-jsdoc3": "^0.3.0",
+    "gulp-jshint": "~2.0.0",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-strip-debug": "^1.1.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.3",
+    "run-sequence": "1.1.5",
+    "uglify-js": "~2.6.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "yargs": "^5.0.0"
+  },
+  "preferGlobal": false,
+  "private": true,
+  "analyze": true,
+  "license": "MIT"
+}
