@@ -1,0 +1,36 @@
+{
+  "name": "wawsite.deploy",
+  "version": "0.0.1-alpha00-build001",
+  "description": "WAW site deploy",
+  "author": "WAW developer <wawdeveloper@gmail.com>",
+  "main": "dist/wawsite/wawsite.js",
+  "files": [
+    ".gitignore",
+    "package.json",
+    "readme.md",
+    "gulpfile.js"
+  ],
+  "keywords": [
+    "st.forbrowser",
+    "st",
+    "IoT",
+    "SomeThings",
+    "sensor",
+    "actuator"
+  ],
+  "scripts": {},
+  "dependencies": {
+  },
+  "devDependencies": {
+    "del": "2.2.0",
+    "gulp": "3.9.1",
+    "gulp-if-else": "^1.0.3",
+    "gulp-util": "^3.0.7",
+    "run-sequence": "1.1.5",
+    "yargs": "^5.0.0"
+  },
+  "preferGlobal": false,
+  "private": true,
+  "analyze": true,
+  "license": "MIT"
+}

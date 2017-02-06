@@ -1,5 +1,7 @@
 node_modules
 .project
+*./*node_modules
+wawsite/babel
 
 .vagrant
 .settings

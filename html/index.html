@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <!-- angular2-polyfills -->
+  <script src="js/mainsite-min.js"></script>
+  <script src="js/jquery-3.1.1.min.js"></script>
+  
+  
+  
+  <title>WAW</title>
+
+    <!-- Block scale -->  
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' /> 
+  
+  <meta http-equiv="cache-control" content="max-age=1" />
+  <meta http-equiv="Cache-control" content="no-cache" />
+  <meta http-equiv="expires" content="1" />
+<!--  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" /> -->
+  <meta http-equiv="pragma" content="no-cache" />
+
+
+  <script type="text/javascript">
+    
+    var _mainsite = waw.mainsite;
+    
+    _mainsite.config.initialize({
+          'config': {
+              'jquery_Lib': jQuery,
+              'config_file': 'js/config.json'
+          }
+      });
+    
+    _mainsite.config.loadConfig().then(function(_data){
+        _mainsite.rss.load_feed({
+            'url': 'https://wabout-justice.blogspot.com/feeds/posts/default'
+        }).then(
+            function(_data){
+                console.log(_data); // TODO: REMOVE DEBUG LOG 
+            }, 
+            function(_error){
+                console.log(_error); // TODO: REMOVE DEBUG LOG
+            });
+    });
+    
+    // "https://wabout-justice.blogspot.com/feeds/posts/default"
+    
+
+  
+  </script>
+
+</head>
+
+
+<body>
+
+
+<article>
+  <h1>WAW</h1>
+</article>
+
+
+</body>
+
+</html>

@@ -12,6 +12,7 @@ var gulp = require('gulp'),
   _argv = require('yargs').argv,
 //  stripDebug = require('gulp-strip-debug'),
   jsdoc = require('gulp-jsdoc3'),
+  babelify = require('babelify'),
   ifElse = require('gulp-if-else');
 
 
@@ -75,7 +76,9 @@ gulp.task('toES5', function (_done) {
         .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ['es2015'],
-            plugins: ["transform-es2015-modules-systemjs"]
+//            plugins: ['transform-es2015-modules-commonjs']
+//            plugins: ["transform-es2015-modules-systemjs"]
+            
         }))
         .pipe(sourcemaps.write('.', { sourceRoot: _sourceRoot }))
         .pipe(gulp.dest(_path_es5));
@@ -94,10 +97,13 @@ gulp.task('toES5', function (_done) {
  */
 gulp.task('toBrowser', function (_done) {
   // set up the browserify instance on a task basis
-
+    var _defaultPath_ES6 = 'src/';
     var _defaultPath_ES5 = 'babel/ES5/wawsite/';
     var _defaultPath_ES5forBrowser = 'babel/ES5forBrowser/wawsite/';
     var _standAlone_Base = 'waw.mainsite';
+    
+    
+//    _defaultPath_ES5 = _defaultPath_ES6;    // TODO: REMOVE DEBUG TRICK
 
     var _howUse = function() {
         console.log('---i--- gulp.task(toBrowser)');
@@ -172,12 +178,24 @@ gulp.task('toBrowser', function (_done) {
     }
 
 
+    
+//    "sourceMapRelative": "$PWD/src/js",
+//    "presets": ["es2015"]
 
     var b = browserify ({
         entries: _entries,
         debug: true,
         outfile: _outfile,
-        standalone: _standAlone
+        standalone: _standAlone,
+        'transform': [
+            [
+              "babelify",
+              {
+                "sourceMapRelative": "$PWD/src",
+                "presets": ["es2015"]
+              }
+            ]
+          ]
     });
 
     return b.bundle()
@@ -191,6 +209,7 @@ gulp.task('toBrowser', function (_done) {
         .pipe(gulp.dest(_destPath));
 
 });
+
 
 
 /**
@@ -216,6 +235,137 @@ gulp.task('buildWAWSite', function (_done) {
 
 });
 
+
+/**
+ * Gulp task 'copywawmsite'
+ *
+ * Copy waw site
+ *
+ * - jsdocs
+ *
+ */
+gulp.task('copywawmsite', function (_done) {
+
+    var _defaultPath_ES5forBrowser = 'babel/ES5forBrowser/wawsite/';
+    var _fileName = 'mainsite-min.js';
+    var _defaultDestinationPath = '../html/js/';
+
+    var _filePath = _defaultPath_ES5forBrowser + _fileName;
+
+    gulp.src(_filePath)
+        .pipe(gulp.dest(_defaultDestinationPath));
+
+    _done();
+
+});
+
+
+
+var _copy = function(_options) {
+    _source = _options.source;
+    _target = _options.target;
+    _callback = _options.callback;
+    
+    gulp.src(_source)
+    .pipe(gulp.dest(_target))
+    .on('end', function () { 
+        if (_callback !== undefined) {
+            _callback();    
+        }
+        });
+};
+
+
+/**
+ * Gulp task 'copywawmsite'
+ *
+ * Copy waw site
+ *
+ * - jsdocs
+ *
+ */
+gulp.task('copyLib_polymer', function (_done) {
+
+    
+    var _filePath = 'bower_components/polymer/polymer-mini.html';
+    var _defaultDestinationPath = '../html/js/';
+
+//    var _filePath = _defaultPath_ES5forBrowser + _fileName;
+
+    var _copy_Polymer = function() {
+        _copy({
+            'source': 'bower_components/polymer/polymer-mini.html',
+            'target': _defaultDestinationPath
+        });
+    };
+    
+//    _copy(_filePath,_defaultDestinationPath,_done);
+    _copy_Polymer(_done);
+
+
+});
+
+
+
+
+/**
+ * Gulp task 'copywawmsite'
+ *
+ * Copy waw site
+ *
+ * - jsdocs
+ *
+ */
+gulp.task('copyLib_webcomponents', function (_done) {
+    
+    var _defaultDestinationPath = '../html/js/';
+    var _copy_webcomponents = function() {
+        _copy({
+            'source': 'bower_components/webcomponentsjs/webcomponents-lite.min.js',
+            'target': _defaultDestinationPath,
+            'callback': _done
+        });
+    };
+    
+    
+});
+
+
+
+/**
+ * Gulp task 'copyLibs'
+ *
+ * Copy waw site
+ *
+ * - jsdocs
+ *
+ */
+gulp.task('copyLibs', function (_done) {
+    
+    runSequence(['copyLib_polymer','copyLib_webcomponents'], _done);
+
+    
+});
+
+
+/**
+ * Gulp task 'buildWAWSite'
+ *
+ * Build API library
+ *
+ * - toES5
+ * - toBrowser
+ *
+ */
+gulp.task('buildandcopyWAWSite', function (_done) {
+    
+    var _copy = function() {
+        runSequence(['copywawmsite'],_done);
+    };
+
+    runSequence(['buildWAWSite'],_copy);
+    
+});
 
 //gulp.task('build', function(done){
 //    runSequence(['clean', 'buildAPI'], function () {
