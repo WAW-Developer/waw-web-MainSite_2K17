@@ -1,5 +1,16 @@
 server {
         listen 80;
+        listen [::]:80 ipv6only=on;
+        
+        listen 443 ssl;
+        
+        server_name waw.net;
+        # ssl_certificate /etc/nginx/ssl/nginx.crt;
+        # ssl_certificate_key /etc/nginx/ssl/nginx.key;
+        
+        ssl_certificate /vagrant/provision/systems/keydev.pub;
+        ssl_certificate_key /vagrant/provision/systems/keydev;
+        
         server_name localhost;
         
         root /var/www/;

@@ -50,19 +50,35 @@ let _rss = {
                 _JQ.ajax({
                     type: 'GET',
                     url: _url,
-                    dataType: 'xml',
-                    success: function (_xml) {
-                        _JQ(_xml).find("item").each(function (_item) {
+                    dataType: 'jsonp',
+                    success: function (_data) {
+                        
+                        let _xml = _JQ(_data);
+                        
+                        _xml.find("entry").each(function (_item) {
                             
                             console.log(_item);   // TODO: REMOVE DEBUG LOG
+                            let _this = _JQ(this);
+                            console.log(_this);   // TODO: REMOVE DEBUG LOG
 
-
-//                            var title = $(this).find("title").text();
+                            let _title = _JQ(_this).find("title").text();
+                            console.log(_title);   // TODO: REMOVE DEBUG LOG
+                            
+                            let _content =_JQ(_this).find("content").text();
+                            console.log(_content);   // TODO: REMOVE DEBUG LOG
+                            
+                            // published
+                            let _published =_JQ(_this).find("published").text();
+                            console.log(_published);   // TODO: REMOVE DEBUG LOG
+                            
+                            
+                            
 //                            var description = $(this).find("description").text();
 //                            var linkUrl = $(this).find("link_url").text();
 //                            var link = "<a href='" + linkUrl + "' target='_blank'>Read More<a>";
 //                            $('#feedContainer').append('<article><h3>'+title+'</h3><p>'+description+link+'</p>');
                         });
+                        
                         _resolve(_xml);
 
                     },
