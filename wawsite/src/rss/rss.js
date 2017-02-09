@@ -32,6 +32,11 @@ let _rss = {
                 
                 let _JQ = _config.jquery_Lib;
                 
+                let _feed = {
+                    'url': _url,
+                    'entries': []
+                };
+                
 //                _JQ.get(_url, function (_data) {
 //                    _JQ(_data).find("entry").each(function (_item, _i) { // or "item" or whatever suits your feed
 //                        
@@ -57,21 +62,41 @@ let _rss = {
                         
                         _xml.find("entry").each(function (_item) {
                             
-                            console.log(_item);   // TODO: REMOVE DEBUG LOG
                             let _this = _JQ(this);
-                            console.log(_this);   // TODO: REMOVE DEBUG LOG
-
+                            
+                            let _id = _JQ(_this).find("id").text();;
                             let _title = _JQ(_this).find("title").text();
-                            console.log(_title);   // TODO: REMOVE DEBUG LOG
-                            
                             let _content =_JQ(_this).find("content").text();
-                            console.log(_content);   // TODO: REMOVE DEBUG LOG
-                            
-                            // published
                             let _published =_JQ(_this).find("published").text();
-                            console.log(_published);   // TODO: REMOVE DEBUG LOG
+                            let _link = _this.find("link[rel='alternate']").attr('href');
+                            let _author = _this.find("author name").text();
                             
+                            let _entry = {
+                              'id': _id,
+                              'title': _title,
+                              'content': _content,
+                              'published': _published,
+                              'link': _link,
+                              'author': _author,
+                              
+                              'categories': []
+                            };
                             
+                            _this.find("category").each(function () {
+                                
+                                let _category_xml = _JQ(this);
+                                let _category_string_ = _JQ(_category_xml).attr('term');
+
+                                _entry.categories.push(_category_string_);
+                                
+                            });
+
+                            
+                            _feed.entries.push(_entry);
+                            
+                            console.log(_this);     // TODO: REMOVE DEBUG LOG
+                            console.log(_entry);     // TODO: REMOVE DEBUG LOG
+
                             
 //                            var description = $(this).find("description").text();
 //                            var linkUrl = $(this).find("link_url").text();
@@ -79,7 +104,10 @@ let _rss = {
 //                            $('#feedContainer').append('<article><h3>'+title+'</h3><p>'+description+link+'</p>');
                         });
                         
-                        _resolve(_xml);
+                        _resolve({
+                            'xml': _xml,
+                            'feed': _feed
+                        });
 
                     },
                     beforeSend: function(_xhr) {
