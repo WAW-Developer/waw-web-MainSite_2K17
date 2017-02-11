@@ -2,4 +2,18 @@
 
 npm install --no-bin-links
 
+## How to start service
+sudo service nginx start
+and then access to http://localhost:8932/html/
+or https://localhost:8933/html/
 
+## How to build wawsite
+cd wawsite
+gulp buildandcopyWAWSite
+
+
+## Hot to copy libraries
+gulp copyLibs
+
+## Hot to copy web components
+gulp copy_WebComponents

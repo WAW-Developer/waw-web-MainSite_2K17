@@ -2,23 +2,21 @@
   "name": "waw-site",
   "description": "WAW site",
   "authors": [
-      { "name": "WAW developer", "email": "wawdeveloper@gmail.com" }
-      
+    {
+      "name": "WAW developer",
+      "email": "wawdeveloper@gmail.com"
+    }
   ],
-
   "private": true,
   "version": "0.0.1-alpha00-build005",
   "license": "MIT",
-
   "main": [
-     "dist/stforBrowser/stforBrowser.js"
+    "dist/stforBrowser/stforBrowser.js"
   ],
-
   "moduleType": [
-        "amd",
-        "globals"
+    "amd",
+    "globals"
   ],
-
   "ignore": [
     "**/.*",
     "node_modules/",
@@ -29,14 +27,9 @@
     "docs/",
     "build/"
   ],
-
-
   "dependencies": {
-    "polymer": "^1.0.0"
+    "polymer": "^1.0.0",
+    "bootstrap": "^3.3.7"
   },
-
-  "devDependencies": {
-   
-  }
-
+  "devDependencies": {}
 }

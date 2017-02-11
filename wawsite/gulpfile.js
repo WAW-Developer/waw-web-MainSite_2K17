@@ -261,72 +261,48 @@ gulp.task('copywawmsite', function (_done) {
 
 
 
-var _copy = function(_options) {
-    _source = _options.source;
-    _target = _options.target;
-    _callback = _options.callback;
-    
-    gulp.src(_source)
-    .pipe(gulp.dest(_target))
-    .on('end', function () { 
-        if (_callback !== undefined) {
-            _callback();    
-        }
-        });
-};
-
-
 /**
- * Gulp task 'copywawmsite'
+ * Gulp task 'copyLib_polymer'
  *
- * Copy waw site
- *
- * - jsdocs
+ * Copy polymer library
  *
  */
 gulp.task('copyLib_polymer', function (_done) {
 
     
-    var _filePath = 'bower_components/polymer/polymer-mini.html';
+    var _filePath = ['bower_components/polymer/polymer.html',
+        'bower_components/polymer/polymer-mini.html',
+        'bower_components/polymer/polymer-micro.html',
+        'bower_components/webcomponentsjs/webcomponents.min.js'];
     var _defaultDestinationPath = '../html/js/';
 
-//    var _filePath = _defaultPath_ES5forBrowser + _fileName;
-
-    var _copy_Polymer = function() {
-        _copy({
-            'source': 'bower_components/polymer/polymer-mini.html',
-            'target': _defaultDestinationPath
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done()
         });
-    };
-    
-//    _copy(_filePath,_defaultDestinationPath,_done);
-    _copy_Polymer(_done);
-
-
 });
 
 
 
 
 /**
- * Gulp task 'copywawmsite'
+ * Gulp task 'copyLib_bootstrap'
  *
- * Copy waw site
- *
- * - jsdocs
+ * Copy bootstrap library
  *
  */
-gulp.task('copyLib_webcomponents', function (_done) {
+gulp.task('copyLib_bootstrap', function (_done) {
     
+    var _filePath = ['bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'bower_components/bootstrap/dist/js/bootstrap.min.js'];
     var _defaultDestinationPath = '../html/js/';
-    var _copy_webcomponents = function() {
-        _copy({
-            'source': 'bower_components/webcomponentsjs/webcomponents-lite.min.js',
-            'target': _defaultDestinationPath,
-            'callback': _done
-        });
-    };
     
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done()
+        });
     
 });
 
@@ -342,8 +318,29 @@ gulp.task('copyLib_webcomponents', function (_done) {
  */
 gulp.task('copyLibs', function (_done) {
     
-    runSequence(['copyLib_polymer','copyLib_webcomponents'], _done);
+    runSequence(['copyLib_polymer', 'copyLib_bootstrap'], _done);
+    
+});
 
+
+
+
+/**
+ * Gulp task 'copy_WebComponents'
+ *
+ * Copy web components
+ *
+ */
+gulp.task('copy_WebComponents', function (_done) {
+    
+    var _filePath = ['webcomponents/*.html'];
+    var _defaultDestinationPath = '../html/webcomponents/';
+    
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done()
+        });
     
 });
 
@@ -360,7 +357,7 @@ gulp.task('copyLibs', function (_done) {
 gulp.task('buildandcopyWAWSite', function (_done) {
     
     var _copy = function() {
-        runSequence(['copywawmsite'],_done);
+        runSequence(['copywawmsite', 'copy_WebComponents'],_done);
     };
 
     runSequence(['buildWAWSite'],_copy);

@@ -1,11 +1,23 @@
 <html>
 
 <head>
-    <!-- angular2-polyfills -->
-  <script src="js/mainsite-min.js"></script>
+ 
   <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="js/webcomponents.min.js"></script>
+  
+  <script src="js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="js/bootstrap.min.css">
   
   
+  <script src="js/mainsite-min.js"></script>
+  
+  <link rel="import" href="js/polymer.html">
+<!--   <link rel="import" href="js/polymer-mini.html"> -->
+<!--   <link rel="import" href="js/polymer-micro.html"> -->
+  
+  <link rel="import" href="webcomponents/waw-header.html">
+  <link rel="import" href="webcomponents/waw-topic-detail.html">
+
   
   <title>WAW</title>
 
@@ -56,6 +68,9 @@
 
 <article>
   <h1>WAW</h1>
+  
+  <waw-header></waw-header>
+  <waw-topic-detail></waw-topic-detail>
 </article>
 
 

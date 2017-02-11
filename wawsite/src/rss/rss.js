@@ -111,7 +111,7 @@ let _rss = {
 
                     },
                     beforeSend: function(_xhr) {
-                        _xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+//                        _xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
                     }
                 });
                 
