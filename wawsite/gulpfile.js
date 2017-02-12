@@ -246,20 +246,10 @@ gulp.task('buildWAWSite', function (_done) {
  */
 gulp.task('copywawmsite', function (_done) {
 
-    var _defaultPath_ES5forBrowser = 'babel/ES5forBrowser/wawsite/';
-    var _fileName = 'mainsite-min.js';
     var _defaultDestinationPath = '../html/js/';
 
-//    var _filePath = _defaultPath_ES5forBrowser + _fileName;
     var _filePath = ['babel/ES5forBrowser/wawsite/mainsite-min.js',
         'config/config.json'];
-
-    
-//    gulp.src(_filePath)
-//        .pipe(gulp.dest(_defaultDestinationPath));
-//
-//    _done();
-    
     
     gulp.src(_filePath)
     .pipe(gulp.dest(_defaultDestinationPath))

@@ -4,6 +4,7 @@ node_modules
 /wawsite/babel/*
 /wawsite/npm*.log.*
 html/js/*.js
+# html/js/*.json
 html/js/*.map
 html/js/*.html
 html/js/*.css

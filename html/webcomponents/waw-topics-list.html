@@ -1,0 +1,141 @@
+
+<dom-module id="waw-topics-list">
+  <template>
+    <style>
+      /* local styles go here */
+/*       :host { */
+/*         display: block; */
+/*       } */
+    </style>
+
+
+    <div class="list-group">
+      <a href="#" class="list-group-item active">
+        <h4 class="list-group-item-heading">List group item heading</h4>
+        <p class="list-group-item-text">...</p>
+      </a>
+      
+      <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic">
+        <a href="javascript:void(null);" 
+            class$="list-group-item {{_topic_Class(_topic._model.selected)}}"
+            data-target$="[[_topic.id]]"
+            on-click="_itemclicked">
+          <h4 class="list-group-item-heading">{{_topic.name}}</h4>
+          <p class="list-group-item-text">...</p>
+        </a>
+      </template>      
+      
+    </div>
+    
+    
+  </template>
+
+
+   <script>
+   Polymer({
+     /* this is the element's prototype */
+    is: 'waw-topics-list',
+    
+    properties: {
+
+      mode: {
+        type: String,
+        value: 'auto'
+      },
+
+      topics: {
+          type: Array,
+          reflectToAttribute: true,
+          notify: true,
+          value: function() { return []; }
+
+      }
+
+    },
+    
+    
+    
+    /**
+     * Called when the component is ready
+     */
+    ready: function() {
+//         console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
+      },
+      
+      
+      
+    _itemclicked: function(_e, _topic) {
+
+        var _this = this;
+//         var _data_target = jQuery(_e.srcElement).attr('data-target');
+        var _data_target = _e.model.__data__._topic.id;
+        console.log(_e); //// TODO: REMOVE DEBUG LOG
+        console.log(_data_target); //// TODO: REMOVE DEBUG LOG
+        // .model.__data__._topic
+          
+        _this.fire('itemclicked', {
+            'data-target': _data_target
+            });
+          
+          
+          // .srcElement.childNodes["0"].data
+          // .srcElement.attributes[1]
+      },
+      
+      
+    _topic_Class: function(_selected) {
+        console.log('_topic_Class'); //// TODO: REMOVE DEBUG LOG
+        console.log(_selected); //// TODO: REMOVE DEBUG LOG
+
+        return _selected === true ? 'active' : '';
+    },
+      
+    
+    
+    set_topics: function (_options) {
+        
+        var _this = this;
+        var _topics = _options.topics;
+        
+        console.log(_topics); //// TODO: REMOVE DEBUG LOG
+
+     // clear an array
+        _this.set('topics', []);
+
+        _topics.forEach(function(_item, _id){
+//             _data.topics.push(_item);
+
+            _item._model = {
+              'selected': false
+            };
+
+            _this.push('topics', _item);
+        });
+        
+
+    },
+    
+    set_active_topic: function (_options) {
+        
+        var _this = this;
+        var _topic_ID = _options.topic;
+        var _data = _this.data;
+        var _topics = _this.topics;
+//         var _topics = _this.data.topics.slice(0);
+        
+        _topics.forEach(function(_topic, _i) {
+//             _topic._model.selected = _topic.id === _topic_ID ? true: false;
+            _this.set('topics.' + _i + '._model.selected', _topic.id === _topic_ID ? true: false);
+        });
+        
+            
+    }
+    
+   
+      
+      
+  });
+  </script>
+    
+    
+</dom-module>
