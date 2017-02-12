@@ -2,6 +2,7 @@ node_modules
 .project
 *./*node_modules
 /wawsite/babel/*
+/wawsite/npm*.log.*
 html/js/*.js
 html/js/*.map
 html/js/*.html

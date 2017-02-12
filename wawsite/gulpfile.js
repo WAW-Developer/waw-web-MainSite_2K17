@@ -250,12 +250,22 @@ gulp.task('copywawmsite', function (_done) {
     var _fileName = 'mainsite-min.js';
     var _defaultDestinationPath = '../html/js/';
 
-    var _filePath = _defaultPath_ES5forBrowser + _fileName;
+//    var _filePath = _defaultPath_ES5forBrowser + _fileName;
+    var _filePath = ['babel/ES5forBrowser/wawsite/mainsite-min.js',
+        'config/config.json'];
 
+    
+//    gulp.src(_filePath)
+//        .pipe(gulp.dest(_defaultDestinationPath));
+//
+//    _done();
+    
+    
     gulp.src(_filePath)
-        .pipe(gulp.dest(_defaultDestinationPath));
-
-    _done();
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done()
+        });
 
 });
 
@@ -295,7 +305,9 @@ gulp.task('copyLib_polymer', function (_done) {
 gulp.task('copyLib_bootstrap', function (_done) {
     
     var _filePath = ['bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js'];
+        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/jquery/dist/jquery.min.js'];
+    
     var _defaultDestinationPath = '../html/js/';
     
     gulp.src(_filePath)
@@ -329,6 +341,8 @@ gulp.task('copyLibs', function (_done) {
  * Gulp task 'copy_WebComponents'
  *
  * Copy web components
+ * (since current 'web components' are not transpiled is not necessary to copy...)
+ * 
  *
  */
 gulp.task('copy_WebComponents', function (_done) {
@@ -357,12 +371,32 @@ gulp.task('copy_WebComponents', function (_done) {
 gulp.task('buildandcopyWAWSite', function (_done) {
     
     var _copy = function() {
-        runSequence(['copywawmsite', 'copy_WebComponents'],_done);
+//        runSequence(['copywawmsite', 'copy_WebComponents'],_done);
+        runSequence(['copywawmsite'],_done);
     };
 
     runSequence(['buildWAWSite'],_copy);
     
 });
+
+
+/**
+ * Gulp task 'copyLibs'
+ *
+ * Copy waw site
+ *
+ * - jsdocs
+ *
+ */
+gulp.task('buildAndDeployAll', function (_done) {
+    
+//    runSequence(['buildandcopyWAWSite', 'copyLibs', 'copy_WebComponents'], _done);
+    runSequence(['buildandcopyWAWSite', 'copyLibs'], _done);
+    
+});
+
+
+
 
 //gulp.task('build', function(done){
 //    runSequence(['clean', 'buildAPI'], function () {
