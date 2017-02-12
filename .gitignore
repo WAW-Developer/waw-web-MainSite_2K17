@@ -1,8 +1,11 @@
 node_modules
 .project
 *./*node_modules
-wawsite/babel
-
+/wawsite/babel/*
+html/js/*.js
+html/js/*.map
+html/js/*.html
+html/js/*.css
 .vagrant
 .settings
 *.log
