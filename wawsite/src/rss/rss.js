@@ -13,7 +13,7 @@ import * as config_mod from "../config/config.js";
 let _rss = {
   
     'load_feed': function(_options) {
-        return new Promise(function(_resolve, _reject) { 
+        return new Promise(function(_resolve, _reject) {
             try {
                 
                 if (_options === undefined) {
@@ -120,6 +120,27 @@ let _rss = {
                 _reject(_e);
             }
         });
+    },
+    
+    
+    'get_TopicbyID': function (_options) {
+        
+        var _topics = _options.topics;
+        var _id = _options.id;
+        var _topic = null;
+        
+        var _elementPos = _topics.map(function(_x) {return _x.id; }).indexOf(_id);
+        
+        if (_elementPos >= -1) {
+            _topic = _topics[_elementPos];
+        }
+        
+        var _response = {
+            'topic': _topic,
+            'position': _elementPos
+        };
+        
+        return _response;
     }
         
 };

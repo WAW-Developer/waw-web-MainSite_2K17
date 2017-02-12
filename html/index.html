@@ -42,7 +42,10 @@
           }
       });
     
-    _mainsite.config.loadConfig().then(function(_data){
+    
+    _mainsite._tests = {};
+    
+    _mainsite._tests.load_feed = function(_options) {
         _mainsite.rss.load_feed({
             'url': 'https://wabout-justice.blogspot.com/feeds/posts/default'
         }).then(
@@ -52,6 +55,42 @@
             function(_error){
                 console.log(_error); // TODO: REMOVE DEBUG LOG
             });
+    };
+    
+    
+    _mainsite._tests.get_header = function(_options) {
+        var _wawHeader = jQuery('waw-header')[0];
+        console.log(_wawHeader); // TODO: REMOVE DEBUG LOG 
+        
+        var _loaded_config = _mainsite.config.get_loaded_config();
+        var _waw_topic = _mainsite.rss.get_TopicbyID({
+            'topics': _loaded_config.topics,
+            'id': 'waw'
+        }).topic;
+ 
+        console.log('waw topic'); // TODO: REMOVE DEBUG LOG 
+        console.log(_waw_topic); // TODO: REMOVE DEBUG LOG 
+
+        
+        _wawHeader.set_topics({
+            'topics': _waw_topic.subtopics
+        });
+    };
+    
+    
+    
+    
+    // Do some tests
+    _mainsite._tests.doSomeTests = function(_options) {
+//         _mainsite._tests.load_feed();
+//         _mainsite._tests.get_header();
+        _mainsite.ui.initialize_UI();
+    };
+    
+    
+    // Load configuration
+    _mainsite.config.loadConfig().then(function(_data){
+        _mainsite._tests.doSomeTests();
     });
     
     // "https://wabout-justice.blogspot.com/feeds/posts/default"

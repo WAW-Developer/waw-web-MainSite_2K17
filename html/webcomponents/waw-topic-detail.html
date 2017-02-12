@@ -14,6 +14,8 @@
       </div>
       <div class="panel-body">
         Panel content
+        
+        {{data.topic.name}}
       </div>
     </div>
     
@@ -23,7 +25,47 @@
    <script>
    Polymer({
      /* this is the element's prototype */
-    is: 'waw-topic-detail'
+    is: 'waw-topic-detail',
+    
+    
+    properties: {
+
+      mode: {
+        type: String,
+        value: 'auto'
+      },
+
+      data: {
+        type: Object,
+        reflectToAttribute: true,
+        notify: true,
+        value: function() { return {}; }
+      }
+
+    },
+    
+    /**
+     * Called when the component is ready
+     */
+    ready: function() {
+//         console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
+      },
+      
+      
+      
+    set_topic: function (_options) {
+          
+      var _this = this;
+      var _topic = _options.topic;
+      
+      var _data = _this.data;
+      _this.set('data.topic', _topic);
+      
+      console.log(_data); //// TODO: REMOVE DEBUG LOG
+
+    }
+      
+      
   });
   </script>
 </dom-module>

@@ -76,6 +76,11 @@ let _config = {
             }
         });
         
+    },
+    
+    
+    'get_loaded_config': function() {
+        return _config.loaded_config;
     }
         
 };

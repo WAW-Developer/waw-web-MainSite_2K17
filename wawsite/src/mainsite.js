@@ -43,13 +43,22 @@ import * as config_mod from "./config/config.js";
 import * as rss_mod from "./rss/rss.js"; // recommended
 
 
+
+/**
+ * import rss library
+ * @ignore
+ */
+import * as ui_mod from "./ui/ui.js"; // recommended
+
+
 let waw = {};
 waw.mainsite = {
     
     '_version': '0.0.1a',
     
     'config': config_mod,
-    'rss': rss_mod
+    'rss': rss_mod,
+    'ui': ui_mod
 };
 
 
