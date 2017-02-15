@@ -4,16 +4,16 @@ echo "Provisioning virtual machine..."
 
 
 echo "Installing Git"
-apt-get install git -y > /dev/null
+apt-get install git -y
     
 echo "Installing Nginx"
-apt-get install nginx -y > /dev/null
+apt-get install nginx -y
 
 echo "Configuring Nginx"
-cp /var/www/provision/config/nginx_vhost /etc/nginx/sites-available/nginx_vhost > /dev/null
+cp /var/www/provision/config/nginx_vhost /etc/nginx/sites-available/nginx_vhost
 ln -s /etc/nginx/sites-available/nginx_vhost /etc/nginx/sites-enabled/
 rm -rf /etc/nginx/sites-available/default
-service nginx restart > /dev/null
+service nginx restart
 
 # install node.js
 # sudo apt-get install -y nodejs 
