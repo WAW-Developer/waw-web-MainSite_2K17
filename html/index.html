@@ -18,6 +18,7 @@
   <link rel="import" href="webcomponents/waw-header.html">
   <link rel="import" href="webcomponents/waw-topic-detail.html">
   <link rel="import" href="webcomponents/waw-topics-list.html">
+  <link rel="import" href="webcomponents/waw-blog-properties.html">
 
   
   <title>WAW</title>
@@ -110,9 +111,17 @@
   <h1>WAW</h1>
   
   <waw-header></waw-header>
-  <waw-topic-detail></waw-topic-detail>
-  <waw-topics-list></waw-topics-list>
+
+    <div class="container-fluid">
+      <div class="col-xs-12 col-sm-7 col-md-8"><waw-topic-detail></waw-topic-detail></div>
+      <div class="col-xs-12 col-sm-5 col-md-4"><waw-topics-list></waw-topics-list></div>
+    </div>
   
+    <div class="container-fluid">
+      <div class="col-xs-12 col-sm-7 col-md-8"><waw-blog-properties></waw-blog-properties></div>
+    </div>
+    
+    
 </article>
 
 
