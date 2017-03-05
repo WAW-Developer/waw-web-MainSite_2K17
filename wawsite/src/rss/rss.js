@@ -141,7 +141,115 @@ let _rss = {
         };
         
         return _response;
-    }
+        
+    },  // EndOf get_TopicbyID
+    
+    
+    'get_detailForCategories': function(_options) {
+        return new Promise(function(_resolve, _reject) {
+
+            try {
+                
+                if (_options === undefined) {
+                    _options = {};
+                }
+                
+                if (_options.feed === undefined) {
+                    throw ('feed option is required.');
+                }
+                let _feed = _options.feed;
+                
+                let _config = config_mod.get_current_config();
+                if (_options.config !== undefined) {
+                    _config = _options.config;
+                }
+                
+                let _JQ = _config.jquery_Lib;
+                
+                let _categoriesRawObject = {};
+                
+                
+                _feed.entries.forEach(function(_entry, _i_entry) {
+                    _entry.categories.forEach(function(_category, _i_category) {
+                        
+                        if (_categories[_category] === undefined) {
+                            _categories[_category] = {
+                                    'posts': [],
+                                    'count': 0
+                            };
+                        }
+                        _categories[_category].posts.push(_post);
+                        _categories[_category].count++;
+                        
+                    });
+                });
+
+                _resolve({
+                    'categories': _categories
+                });
+                
+            } catch (_e) {
+                _reject(_e);
+            }
+            
+        });
+    },   // EndOf get_detailForCategories
+    
+    
+    'get_TopicBlogEntries': function(_options) {
+        return new Promise(function(_resolve, _reject) {
+           
+            try {
+                
+                if (_options === undefined) {
+                    _options = {};
+                }
+                
+                if (_options.topic === undefined) {
+                    throw ('topic option is required.');
+                }
+                let _topic = _options.topic;
+                
+                let _config = config_mod.get_current_config();
+                if (_options.config !== undefined) {
+                    _config = _options.config;
+                }
+                
+                let _JQ = _config.jquery_Lib;
+
+                
+                _rss.load_feed({
+                    'url': _topic.url_blog
+                }).then(
+                    
+                    function(_data_load_feed) {
+                        
+                        _rss.get_detailForCategories({
+                            'feed': _data_load_feed.feed
+                        }).then(
+                            
+                            function(_data_categories) {
+                                
+                                _resolve({
+                                    'categories': _data_categories.categories,
+                                    'feed': _data_load_feed.feed
+                                });
+                            },
+                            function(_error_categories) {
+                                reject(_error_categories);
+                            }); // EndOf // EndOf get_detailForCategories
+                        
+                    },
+                    function(_error_load_feed) {
+                        reject(_error_load_feed);
+                    }); // EndOf load_feed
+                
+            } catch (_e) {
+                _reject(_e);
+            }
+            
+        });
+    }   // EndOf get_TopicBlogEntries
         
 };
 

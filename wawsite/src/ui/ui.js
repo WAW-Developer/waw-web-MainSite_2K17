@@ -17,7 +17,8 @@ let _ui = {
     '_components': {
       'header': null,
       'topic_detail': null,
-      'topics_list': null
+      'topics_list': null,
+      'blog_properties': null
     },
     
     '_current_topic': {
@@ -50,6 +51,8 @@ let _ui = {
         }
         
         let _loaded_config = config_mod.get_loaded_config();
+        
+        
         let _waw_topic = rss_mod.get_TopicbyID({
             'topics': _loaded_config.topics,
             'id': 'waw'
@@ -140,10 +143,13 @@ let _ui = {
         }
         let _component = _options.component;
         
+        /*
         let _config = config_mod.get_current_config();
         if (_options.config !== undefined) {
             _config = _options.config;
         }
+        */
+        let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
         
         let _JQ = _config.jquery_Lib;
         let _element = _JQ(_component)[0];
@@ -172,7 +178,35 @@ let _ui = {
         
         _ui._components.topics_list = _element;
         
-    },
+    },  // EndOf _initialize_topics_list
+    
+    
+    '_initialize_blog_properties': function(_options) {
+
+        if (_options === undefined) {
+            _options = {};
+        }
+        
+        if (_options.component === undefined) {
+            throw ('component option is required.');
+        }
+        let _component = _options.component;
+        
+        /*
+        let _config = config_mod.get_current_config();
+        if (_options.config !== undefined) {
+            _config = _options.config;
+        }
+        */
+        
+        let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
+        
+        let _JQ = _config.jquery_Lib;
+        
+        let _element = _JQ(_component)[0];
+        _ui._components.blog_properties = _element;
+        
+    },  // EndOf _initialize_blog_properties
     
         
     'initialize_UI': function(_options) {
@@ -206,6 +240,11 @@ let _ui = {
             'component': 'waw-topics-list'
         });
         
+        _ui._initialize_blog_properties({
+            'config': _config,
+            'component': 'waw-blog-properties'
+        });
+
         
         _ui.set_current_topic({
             'isRootTopic': true,
@@ -221,10 +260,7 @@ let _ui = {
             _options = {};
         }
 
-        let _config = config_mod.get_current_config();
-        if (_options.config !== undefined) {
-            _config = _options.config;
-        }
+        let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
         
         if (_options.topic === undefined) {
             throw ('topic option is required.');
@@ -302,6 +338,12 @@ let _ui = {
         if (_isMainTopic === true) {
             _components.header.set_active_topic({
                 'topic': _topic.id
+            });
+            
+            
+            
+            _components.blog_properties.set_topic({
+                'topic': _topic
             });
         }
         

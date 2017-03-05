@@ -16,18 +16,25 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-          <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-          <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+          <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Categories</a></li>
+          <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Search</a></li>
+          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Properties</a></li>
         </ul>
       
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="home">... home</div>
-          <div role="tabpanel" class="tab-pane" id="profile">... profile</div>
-          <div role="tabpanel" class="tab-pane" id="messages">... messages</div>
-          <div role="tabpanel" class="tab-pane" id="settings">... </div>
+          <div role="tabpanel" class="tab-pane active" id="home">... Categories</div>
+          <div role="tabpanel" class="tab-pane" id="profile">... Search</div>
+          <div role="tabpanel" class="tab-pane" id="messages">
+        ... Properties
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Name:</strong> {{data.topic.name}}</li>
+              <li class="list-group-item"><strong>Description:</strong> {{data.topic.description}}</li>
+              <li class="list-group-item"><strong>URL main:</strong> {{data.topic.url_main}}</li>
+              <li class="list-group-item"><strong>URL blog:</strong> {{data.topic.url_blog}}</li>
+            </ul>
+
+      </div>
         </div>
         
         
@@ -75,7 +82,9 @@
       var _data = _this.data;
       _this.set('data.topic', _topic);
       
-      console.log(_data); //// TODO: REMOVE DEBUG LOG
+      
+      console.log('waw-blog-properties set_topic'); /// TODO: REMOVE DEBUG LOG
+      console.log(_data); // TODO: REMOVE DEBUG LOG
 
     }
       

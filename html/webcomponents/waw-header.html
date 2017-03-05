@@ -159,10 +159,10 @@
 //             _data.topics.push(_item);
 
             if (_item._model === undefined) {
-                _item._model = {
-                  'selected': false
-                };
+                _item._model = {};
             }
+            
+            _item._model.selected = (_item._model.selected === true) ? true : false;
 
             _this.push('topics', _item);
         });

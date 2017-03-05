@@ -73,6 +73,10 @@
         console.log(_data_target); //// TODO: REMOVE DEBUG LOG
         // .model.__data__._topic
           
+        _this.set_active_topic({
+            'topic': _data_target
+        });
+        
         _this.fire('itemclicked', {
             'data-target': _data_target
             });
@@ -99,15 +103,17 @@
         
         console.log(_topics); //// TODO: REMOVE DEBUG LOG
 
-     // clear an array
+        // clear an array
         _this.set('topics', []);
 
         _topics.forEach(function(_item, _id){
 //             _data.topics.push(_item);
 
-            _item._model = {
-              'selected': false
-            };
+            if (_item._model === undefined) {
+                _item._model = {};
+            }
+            
+            _item._model.selected = (_item._model.selected === true) ? true : false;
 
             _this.push('topics', _item);
         });
