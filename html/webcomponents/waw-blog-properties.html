@@ -23,7 +23,7 @@
       
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="categories">... Categories
+          <div role="tabpanel" class="tab-pane active" id="categories">
           
           <!-- Panel Toolbar -->
           <nav class="nav nav-pills">
@@ -33,13 +33,15 @@
               
             <button type="button" 
               class="btn btn-default navbar-btn"
-              (click)="orderCategories('name')">
+              on-click="_orderCategories"
+              data-order="name">
               <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>
             </button>
 
             <button type="button" 
               class="btn btn-default navbar-btn"
-              (click)="orderCategories('count')">
+              on-click="_orderCategories"
+              data-order="count">
               <span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
             </button>
             
@@ -116,6 +118,7 @@
       var _this = this;
       var _topic = _options.topic;
       
+      
       var _data = _this.data;
       _this.set('data.topic', {});
       _this.set('data.topic', _topic);
@@ -124,7 +127,45 @@
       console.log('waw-blog-properties set_topic'); /// TODO: REMOVE DEBUG LOG
       console.log(_data); // TODO: REMOVE DEBUG LOG
 
-    }
+    },   // EndOf set_topic
+    
+    
+    _orderCategories: function(_event) {
+        
+        var _this = this;
+
+        var _rss = _this.get('data.topic._model._rss');
+        var _categories = _rss.categories;
+        
+        var _JQ = jQuery;
+        var _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
+
+        switch(_orderType) {
+        
+          case "name":
+              _categories.sort(function(a, b) {
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0;
+            });
+            break;
+                
+          case "count":
+              _categories.sort(function(a, b) {
+                if (a.count > b.count) return -1;
+                if (a.count < b.count) return 1;
+                return 0;
+            });
+            break;
+              
+          default:
+              break;
+        }
+        
+        _this.set('data.topic._model._rss', {});
+        _this.set('data.topic._model._rss', _rss);
+        
+    }   // EndOf orderCategories
       
       
   });
