@@ -19,6 +19,7 @@
   <link rel="import" href="webcomponents/waw-topic-detail.html">
   <link rel="import" href="webcomponents/waw-topics-list.html">
   <link rel="import" href="webcomponents/waw-blog-properties.html">
+  <link rel="import" href="webcomponents/waw-posts-list.html">
 
   
   <title>WAW</title>
@@ -60,32 +61,11 @@
     };
     
     
-    _mainsite._tests.get_header = function(_options) {
-        var _wawHeader = jQuery('waw-header')[0];
-        console.log(_wawHeader); // TODO: REMOVE DEBUG LOG 
-        
-        var _loaded_config = _mainsite.config.get_loaded_config();
-        var _waw_topic = _mainsite.rss.get_TopicbyID({
-            'topics': _loaded_config.topics,
-            'id': 'waw'
-        }).topic;
- 
-        console.log('waw topic'); // TODO: REMOVE DEBUG LOG 
-        console.log(_waw_topic); // TODO: REMOVE DEBUG LOG 
-
-        
-        _wawHeader.set_topics({
-            'topics': _waw_topic.subtopics
-        });
-    };
-    
-    
     
     
     // Do some tests
     _mainsite._tests.doSomeTests = function(_options) {
 //         _mainsite._tests.load_feed();
-//         _mainsite._tests.get_header();
         _mainsite.ui.initialize_UI();
     };
     
@@ -108,8 +88,6 @@
 
 
 <article>
-  <h1>WAW</h1>
-  
   <waw-header></waw-header>
 
     <div class="container-fluid">
@@ -118,7 +96,8 @@
     </div>
   
     <div class="container-fluid">
-      <div class="col-xs-12 col-sm-7 col-md-8"><waw-blog-properties></waw-blog-properties></div>
+      <div class="col-xs-12 col-sm-5 col-md-4"><waw-blog-properties></waw-blog-properties></div>
+      <div class="col-xs-12 col-sm-7 col-md-8"><waw-posts-list></waw-posts-list></div>
     </div>
     
     

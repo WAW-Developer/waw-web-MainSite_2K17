@@ -166,24 +166,33 @@ let _rss = {
                 
                 let _JQ = _config.jquery_Lib;
                 
-                let _categoriesRawObject = {};
-                
+                let _categories_RAW = {};
                 
                 _feed.entries.forEach(function(_entry, _i_entry) {
                     _entry.categories.forEach(function(_category, _i_category) {
                         
-                        if (_categories[_category] === undefined) {
-                            _categories[_category] = {
+                        if (_categories_RAW[_category] === undefined) {
+                            _categories_RAW[_category] = {
                                     'posts': [],
                                     'count': 0
                             };
                         }
-                        _categories[_category].posts.push(_post);
-                        _categories[_category].count++;
+                        _categories_RAW[_category].posts.push(_entry);
+                        _categories_RAW[_category].count++;
                         
                     });
                 });
 
+                let _categories = [];
+                for (var _category in _categories_RAW) {
+                    _categories.push({
+                        'name': _category,
+                        'posts': _categories_RAW[_category].posts,
+                        'count': _categories_RAW[_category].count
+                    });
+                }
+                
+                
                 _resolve({
                     'categories': _categories
                 });
@@ -219,7 +228,7 @@ let _rss = {
 
                 
                 _rss.load_feed({
-                    'url': _topic.url_blog
+                    'url': _topic.url_feed
                 }).then(
                     
                     function(_data_load_feed) {
@@ -236,12 +245,12 @@ let _rss = {
                                 });
                             },
                             function(_error_categories) {
-                                reject(_error_categories);
+                                _reject(_error_categories);
                             }); // EndOf // EndOf get_detailForCategories
                         
                     },
                     function(_error_load_feed) {
-                        reject(_error_load_feed);
+                        _reject(_error_load_feed);
                     }); // EndOf load_feed
                 
             } catch (_e) {

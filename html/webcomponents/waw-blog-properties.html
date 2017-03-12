@@ -16,16 +16,30 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Categories</a></li>
-          <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Search</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Properties</a></li>
+          <li role="presentation" class="active"><a href="#categories" aria-controls="categories" role="tab" data-toggle="tab">Categories</a></li>
+          <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+          <li role="presentation"><a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">Properties</a></li>
         </ul>
       
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="home">... Categories</div>
-          <div role="tabpanel" class="tab-pane" id="profile">... Search</div>
-          <div role="tabpanel" class="tab-pane" id="messages">
+          <div role="tabpanel" class="tab-pane active" id="categories">... Categories
+          
+          <template id="categories_list" is="dom-repeat" items="{{data.topic._model._rss.categories}}" as="_category">
+            
+<!--             <a href="javascript:void(null);"> -->
+<!--             <span class="label label-default">{{_category.name}}<span class="badge">{{_category.posts.length}}</span></span> -->
+<!--             </a> -->
+            
+            <button class="btn btn-info" type="button">
+              {{_category.name}} <span class="badge">{{_category.posts.length}}</span>
+            </button>
+          </template>
+          
+          
+          </div>
+          <div role="tabpanel" class="tab-pane" id="search">... Search</div>
+          <div role="tabpanel" class="tab-pane" id="properties">
         ... Properties
             <ul class="list-group">
               <li class="list-group-item"><strong>Name:</strong> {{data.topic.name}}</li>
@@ -34,7 +48,7 @@
               <li class="list-group-item"><strong>URL blog:</strong> {{data.topic.url_blog}}</li>
             </ul>
 
-      </div>
+          </div>
         </div>
         
         
@@ -80,6 +94,7 @@
       var _topic = _options.topic;
       
       var _data = _this.data;
+      _this.set('data.topic', {});
       _this.set('data.topic', _topic);
       
       

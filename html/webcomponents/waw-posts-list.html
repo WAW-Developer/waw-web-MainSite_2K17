@@ -1,0 +1,85 @@
+<dom-module id="waw-posts-list">
+  <template>
+    <style>
+      /* local styles go here */
+/*       :host { */
+/*         display: block; */
+/*       } */
+    </style>
+    
+    
+    <div class="panel panel-default">
+      <div class="panel-body">
+      
+        <template id="posts_list" is="dom-repeat" items="{{posts}}" as="_post">
+          
+          <div class="panel panel-default" data-target$="[[_post.id]]">
+          
+          {{_post.title}}
+          
+          </div>
+          
+          
+        </template>
+      
+      </div>
+    </div>
+    
+    </template>
+    
+    
+    <script>
+    Polymer({
+        /* this is the element's prototype */
+       is: 'waw-posts-list',
+       
+       properties: {
+
+         mode: {
+           type: String,
+           value: 'auto'
+         },
+
+         posts: {
+             type: Array,
+             reflectToAttribute: true,
+             notify: true,
+             value: function() { return []; }
+
+         }
+
+       },
+       
+       
+       
+       /**
+        * Called when the component is ready
+        */
+       ready: function() {
+//            console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
+         },
+         
+         
+       set_posts: function (_options) {
+             
+         var _this = this;
+         var _posts = _options.posts;
+             
+         console.log(_posts); //// TODO: REMOVE DEBUG LOG
+
+             // clear an array
+             _this.set('posts', []);
+
+         _posts.forEach(function(_item, _id){
+
+             _this.push('posts', _item);
+         });
+             
+
+       },   // EndOf set_posts
+
+         
+    });    
+    </script>
+    
+</dom-module>
