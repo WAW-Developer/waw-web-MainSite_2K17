@@ -25,6 +25,29 @@
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="categories">... Categories
           
+          <!-- Panel Toolbar -->
+          <nav class="nav nav-pills">
+              <span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-right: 6px;"> </span>
+              <span>Categories <span class="badge small">{{data.topic._model._rss.categories.length}}</span></span>
+              
+              
+            <button type="button" 
+              class="btn btn-default navbar-btn"
+              (click)="orderCategories('name')">
+              <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>
+            </button>
+
+            <button type="button" 
+              class="btn btn-default navbar-btn"
+              (click)="orderCategories('count')">
+              <span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
+            </button>
+            
+          </nav>
+          <!-- EnfOf Panel Toolbar -->
+
+          
+          
           <template id="categories_list" is="dom-repeat" items="{{data.topic._model._rss.categories}}" as="_category">
             
 <!--             <a href="javascript:void(null);"> -->

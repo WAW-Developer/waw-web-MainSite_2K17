@@ -298,7 +298,7 @@ gulp.task('copyLib_bootstrap', function (_done) {
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
         'bower_components/jquery/dist/jquery.min.js'];
     
-    var _defaultDestinationPath = '../html/js/';
+    var _defaultDestinationPath = '../html/js/bootstrap/js/';
     
     gulp.src(_filePath)
     .pipe(gulp.dest(_defaultDestinationPath))
@@ -308,6 +308,30 @@ gulp.task('copyLib_bootstrap', function (_done) {
     
 });
 
+
+/**
+ * Gulp task 'copyLib_bootstrap_glyphicons'
+ *
+ * Copy bootstrap glyphicons library
+ *
+ */
+gulp.task('copyLib_bootstrap_glyphicons', function (_done) {
+    
+    var _filePath = ['bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
+        'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
+        'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
+        'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
+        'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'];
+    
+    var _defaultDestinationPath = '../html/js/bootstrap/fonts/';
+    
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done()
+        });
+    
+});
 
 
 /**
@@ -320,7 +344,7 @@ gulp.task('copyLib_bootstrap', function (_done) {
  */
 gulp.task('copyLibs', function (_done) {
     
-    runSequence(['copyLib_polymer', 'copyLib_bootstrap'], _done);
+    runSequence(['copyLib_polymer', 'copyLib_bootstrap', 'copyLib_bootstrap_glyphicons'], _done);
     
 });
 
