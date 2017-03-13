@@ -13,9 +13,9 @@
         <h3 class="panel-title">Topic detail</h3>
       </div>
       <div class="panel-body">
-        Panel content
-        
-        {{data.topic.name}}
+        <h3>{{data.topic.name}}</h3>
+        <p id="description">
+        </p>
       </div>
     </div>
     
@@ -58,11 +58,21 @@
       var _this = this;
       var _topic = _options.topic;
       
-      var _data = _this.data;
+      var _JQ = jQuery;
+      
       _this.set('data.topic', _topic);
       
-      console.log(_data); //// TODO: REMOVE DEBUG LOG
-
+      
+      // Paint description
+      var _description = '';
+      
+      _topic.summary.forEach(function(_line, _i) {
+          _description = _description + _line;
+          
+      });
+      
+      Polymer.dom(_this.$.description).innerHTML =_description;
+      
     }
       
       
