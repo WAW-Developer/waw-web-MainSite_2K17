@@ -10,17 +10,103 @@
     
     <div class="panel panel-default">
       <div class="panel-body">
+        
+        <!-- Toolbar -->
+        <nav class="nav nav-pills">
+            <span class="glyphicon glyphicon-inbox" aria-hidden="true" 
+                style="margin-right: 6px; display: none;"> 
+            </span>
+
+            <!-- Number of Posts -->
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <span class="nav-text">Posts: <span class="badge .small">{{posts.length}}</span> </span>
+
+            <span class="glyphicon glyphicon-cog cogLoading"
+                style="display:none;" 
+                aria-hidden="true">
+            </span>
+
+        </nav>
+        
+        <br />
       
-        <template id="posts_list" is="dom-repeat" items="{{posts}}" as="_post">
-          
-          <div class="panel panel-default" data-target$="[[_post.id]]">
-          
-          {{_post.title}}
-          
-          </div>
-          
-          
-        </template>
+        <!-- Post Items -->
+        <ul class="list-group">
+        
+        
+          <template id="posts_list" is="dom-repeat" items="{{posts}}" as="_post">
+            
+            
+            <li class="list-group-item" data-target$="{{_post.id}}">
+            <h3>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{_post.title}}
+            </h3>
+            <span class="h3"><small><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{_post.published}} </small></span>
+            
+            <!-- Button for show/hidde postProperties -->
+            <button type="button" class="btn btn-info" data-name="properties"
+                on-click="_showHideProperties">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-name="icon"></span> 
+                Properties
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true">
+                    </span>
+            </button> 
+            
+            
+            <!-- Layer for postProperties -->
+            <div hidden="true" class="panel panel-info" data-name="properties">
+            
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <span class="glyphicon glyphicon-link" aria-hidden="true">&nbsp;</span>
+                  <span class="h4">URL blog: </span>
+                  <span class="h5"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
+                </li>
+                <li class="list-group-item">
+                  <div class="btn-group btn-group-sm text-justify" role="group" aria-label="...">
+                  <p>
+                  <span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;</span>
+                  <span class="h4"> Categories: </span>
+                  </p>
+                  
+                    <template is="dom-repeat" items="{{_post.categories}}" as="_catagory" index-as="_catagory_no">
+                      <button class="btn btn-sm btn-link" type="button">
+                          {{_catagory}}
+                      </button>                    
+                    </template>
+
+                  </div>            
+                </li>
+              </ul>
+
+            
+            </div>
+            
+            
+            <!-- Button for show/hidde postDetail -->
+            <button type="button" class="btn btn-success" data-name="detail"
+                on-click="_showHideDetail">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-name="icon">
+                    </span>
+                Content
+                <span class="glyphicon glyphicon-file" aria-hidden="true">
+                    </span>
+            </button>            
+            
+              
+            <!-- Layer for postDetail -->
+            <div hidden="true" class="panel panel-success" data-name="detail" 
+                data-loaded="false">
+              <div class="panel-body">
+              </div>
+            </div>            
+            
+            
+            </li>
+            
+          </template>
+        
+        </ul>
       
       </div>
     </div>
@@ -77,7 +163,74 @@
              
 
        },   // EndOf set_posts
+       
+       
+       _showHideProperties: function(_event) {
+           
+           var _JQ = jQuery;
+           
+           var _div_properties = _JQ(_event.srcElement).closest('li').find('div[data-name="properties"]');
+           var _hidden = _JQ(_div_properties).attr('hidden');
+           
+           var _div_button = _JQ(_event.srcElement).closest('li').find('button[data-name="properties"]');
+           var _span_button = _JQ(_div_button).find('span.glyphicon[data-name="icon"]');
 
+
+           if (_hidden === 'hidden') {
+               
+             _JQ(_div_properties).removeAttr( 'hidden' );
+             _JQ(_div_button).addClass( 'active' );
+             _JQ(_span_button).removeClass( 'glyphicon-eye-open' );
+             _JQ(_span_button).addClass( 'glyphicon-eye-close' );
+               
+           } else {
+               _JQ(_div_properties).attr('hidden', "true");
+               _JQ(_div_button).removeClass( 'active' );
+               _JQ(_span_button).removeClass( 'glyphicon-eye-close' );
+               _JQ(_span_button).addClass( 'glyphicon-eye-open' );
+
+           }
+           
+           
+       },   // EndOf _showHideProperties
+
+       
+       _showHideDetail: function(_event) {
+           
+           var _JQ = jQuery;
+           
+           var _div_detail = _JQ(_event.srcElement).closest('li').find('div[data-name="detail"]');
+           var _hidden = _JQ(_div_detail).attr('hidden');
+           
+           var _div_button = _JQ(_event.srcElement).closest('li').find('button[data-name="detail"]');
+           var _span_button = _JQ(_div_button).find('span.glyphicon[data-name="icon"]');
+           
+           // Paint detail content
+           if (_JQ(_div_detail).attr('data-loaded') === 'false') {
+               
+               var _post = _event.model.__data__._post;
+               _JQ(_div_detail).find('div.panel-body').html(_post.content);
+               _JQ(_div_detail).attr('data-loaded', "true")
+           } 
+           
+           
+           if (_hidden === 'hidden') {
+               
+               _JQ(_div_detail).removeAttr( 'hidden' );
+               _JQ(_div_button).addClass( 'active' );
+               _JQ(_span_button).removeClass( 'glyphicon-eye-open' );
+               _JQ(_span_button).addClass( 'glyphicon-eye-close' );
+                 
+           } else {
+               _JQ(_div_detail).attr('hidden', "true");
+               _JQ(_div_button).removeClass( 'active' );
+               _JQ(_span_button).removeClass( 'glyphicon-eye-close' );
+               _JQ(_span_button).addClass( 'glyphicon-eye-open' );
+
+           }
+
+           
+       }    // EndOf _showHideDetail
          
     });    
     </script>
