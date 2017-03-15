@@ -205,6 +205,20 @@ let _ui = {
         let _JQ = _config.jquery_Lib;
         
         let _element = _JQ(_component)[0];
+        
+        
+        // Map event 'catepgoryclicked'
+        _JQ(_element).on('catepgoryclicked', function(_event, _data) {
+            
+            let _event_detail = _event.originalEvent.detail;
+
+            let _category = _event_detail['category'];
+            
+            _ui.get_components().posts_list.set_categories();
+            
+        });
+        
+        
         _ui._components.blog_properties = _element;
         
     },  // EndOf _initialize_blog_properties
@@ -419,6 +433,10 @@ let _ui = {
             _components.posts_list.set_posts({
                 'posts': _topic._model._rss.feed.entries
             });
+            _components.posts_list.set_categories({
+                'categories': _topic._model._rss.categories
+            });
+
             
         } else {
             
@@ -435,6 +453,9 @@ let _ui = {
                 let _components = _ui.get_components();
                 _components.posts_list.set_posts({
                     'posts': _topic._model._rss.feed.entries
+                });
+                _components.posts_list.set_categories({
+                    'categories': _topic._model._rss.categories
                 });
                 
                 _components.blog_properties.set_topic({

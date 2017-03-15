@@ -56,9 +56,11 @@
 <!--             <span class="label label-default">{{_category.name}}<span class="badge">{{_category.posts.length}}</span></span> -->
 <!--             </a> -->
             
-            <button class="btn btn-info" type="button">
+            <button class$="btn {{_category_Class(_category)}}" type="button" 
+                on-click="_clickcategory">
               {{_category.name}} <span class="badge">{{_category.posts.length}}</span>
             </button>
+            
           </template>
           
           
@@ -112,7 +114,14 @@
       },
       
       
+    _category_Class: function(_category) {
+
+        return (_category._model !== undefined &&
+                _category._model._selected === true) ? 'bg-success' : 'btn-link';
+        
+    },  // EndOf _category_Class
       
+    
     set_topic: function (_options) {
           
       var _this = this;
@@ -165,8 +174,46 @@
         _this.set('data.topic._model._rss', {});
         _this.set('data.topic._model._rss', _rss);
         
-    }   // EndOf orderCategories
+    },   // EndOf orderCategories
     
+    
+    _clickcategory: function(_event) {
+        
+        var _this = this;
+
+        var _category = _event.model.__data__._category;
+
+        console.log('waw-blog-properties _clickcategory'); /// TODO: REMOVE DEBUG LOG
+
+        _category._model = (_category._model === undefined) ? {} : _category._model;
+        
+        console.log(_category); // TODO: REMOVE DEBUG LOG
+
+        var _JQ = jQuery;
+        
+        var _button = _JQ(_event.srcElement).closest('button');
+        
+        
+        if (_category._model._selected !== true) {
+            
+            _JQ(_button).removeClass( 'btn-link' );
+            _JQ(_button).addClass( 'bg-success' );
+            _category._model._selected = true;
+            
+        } else {
+            
+            _JQ(_button).removeClass( 'bg-success' );
+            _JQ(_button).addClass( 'btn-link' );
+            _category._model._selected = false;
+        }
+        
+        
+        _this.fire('catepgoryclicked', {
+            'category': _category
+            });
+        
+        
+    },   // EndOf _clickcategory
     
   });
   </script>

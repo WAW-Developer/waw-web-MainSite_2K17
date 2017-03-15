@@ -12,7 +12,7 @@
       <div class="panel-body">
         
         <!-- Toolbar -->
-        <nav class="nav nav-pills">
+        <nav class="nav nav-pills" data-name="toolbar">
             <span class="glyphicon glyphicon-inbox" aria-hidden="true" 
                 style="margin-right: 6px; display: none;"> 
             </span>
@@ -25,6 +25,57 @@
                 style="display:none;" 
                 aria-hidden="true">
             </span>
+            
+            <br />
+            
+            <!-- Filter by Categories -->
+            <div class="panel panel-info" data-name="categories" style="display: none;">
+            
+                <div class="nav nav-pills">
+                
+                    <button type="button" 
+                      class="btn btn-default navbar-btn"
+                      [class.active]="showFiltered"
+                      [class.btn-success]="showFiltered"
+                      (click)="click_FilterPosts()">
+                        <span class="glyphicon glyphicon-inbox" aria-hidden="true"> 
+                        </span>
+                        <span class="glyphicon glyphicon-filter" aria-hidden="true">
+                        </span>
+                    </button>                
+                
+                
+                    <span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-right: 6px;"> </span>
+                    <span>Categories <span class="badge small">{{categories_selected.length}}</span></span>
+                    <span>of <span class="badge small">{{categories.length}}</span></span>
+                    
+                    <button type="button" 
+                      class="btn btn-default navbar-btn"
+                      (click)="categoriesSelected_Reset()">
+                      <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    </button>                
+                
+                </div>
+                
+                <div class="btn-group btn-group-sm text-justify" 
+                    role="group" 
+                    aria-label="...">
+                    
+                    <template is="dom-repeat" items="{{categories_selected}}" as="_catagory_selected" index-as="_catagory_no">
+                    
+                      <span>
+                          <button type="button"
+                              (click)="clickCategory(category)"
+                              class="btn btn-sm bg-warning text-warning">
+                              {{_catagory_selected.name}} <span class="badge small">{{_catagory_selected.count}}</span>
+                          </button>
+                      </span>
+                        
+                    </template>
+                </div>
+                
+            </div>
+            <!-- EndOf Filter by Categories -->
 
         </nav>
         
@@ -132,6 +183,29 @@
              notify: true,
              value: function() { return []; }
 
+         },
+         
+         categories: {
+             type: Array,
+             reflectToAttribute: true,
+             notify: true,
+             value: function() { return []; }
+
+         },
+         
+         categories_selected: {
+             type: Array,
+             reflectToAttribute: true,
+             notify: true,
+             value: function() { return []; }
+
+         },
+         
+         data: {
+             type: Object,
+             reflectToAttribute: true,
+             notify: true,
+             value: function() { return {}; }
          }
 
        },
@@ -149,20 +223,83 @@
        set_posts: function (_options) {
              
          var _this = this;
-         var _posts = _options.posts;
+         
+         // Check options
+         _options = (_options === undefined) ? {} : _options;
+         
+         // Check options.posts
+         var _posts = (_options.posts !== undefined) ? _options.posts : _this.get('posts');
              
-         console.log(_posts); //// TODO: REMOVE DEBUG LOG
-
-             // clear an array
-             _this.set('posts', []);
-
+         // clear an array and add new values
+         _this.set('posts', []);  
          _posts.forEach(function(_item, _id){
-
              _this.push('posts', _item);
          });
-             
 
        },   // EndOf set_posts
+       
+       
+       set_categories: function (_options) {
+           
+           var _this = this;
+           
+           // Check options
+           _options = (_options === undefined) ? {} : _options;
+           
+           // Check options.categories
+           var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
+           
+           // clear an array and add new values
+           _this.set('categories', []);
+           _categories.forEach(function(_item, _i){
+               _this.push('categories', _item);
+           });
+               
+           _this._get_categories_selected();
+           
+       },   // EndOf set_categories
+       
+       
+       _get_categories_selected: function(_options) {
+           
+           var _this = this;
+           var _dom = Polymer.dom(this).node;
+           var _categories = _this.categories;
+
+           var _JQ = jQuery;
+           
+           console.log('waw-posts-list _get_categories_selected'); //// TODO: REMOVE DEBUG LOG
+           console.log(_categories); //// TODO: REMOVE DEBUG LOG
+
+           
+           var _categories_selected =_categories.filter(function(_category, _i) {
+              
+               if (_category._model !== undefined &&
+                       _category._model._selected === true) {
+                   return true;
+               }
+           });
+           
+           console.log(_categories_selected); //// TODO: REMOVE DEBUG LOG
+           
+           // clear an array and add new values
+           _this.set('categories_selected', []);
+           _categories_selected.forEach(function(_item, _i) {
+               _this.push('categories_selected', _item);
+           });
+           
+           
+           // Show or hide categories layer
+           var _layer_categories = _JQ(_dom).find('nav[data-name="toolbar"] div[data-name="categories"]');
+           
+           if (_categories_selected.length > 0) {
+               _JQ(_layer_categories).show();
+           } else {
+               _JQ(_layer_categories).hide();
+           }
+
+
+       },   // EnfOf _get_categories_selected
        
        
        _showHideProperties: function(_event) {
