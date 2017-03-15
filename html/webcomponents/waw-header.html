@@ -123,7 +123,6 @@
 
         var _this = this;
         var _data_target = jQuery(_e.srcElement).attr('data-target');
-//         console.log(_data_target); //// TODO: REMOVE DEBUG LOG
 
           
         _this.fire('itemclicked', {
@@ -137,9 +136,6 @@
       
       
     _topic_Class: function(_selected) {
-        console.log('_topic_Class'); //// TODO: REMOVE DEBUG LOG
-        console.log(_selected); //// TODO: REMOVE DEBUG LOG
-
         return _selected === true ? 'active' : '';
     },
       
@@ -150,8 +146,6 @@
         var _this = this;
         var _topics = _options.topics;
         
-        console.log(_topics); //// TODO: REMOVE DEBUG LOG
-
      // clear an array
         _this.set('topics', []);
 

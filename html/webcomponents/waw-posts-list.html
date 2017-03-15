@@ -51,7 +51,7 @@
                     
                     <button type="button" 
                       class="btn btn-default navbar-btn"
-                      (click)="categoriesSelected_Reset()">
+                      on-click="_categoriesSelected_Reset">
                       <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
                     </button>                
                 
@@ -65,7 +65,7 @@
                     
                       <span>
                           <button type="button"
-                              (click)="clickCategory(category)"
+                              on-click="_clickcategoryselected"
                               class="btn btn-sm bg-warning text-warning">
                               {{_catagory_selected.name}} <span class="badge small">{{_catagory_selected.count}}</span>
                           </button>
@@ -268,9 +268,6 @@
 
            var _JQ = jQuery;
            
-           console.log('waw-posts-list _get_categories_selected'); //// TODO: REMOVE DEBUG LOG
-           console.log(_categories); //// TODO: REMOVE DEBUG LOG
-
            
            var _categories_selected =_categories.filter(function(_category, _i) {
               
@@ -280,7 +277,6 @@
                }
            });
            
-           console.log(_categories_selected); //// TODO: REMOVE DEBUG LOG
            
            // clear an array and add new values
            _this.set('categories_selected', []);
@@ -300,6 +296,41 @@
 
 
        },   // EnfOf _get_categories_selected
+       
+       
+       _categoriesSelected_Reset: function(_event) {
+           
+           var _this = this;
+
+           var _categories = _this.get('categories');
+           
+           _categories.forEach(function(_category, _i) {
+               
+               if (_category._model !== undefined) {
+                   _category._model._selected = false;
+               }
+           });
+           
+           
+           _this.set_categories(
+                   { 'categories': _categories });
+           
+           _this.fire('selectedcategoriesreset');
+
+       },   // EndOf categoriesSelected_Reset
+       
+       _clickcategoryselected: function(_event) {
+           
+           var _this = this;
+
+           var _category = _event.model.__data__._catagory_selected;
+
+           _category._model._selected = false;
+           _this.set_categories();
+           
+           _this.fire('catepgoryclicked');
+           
+       },   // EndOf _clickcategoryselected
        
        
        _showHideProperties: function(_event) {

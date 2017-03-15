@@ -88,7 +88,6 @@ let _ui = {
         // Map event 'itemclicked'
         _JQ(_wawHeader).on('itemclicked', function(_event, _data) {
             
-//            console.log('itemclicked');     // TODO: REMOVE DEBUG LOG
             let _event_detail = _event.originalEvent.detail;
 
             let _topic_id = _event_detail['data-target'];
@@ -240,6 +239,20 @@ let _ui = {
         let _JQ = _config.jquery_Lib;
         
         let _element = _JQ(_component)[0];
+        
+        // Map event 'selectedcategoriesreset'
+        _JQ(_element).on('selectedcategoriesreset', function(_event, _data) {
+            
+            _ui.get_components().blog_properties.set_topic();
+        });
+        
+        // Map event 'catepgoryclicked'
+        _JQ(_element).on('catepgoryclicked', function(_event, _data) {
+            
+            _ui.get_components().blog_properties.set_topic();
+        });
+        
+        
         _ui._components.posts_list = _element;
         
     },  // EndOf _initialize_posts_list
@@ -413,9 +426,6 @@ let _ui = {
         }
         let _topic = _options.topic;
         
-        console.log('_manage_rss');     // TODO: REMOVE DEBUG LOG
-        console.log(_topic);     // TODO: REMOVE DEBUG LOG
-
         
         if (_topic.url_feed === undefined) {    // Feed URL is required
             return;
@@ -444,8 +454,6 @@ let _ui = {
                 'topic': _topic
             }).then(
             function(_data){
-                console.log(_data); // TODO: REMOVE DEBUG LOG 
-                
                 _topic._model._rss.loaded = true;
                 _topic._model._rss.categories = _data.categories;
                 _topic._model._rss.feed = _data.feed;

@@ -67,11 +67,7 @@
     _itemclicked: function(_e, _topic) {
 
         var _this = this;
-//         var _data_target = jQuery(_e.srcElement).attr('data-target');
         var _data_target = _e.model.__data__._topic.id;
-        console.log(_e); //// TODO: REMOVE DEBUG LOG
-        console.log(_data_target); //// TODO: REMOVE DEBUG LOG
-        // .model.__data__._topic
           
         _this.set_active_topic({
             'topic': _data_target
@@ -99,8 +95,6 @@
         var _this = this;
         var _topics = _options.topics;
         
-        console.log(_topics); //// TODO: REMOVE DEBUG LOG
-
         // clear an array
         _this.set('topics', []);
 

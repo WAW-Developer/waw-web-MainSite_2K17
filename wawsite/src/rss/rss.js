@@ -94,10 +94,6 @@ let _rss = {
                             
                             _feed.entries.push(_entry);
                             
-                            console.log(_this);     // TODO: REMOVE DEBUG LOG
-                            console.log(_entry);     // TODO: REMOVE DEBUG LOG
-
-                            
 //                            var description = $(this).find("description").text();
 //                            var linkUrl = $(this).find("link_url").text();
 //                            var link = "<a href='" + linkUrl + "' target='_blank'>Read More<a>";

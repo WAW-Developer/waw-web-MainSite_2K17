@@ -50,13 +50,13 @@
 
           
           
-          <template id="categories_list" is="dom-repeat" items="{{data.topic._model._rss.categories}}" as="_category">
+          <template id="categories_list" is="dom-repeat" items="{{categories}}" as="_category" index-as="_catagory_no">
             
 <!--             <a href="javascript:void(null);"> -->
 <!--             <span class="label label-default">{{_category.name}}<span class="badge">{{_category.posts.length}}</span></span> -->
 <!--             </a> -->
             
-            <button class$="btn {{_category_Class(_category)}}" type="button" 
+            <button class$="btn {{_category_Class(_category._model._selected)}}" type="button" 
                 on-click="_clickcategory">
               {{_category.name}} <span class="badge">{{_category.posts.length}}</span>
             </button>
@@ -102,7 +102,16 @@
         reflectToAttribute: true,
         notify: true,
         value: function() { return {}; }
-      }
+      },
+      
+      
+      categories: {
+          type: Array,
+          reflectToAttribute: true,
+          notify: true,
+          value: function() { return []; }
+
+      },
 
     },
     
@@ -114,10 +123,9 @@
       },
       
       
-    _category_Class: function(_category) {
+    _category_Class: function(_selected) {
 
-        return (_category._model !== undefined &&
-                _category._model._selected === true) ? 'bg-success' : 'btn-link';
+        return (_selected === true) ? 'bg-success' : 'btn-link';
         
     },  // EndOf _category_Class
       
@@ -125,30 +133,82 @@
     set_topic: function (_options) {
           
       var _this = this;
-      var _topic = _options.topic;
       
+      // Check options
+      _options = (_options === undefined) ? {} : _options;
       
-      var _data = _this.data;
+      // Check options.topic
+      var _topic = (_options.topic !== undefined) ? _options.topic : _this.get('data.topic');
+
       _this.set('data.topic', {});
       _this.set('data.topic', _topic);
+
+      // Refresh categories
+      _this.set_categories({
+          'categories': _topic._model._rss.categories
+      });
       
+      _this._orderCategories();
       
-      console.log('waw-blog-properties set_topic'); /// TODO: REMOVE DEBUG LOG
-      console.log(_data); // TODO: REMOVE DEBUG LOG
+//       var _data = _this.data;
+//       console.log('waw-blog-properties set_topic'); /// TODO: REMOVE DEBUG LOG
+//       console.log(_data); // TODO: REMOVE DEBUG LOG
 
     },   // EndOf set_topic
+   
+    set_categories: function (_options) {
+        
+        var _this = this;
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.categories
+        var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
+
+        // clear an array and add new values
+        _this.set('categories', []);
+        _this.$.categories_list.render();
+
+        
+        _categories.forEach(function(_item, _i){
+            
+            _item._model = (_item._model !== undefined) ? _item._model : {};
+            _item._model._selected = (_item._model._selected !== undefined) ? _item._model._selected : false;
+
+            _this.push('categories', _item);
+        });
+        
+        
+    },  // EndOf set_categories
+
     
     
     _orderCategories: function(_event) {
         
         var _this = this;
+        var _data = _this.data;
 
-        var _rss = _this.get('data.topic._model._rss');
-        var _categories = _rss.categories;
+//         var _rss = _this.get('data.topic._model._rss');
+//         var _categories = _rss.categories;
+        
+        var _categories = _this.get('categories');
+
         
         var _JQ = jQuery;
-        var _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
-
+        
+        var _orderType = "count"
+        if (_event !== undefined && _event.srcElement !== undefined) {
+            _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
+        } else if (_event !== undefined && _event.orderType !== undefined) {
+            _orderType = _event.orderType;
+        } else if (_data._orderType !== undefined) {
+            _orderType = _data._orderType;
+        }
+        
+        _data._orderType = _orderType;
+        
+        
         switch(_orderType) {
         
           case "name":
@@ -170,9 +230,10 @@
           default:
               break;
         }
-        
-        _this.set('data.topic._model._rss', {});
-        _this.set('data.topic._model._rss', _rss);
+
+        _this.set_categories({
+            'categories': _categories
+        });
         
     },   // EndOf orderCategories
     
@@ -183,16 +244,11 @@
 
         var _category = _event.model.__data__._category;
 
-        console.log('waw-blog-properties _clickcategory'); /// TODO: REMOVE DEBUG LOG
-
         _category._model = (_category._model === undefined) ? {} : _category._model;
-        
-        console.log(_category); // TODO: REMOVE DEBUG LOG
 
         var _JQ = jQuery;
         
         var _button = _JQ(_event.srcElement).closest('button');
-        
         
         if (_category._model._selected !== true) {
             

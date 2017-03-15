@@ -62,14 +62,17 @@
       
       _this.set('data.topic', _topic);
       
-      
       // Paint description
       var _description = '';
       
-      _topic.summary.forEach(function(_line, _i) {
-          _description = _description + _line;
-          
-      });
+      if (Array.isArray(_topic.summary) === true) {
+          _topic.summary.forEach(function(_line, _i) {
+              _description = _description + _line;
+          });
+      } else {
+          _description = _topic.summary;
+      }
+      
       
       Polymer.dom(_this.$.description).innerHTML =_description;
       
