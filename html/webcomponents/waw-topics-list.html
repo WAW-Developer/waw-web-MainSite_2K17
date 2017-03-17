@@ -1,5 +1,8 @@
 
 <dom-module id="waw-topics-list">
+  
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  
   <template>
     <style>
       /* local styles go here */
@@ -67,7 +70,7 @@
     _itemclicked: function(_e, _topic) {
 
         var _this = this;
-        var _data_target = _e.model.__data__._topic.id;
+        var _data_target = _e.model.__data._topic.id;
           
         _this.set_active_topic({
             'topic': _data_target

@@ -1,4 +1,7 @@
 <dom-module id="waw-blog-properties">
+  
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+
   <template>
     <style>
       /* local styles go here */
@@ -242,7 +245,7 @@
         
         var _this = this;
 
-        var _category = _event.model.__data__._category;
+        var _category = _event.model.__data._category;
 
         _category._model = (_category._model === undefined) ? {} : _category._model;
 

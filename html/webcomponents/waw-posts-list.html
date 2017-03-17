@@ -1,4 +1,7 @@
 <dom-module id="waw-posts-list">
+  
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+
   <template>
     <style>
       /* local styles go here */
@@ -260,8 +263,6 @@
            
            var _data = _this.get('data');
            
-           console.log('waw-posts-list _init_pagination');   // TODO: REMOVE DEBUG LOG
-
            // Init pagination properties
            _data.pagination = {
              'currentPage': 1,
@@ -324,7 +325,7 @@
        _get_categories_selected: function(_options) {
            
            var _this = this;
-           var _dom = Polymer.dom(this).node;
+           var _dom = Polymer.dom(_this).node.root;
            var _categories = _this.categories;
 
            var _JQ = jQuery;
@@ -384,7 +385,7 @@
            
            var _this = this;
 
-           var _category = _event.model.__data__._catagory_selected;
+           var _category = _event.model.__data._catagory_selected;
 
            _category._model._selected = false;
            _this.set_categories();
@@ -437,7 +438,7 @@
            // Paint detail content
            if (_JQ(_div_detail).attr('data-loaded') === 'false') {
                
-               var _post = _event.model.__data__._post;
+               var _post = _event.model.__data._post;
                _JQ(_div_detail).find('div.panel-body').html(_post.content);
                _JQ(_div_detail).attr('data-loaded', "true")
            } 

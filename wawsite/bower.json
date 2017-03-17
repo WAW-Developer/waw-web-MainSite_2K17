@@ -28,7 +28,7 @@
     "build/"
   ],
   "dependencies": {
-    "polymer": "^1.0.0",
+    "polymer": "Polymer/polymer#2.0.0-rc.2",
     "bootstrap": "^3.3.7"
   },
   "devDependencies": {}

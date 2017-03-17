@@ -269,18 +269,59 @@ gulp.task('copywawmsite', function (_done) {
  */
 gulp.task('copyLib_polymer', function (_done) {
 
-    
+    /*
     var _filePath = ['bower_components/polymer/polymer.html',
         'bower_components/polymer/polymer-mini.html',
         'bower_components/polymer/polymer-micro.html',
-        'bower_components/webcomponentsjs/webcomponents.min.js'];
-    var _defaultDestinationPath = '../html/js/';
+        'bower_components/webcomponentsjs/webcomponents.min.js',
+        'bower_components/webcomponentsjs/webcomponents-loader.js'];
+    */
+    
+    var _filePath = ['bower_components/polymer/**/*'];
+    
+    var _defaultDestinationPath = '../html/js/polymer';
 
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        
+        gulp.src(['bower_components/webcomponentsjs/webcomponents-lite.js',
+            'bower_components/webcomponentsjs/webcomponents-loader.js'])
+        .pipe(gulp.dest('../html/js/webcomponents'))
+        .on('end', function () {
+            
+            gulp.src(['bower_components/shadycss/**/*'])
+            .pipe(gulp.dest('../html/js/shadycss'))
+            .on('end', function () {
+                _done();
+            });
+            
+        });
+        
+        //_done()
+    });
+    
+});
+
+
+/**
+ * Gulp task 'copyLib_jQuery'
+ *
+ * Copy jQuery library
+ *
+ */
+gulp.task('copyLib_jQuery', function (_done) {
+    
+    var _filePath = ['bower_components/jquery/dist/jquery.min.js'];
+    
+    var _defaultDestinationPath = '../html/js/';
+    
     gulp.src(_filePath)
     .pipe(gulp.dest(_defaultDestinationPath))
     .on('end', function () { 
         _done()
         });
+    
 });
 
 
@@ -344,7 +385,7 @@ gulp.task('copyLib_bootstrap_glyphicons', function (_done) {
  */
 gulp.task('copyLibs', function (_done) {
     
-    runSequence(['copyLib_polymer', 'copyLib_bootstrap', 'copyLib_bootstrap_glyphicons'], _done);
+    runSequence(['copyLib_jQuery', 'copyLib_polymer', 'copyLib_bootstrap', 'copyLib_bootstrap_glyphicons'], _done);
     
 });
 

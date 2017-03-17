@@ -3,12 +3,7 @@ node_modules
 *./*node_modules
 /wawsite/babel/*
 /wawsite/npm*.log.*
-html/js/*.js
-# html/js/*.json
-html/js/*.map
-html/js/*.html
-html/js/*.css
-html/js/bootstrap/
+html/js/*
 .vagrant
 .settings
 *.log
