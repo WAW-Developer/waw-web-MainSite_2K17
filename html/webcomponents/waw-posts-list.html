@@ -78,6 +78,41 @@
             <!-- EndOf Filter by Categories -->
 
         </nav>
+        <!-- EndOf Toolbar -->
+
+
+        <!-- Pagination -->
+        <nav>
+          <ul class="pager">
+            <li *ngIf="pagination.currentPage > 1" class="previous" (click)="pagination_Previous()">
+                <a href="javascript:void(null);"><span aria-hidden="true">&larr;</span> Previous</a>
+            </li>
+            
+            <li>
+            <ul class="pagination">
+                
+               <template id="pages_top" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
+                
+                  <li [class.active]="page.active">
+                      <a href="javascript:void(null);"
+                          [class.active]="page.active"
+                          (click)="pagination_GotoPage(page.pageNum)">
+                          {{_page.pageNum}}
+                       </a>
+                  </li>
+                
+                </template>
+                
+            </ul>
+            </li>
+
+            <li *ngIf="pagination.currentPage < pagination.pages.length" class="next" (click)="pagination_Next()">
+                <a href="javascript:void(null);">Next <span aria-hidden="true">&rarr;</span></a>
+            </li>
+          </ul>
+        </nav>
+        <!-- EndOf Pagination -->
+        
         
         <br />
       
@@ -217,9 +252,31 @@
         */
        ready: function() {
 //            console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
-         },
+       },
          
          
+       _init_pagination: function(_options) {
+           var _this = this;
+           
+           var _data = _this.get('data');
+           
+           console.log('waw-posts-list _init_pagination');   // TODO: REMOVE DEBUG LOG
+
+           // Init pagination properties
+           _data.pagination = {
+             'currentPage': 1,
+             'itemsForPage': 5,
+             '_pages': [],
+             '_page': {},
+             '_items': []
+           
+           };
+           
+//            _this.set('data', _data);
+
+       },   // EndOF _init_pagination
+       
+       
        set_posts: function (_options) {
              
          var _this = this;
@@ -235,6 +292,10 @@
          _posts.forEach(function(_item, _id){
              _this.push('posts', _item);
          });
+         
+         _this._paginate();
+         _this._paginate_goToPage();
+
 
        },   // EndOf set_posts
        
@@ -398,7 +459,87 @@
            }
 
            
-       }    // EndOf _showHideDetail
+       },    // EndOf _showHideDetail
+       
+       
+       _paginate: function(_options) {
+           
+           var _this = this;
+           var _pagination = _this.get('data.pagination');
+           
+           if (_pagination === undefined) {
+               _this._init_pagination();
+               _pagination = _this.get('data.pagination');
+           }
+           
+           console.log('waw-posts-list _paginate');   // TODO: REMOVE DEBUG LOG
+           
+           // Check options
+           _options = (_options === undefined) ? {} : _options;
+           
+           // Check options.itemsForPage
+           var _itemsForPage = (_options.itemsForPage !== undefined) ? _options.itemsForPage : _pagination.itemsForPage;
+
+           var _posts = _this.get('posts');
+           
+           
+           _pagination.currentPage = 1;
+           _pagination._pages = {};
+           
+           var _i,_j,_k=0;
+           for (_i=0, _j=_posts.length; _i<_j; _i+=_itemsForPage) {
+               _k++;
+               _pagination._pages['page_'+ _k] = {
+                 'pageNum': _k,
+                 'items': _posts.slice(_i, _i+_itemsForPage)
+               };
+           }
+           
+           console.log(_pagination);   // TODO: REMOVE DEBUG LOG
+
+           
+       },    // EndOf _paginate
+       
+       
+       _paginate_goToPage: function(_options) {
+           
+           var _this = this;
+           var _pagination = _this.get('data.pagination');
+           
+           console.log('waw-posts-list _paginate_goToPage');   // TODO: REMOVE DEBUG LOG
+           
+           // Check options
+           _options = (_options === undefined) ? {} : _options;
+           
+           // Check options.currentPage
+           var _currentPage = (_options.currentPage !== undefined) ? _options.currentPage : _pagination.currentPage;
+           
+
+           if ( _currentPage <= _pagination._pages.length && 
+                   _currentPage >= 1) {
+               _pagination._page = _pagination._pages['page_' + _currentPage];
+           } else {
+               _pagination._page = _pagination._pages['page_1'];
+           }
+           
+           console.log(_pagination);   // TODO: REMOVE DEBUG LOG
+
+           // clear an array and add new values
+           _this.set('data.pagination._items', []);
+           
+           for (var _key in _pagination._pages) {
+               _this.push('data.pagination._items', _pagination._pages[_key]);
+           }
+           
+           
+           // pages_top
+//            _this.$.pages_top.render();
+
+           
+       }    // EndOf _paginate_goToPage
+
+           
+       
          
     });    
     </script>
