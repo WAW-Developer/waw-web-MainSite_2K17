@@ -19,14 +19,32 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#categories" aria-controls="categories" role="tab" data-toggle="tab">Categories</a></li>
-          <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
-          <li role="presentation"><a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">Properties</a></li>
+          <li role="presentation" class="active">
+            <a href="javascript:void(null);" aria-controls="categories"
+                on-click="_tab_clicked"
+                data-name="categories" 
+                role="tab" data-toggle="tab">Categories
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="javascript:void(null);" aria-controls="search"
+                on-click="_tab_clicked" 
+                data-name="search" 
+                role="tab" data-toggle="tab">Search
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="javascript:void(null);" aria-controls="properties"
+                on-click="_tab_clicked"
+                data-name="properties" 
+                role="tab" data-toggle="tab">Properties
+            </a>
+          </li>
         </ul>
       
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="categories">
+          <div role="tabpanel" class="tab-pane active" id="categories" data-name="categories">
           
           <!-- Panel Toolbar -->
           <nav class="nav nav-pills">
@@ -68,8 +86,8 @@
           
           
           </div>
-          <div role="tabpanel" class="tab-pane" id="search">... Search</div>
-          <div role="tabpanel" class="tab-pane" id="properties">
+          <div role="tabpanel" class="tab-pane" id="search" data-name="search">... Search</div>
+          <div role="tabpanel" class="tab-pane" id="properties" data-name="properties" >
         ... Properties
             <ul class="list-group">
               <li class="list-group-item"><strong>Name:</strong> {{data.topic.name}}</li>
@@ -133,6 +151,23 @@
     },  // EndOf _category_Class
       
     
+    _tab_clicked(_event) {
+      
+        var _this = this;
+        var _name = _event.path["0"].dataset.name;
+       
+       var _JQ = jQuery;
+       
+
+       _JQ(_event.path["0"]).closest('ul').find('li').removeClass('active');
+       _JQ(_event.path["0"]).closest('li').addClass('active');
+       
+       _JQ(_event.path["0"]).closest('div.panel-body').find('div.tab-pane[role="tabpanel"]').removeClass('active');
+       _JQ(_event.path["0"]).closest('div.panel-body').find('div.tab-pane[role="tabpanel"][data-name="' + _name + '"]').addClass('active');
+
+    },  // EndOf _tab_clicked
+    
+    
     set_topic: function (_options) {
           
       var _this = this;
@@ -159,6 +194,7 @@
 
     },   // EndOf set_topic
    
+    
     set_categories: function (_options) {
         
         var _this = this;
@@ -184,7 +220,6 @@
         
         
     },  // EndOf set_categories
-
     
     
     _orderCategories: function(_event) {
