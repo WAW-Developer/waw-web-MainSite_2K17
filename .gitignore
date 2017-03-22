@@ -4,6 +4,7 @@ node_modules
 /wawsite/babel/*
 /wawsite/npm*.log.*
 html/js/*
+html/webcomponents/bs4/
 .vagrant
 .settings
 *.log

@@ -1,4 +1,8 @@
 <dom-module id="waw-topic-detail">
+  
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  
+  
   <template>
     <style>
       /* local styles go here */
@@ -8,11 +12,11 @@
     </style>
    
     <!-- local DOM goes here -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card">
+      <div class="card-header">
         <h3 class="panel-title">Topic detail</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-block">
         <h3>{{data.topic.name}}</h3>
         <p id="description">
         </p>
@@ -22,63 +26,71 @@
     
     
   </template>
+  
+  
+  
    <script>
-   Polymer({
-     /* this is the element's prototype */
-    is: 'waw-topic-detail',
-    
-    
-    properties: {
+   
+   class WAW_TopicDetail extends Polymer.Element {
+       static get is() { return "waw-topic-detail"; }
+       static get properties() {
+         return {
+           mode: {
+               type: String,
+               value: 'auto'
+             },
 
-      mode: {
-        type: String,
-        value: 'auto'
-      },
+             data: {
+               type: Object,
+               reflectToAttribute: true,
+               notify: true,
+               value: function() { return {}; }
+             }
+         }
+       }
+       
+       
+       constructor() {
+         super();
+//          this.textContent = "I'm a custom-element.";
+       }
+       
+       connectedCallback() {
+         super.connectedCallback();
+       }
+       
+       
+       set_topic(_options) {
+           
+         var _this = this;
+         var _topic = _options.topic;
+         
+         var _JQ = jQuery;
+         
+         _this.set('data.topic', _topic);
+         
+         // Paint description
+         var _description = '';
+         
+         if (Array.isArray(_topic.summary) === true) {
+             _topic.summary.forEach(function(_line, _i) {
+                 _description = _description + _line;
+             });
+         } else {
+             _description = _topic.summary;
+         }
+         
+         
+         Polymer.dom(_this.$.description).innerHTML =_description;
+         
+       }
+       
+       
+   }
+   
+   // Register the new element with the browser
+   customElements.define(WAW_TopicDetail.is, WAW_TopicDetail);
 
-      data: {
-        type: Object,
-        reflectToAttribute: true,
-        notify: true,
-        value: function() { return {}; }
-      }
-
-    },
-    
-    /**
-     * Called when the component is ready
-     */
-    ready: function() {
-//         console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
-      },
-      
-      
-      
-    set_topic: function (_options) {
-          
-      var _this = this;
-      var _topic = _options.topic;
-      
-      var _JQ = jQuery;
-      
-      _this.set('data.topic', _topic);
-      
-      // Paint description
-      var _description = '';
-      
-      if (Array.isArray(_topic.summary) === true) {
-          _topic.summary.forEach(function(_line, _i) {
-              _description = _description + _line;
-          });
-      } else {
-          _description = _topic.summary;
-      }
-      
-      
-      Polymer.dom(_this.$.description).innerHTML =_description;
-      
-    }
-      
-      
-  });
+   
   </script>
 </dom-module>

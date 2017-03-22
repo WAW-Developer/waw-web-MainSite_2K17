@@ -3,7 +3,12 @@
   
   <!-- special import with type=css used to load remote CSS
        Note: this style of importing CSS is deprecated -->
+  <link rel="import" type="css" href="../js/tether/tether.min.css">
   <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  
+  <link rel="import" type="css" href="../js/font-awesome/css/font-awesome.min.css">
+  
+  <link rel="import" href="./bs4/bs4-dropdown.html">
   
   <template>
     <style>
@@ -36,13 +41,13 @@
             <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
             <li><a href="#">Link</a></li>
             
-            <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic">
-                <li class$="{{_topic_Class(_topic._model.selected)}}">
-                    <a href="javascript:void(null);" 
-                        on-click="_itemclicked" 
-                        data-target$="{{_topic.id}}">{{_topic.name}}</a>
-                </li>
-            </template>
+<!--             <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic"> -->
+<!--                 <li class$="{{_topic_Class(_topic._model.selected)}}"> -->
+<!--                     <a href="javascript:void(null);"  -->
+<!--                         on-click="_itemclicked"  -->
+<!--                         data-target$="{{_topic.id}}">{{_topic.name}}</a> -->
+<!--                 </li> -->
+<!--             </template> -->
             
             
             <li class="dropdown">
@@ -84,110 +89,173 @@
       </div><!-- /.container-fluid -->
     </nav>
     
+    
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+        </span>
+      </button>
+      <a class="navbar-brand" href="#">Navbar</a>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          
+<!--           <li class="nav-item dropdown"> -->
+          <bs4-dropdown class="nav-item dropdown" style="display: block;">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(null);"
+                id="dropdownMenuButton"
+                role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+          </bs4-dropdown>
+<!--           </li> -->
+          
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+          
+          <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic">
+              <li class$="nav-item {{_topic_Class(_topic)}}">
+                  <a href="javascript:void(null);" 
+                      class="nav-link"
+                      on-click="_itemclicked" 
+                      data-target$="{{_topic.id}}">{{_topic.name}}</a>
+              </li>
+          </template>
+          
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    
+    
   </template>
   
   
-  
-  
-  
-  
    <script>
-   Polymer({
-     /* this is the element's prototype */
-    is: 'waw-header',
-    
-    properties: {
-
-      mode: {
-        type: String,
-        value: 'auto'
-      },
-
-      topics: {
-          type: Array,
-          reflectToAttribute: true,
-          notify: true,
-          value: function() { return []; }
-
-      }
-
-    },
-    
-    
-    
-    /**
-     * Called when the component is ready
-     */
-    ready: function() {
-//         console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
-      },
-      
-      
-      
-    _itemclicked: function(_e, _detail) {
-
-        var _this = this;
-        var _data_target = jQuery(_e.srcElement).attr('data-target');
-
-          
-        _this.fire('itemclicked', {
-            'data-target': _data_target
-            });
-          
-          
-          // .srcElement.childNodes["0"].data
-          // .srcElement.attributes[1]
-      },
-      
-      
-    _topic_Class: function(_selected) {
-        return _selected === true ? 'active' : '';
-    },
-      
-    
-    
-    set_topics: function (_options) {
-        
-        var _this = this;
-        var _topics = _options.topics;
-        
-     // clear an array
-        _this.set('topics', []);
-
-        _topics.forEach(function(_item, _id){
-//             _data.topics.push(_item);
-
-            if (_item._model === undefined) {
-                _item._model = {};
-            }
-            
-            _item._model.selected = (_item._model.selected === true) ? true : false;
-
-            _this.push('topics', _item);
-        });
-        
-
-    },
-    
-    set_active_topic: function (_options) {
-        
-        var _this = this;
-        var _topic_ID = _options.topic;
-        var _data = _this.data;
-        var _topics = _this.topics;
-//         var _topics = _this.data.topics.slice(0);
-        
-        _topics.forEach(function(_topic, _i) {
-//             _topic._model.selected = _topic.id === _topic_ID ? true: false;
-            _this.set('topics.' + _i + '._model.selected', _topic.id === _topic_ID ? true: false);
-        });
-        
-            
-    }
-    
    
+   
+   class WAW_Header extends Polymer.Element {
+     static get is() { return "waw-header"; }
+     static get properties() {
+       return {
+         mode: {
+             type: String,
+             value: 'auto'
+           },
+
+         topics: {
+             type: Array,
+             reflectToAttribute: true,
+             notify: true,
+             value: function() { return []; }
+
+         }
+       }
+     }
+     
+     
+     constructor() {
+       super();
+//        this.textContent = "I'm a custom-element.";
+     }
+     
+     connectedCallback() {
+       super.connectedCallback();
+     }
+     
+     _itemclicked(_e, _detail) {
+
+       var _this = this;
+//        var _data_target = jQuery(_e.srcElement).attr('data-target');
+       var _data_target = _e.model.__data._topic.id;
+
+       
+       var _event_Detail = {
+           'data-target': _data_target
+       };
+
+       _this.dispatchEvent(new CustomEvent('itemclicked', {
+           'detail': _event_Detail
+       }));
+
+//        _this.fire('itemclicked', {
+//            'data-target': _data_target
+//            });
+         
+         // .srcElement.childNodes["0"].data
+         // .srcElement.attributes[1]
+     }
+     
+     
+     _topic_Class(_topic) {
+         return _topic._model.selected === true ? 'active' : '';
+     }
+
+     
+     set_topics(_options) {
+         
+         var _this = this;
+         
+         _options = (_options !== undefined) ? _options: {};
+         var _topics = (_options.topics !== undefined) ? _options.topics : _this.get('topics');
+         
+          // clear an array
+         _this.set('topics', []);
+         _this.$.topics_list.render();
       
-      
-  });
+         _topics.forEach(function(_item, _id){
+//              _data.topics.push(_item);
+
+             if (_item._model === undefined) {
+                 _item._model = {};
+             }
+             
+             _item._model.selected = (_item._model.selected === true) ? true : false;
+
+             _this.push('topics', _item);
+         });
+         
+     }
+     
+     
+     set_active_topic(_options) {
+         
+       var _this = this;
+       var _topic_ID = _options.topic;
+       var _data = _this.data;
+       var _topics = _this.topics;
+       
+       _topics.forEach(function(_topic, _i) {
+           _this.set('topics.' + _i + '._model.selected', _topic.id === _topic_ID ? true: false);
+           });
+       
+       _this.set_topics();
+
+     }
+
+     
+       
+   }
+
+   
+   // Register the new element with the browser
+   customElements.define(WAW_Header.is, WAW_Header);
+   
   </script>
 </dom-module>

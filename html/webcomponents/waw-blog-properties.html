@@ -1,6 +1,12 @@
 <dom-module id="waw-blog-properties">
   
+  <link rel="import" type="css" href="../js/tether/tether.min.css">
   <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  <link rel="import" type="css" href="../js/font-awesome/css/font-awesome.min.css">
+  
+  <link rel="import" href="./bs4/bs4-tabs.html">
+  
+  
 
   <template>
     <style>
@@ -11,32 +17,39 @@
     </style>
    
     <!-- local DOM goes here -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card">
+      <div class="card-header">
         <h3 class="panel-title">Blog properties</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-block">
 
         <!-- Nav tabs -->
+        <bs4-tabs>
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active">
-            <a href="javascript:void(null);" aria-controls="categories"
-                on-click="_tab_clicked"
-                data-name="categories" 
+          <li class="nav-item">
+            <a href="#categories" aria-controls="categories"
+                id="categories-tab"
+                class="nav-link"
+                data-toggle="tab"
+                data-name="categories"
                 role="tab" data-toggle="tab">Categories
             </a>
           </li>
-          <li role="presentation">
-            <a href="javascript:void(null);" aria-controls="search"
-                on-click="_tab_clicked" 
-                data-name="search" 
+          <li class="nav-item">
+            <a href="#search" aria-controls="search"
+                id="search-tab"
+                class="nav-link"
+                data-toggle="tab"
+                data-name="search"
                 role="tab" data-toggle="tab">Search
             </a>
           </li>
-          <li role="presentation">
-            <a href="javascript:void(null);" aria-controls="properties"
-                on-click="_tab_clicked"
-                data-name="properties" 
+          <li class="nav-item">
+            <a href="#properties" aria-controls="properties"
+                id="properties-tab"
+                class="nav-link"
+                data-toggle="tab"
+                data-name="properties"
                 role="tab" data-toggle="tab">Properties
             </a>
           </li>
@@ -44,26 +57,28 @@
       
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="categories" data-name="categories">
+          <div role="tabpanel" class="tab-pane card-block active" id="categories" data-name="categories" aria-labelledby="categories-tab">
           
           <!-- Panel Toolbar -->
           <nav class="nav nav-pills">
-              <span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-right: 6px;"> </span>
-              <span>Categories <span class="badge small">{{data.topic._model._rss.categories.length}}</span></span>
+              <span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-right: 6px;">
+                <i class="fa fa-tags" aria-hidden="true"></i> 
+              </span>
+              <span>Categories <span class="badge badge-pill badge-default small">{{data.topic._model._rss.categories.length}}</span></span>
               
               
             <button type="button" 
-              class="btn btn-default navbar-btn"
+              class="btn btn-outline-primary navbar-btn"
               on-click="_orderCategories"
               data-order="name">
-              <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>
+              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
             </button>
 
             <button type="button" 
-              class="btn btn-default navbar-btn"
+              class="btn btn-outline-primary navbar-btn"
               on-click="_orderCategories"
               data-order="count">
-              <span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
+              <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
             </button>
             
           </nav>
@@ -77,17 +92,17 @@
 <!--             <span class="label label-default">{{_category.name}}<span class="badge">{{_category.posts.length}}</span></span> -->
 <!--             </a> -->
             
-            <button class$="btn {{_category_Class(_category._model._selected)}}" type="button" 
+            <button class$="btn btn-secondary {{_category_Class(_category._model._selected)}}" type="button" 
                 on-click="_clickcategory">
-              {{_category.name}} <span class="badge">{{_category.posts.length}}</span>
+              {{_category.name}} <span class="badge badge-pill badge-default small">{{_category.posts.length}}</span>
             </button>
             
           </template>
           
           
           </div>
-          <div role="tabpanel" class="tab-pane" id="search" data-name="search">... Search</div>
-          <div role="tabpanel" class="tab-pane" id="properties" data-name="properties" >
+          <div role="tabpanel" class="tab-pane card-block" id="search" data-name="search" aria-labelledby="search-tab">... Search</div>
+          <div role="tabpanel" class="tab-pane card-block" id="properties" data-name="properties" aria-labelledby="properties-tab">
         ... Properties
             <ul class="list-group">
               <li class="list-group-item"><strong>Name:</strong> {{data.topic.name}}</li>
@@ -98,6 +113,7 @@
 
           </div>
         </div>
+        </bs4-tabs>
         
         
       </div>
@@ -106,210 +122,209 @@
   </template>
   
    <script>
-   Polymer({
-     /* this is the element's prototype */
-    is: 'waw-blog-properties',
-    
-    
-    properties: {
-
-      mode: {
-        type: String,
-        value: 'auto'
-      },
-
-      data: {
-        type: Object,
-        reflectToAttribute: true,
-        notify: true,
-        value: function() { return {}; }
-      },
-      
-      
-      categories: {
-          type: Array,
-          reflectToAttribute: true,
-          notify: true,
-          value: function() { return []; }
-
-      },
-
-    },
-    
-    /**
-     * Called when the component is ready
-     */
-    ready: function() {
-//         console.log(this.localName + '#' + this.id + ' has local DOM initialized'); //// TODO: REMOVE DEBUG LOG
-      },
-      
-      
-    _category_Class: function(_selected) {
-
-        return (_selected === true) ? 'bg-success' : 'btn-link';
-        
-    },  // EndOf _category_Class
-      
-    
-    _tab_clicked(_event) {
-      
-        var _this = this;
-        var _name = _event.path["0"].dataset.name;
-       
-       var _JQ = jQuery;
-       
-
-       _JQ(_event.path["0"]).closest('ul').find('li').removeClass('active');
-       _JQ(_event.path["0"]).closest('li').addClass('active');
-       
-       _JQ(_event.path["0"]).closest('div.panel-body').find('div.tab-pane[role="tabpanel"]').removeClass('active');
-       _JQ(_event.path["0"]).closest('div.panel-body').find('div.tab-pane[role="tabpanel"][data-name="' + _name + '"]').addClass('active');
-
-    },  // EndOf _tab_clicked
-    
-    
-    set_topic: function (_options) {
-          
-      var _this = this;
-      
-      // Check options
-      _options = (_options === undefined) ? {} : _options;
-      
-      // Check options.topic
-      var _topic = (_options.topic !== undefined) ? _options.topic : _this.get('data.topic');
-
-      _this.set('data.topic', {});
-      _this.set('data.topic', _topic);
-
-      // Refresh categories
-      _this.set_categories({
-          'categories': _topic._model._rss.categories
-      });
-      
-      _this._orderCategories();
-      
-//       var _data = _this.data;
-//       console.log('waw-blog-properties set_topic'); /// TODO: REMOVE DEBUG LOG
-//       console.log(_data); // TODO: REMOVE DEBUG LOG
-
-    },   // EndOf set_topic
    
-    
-    set_categories: function (_options) {
-        
-        var _this = this;
-        
-        // Check options
-        _options = (_options === undefined) ? {} : _options;
-        
-        // Check options.categories
-        var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
+   class WAW_BlogProperties extends Polymer.Element {
+       static get is() { return "waw-blog-properties"; }
+       static get properties() {
+         return {
+           mode: {
+               type: String,
+               value: 'auto'
+             },
 
-        // clear an array and add new values
-        _this.set('categories', []);
-        _this.$.categories_list.render();
+             data: {
+               type: Object,
+               reflectToAttribute: true,
+               notify: true,
+               value: function() { return {}; }
+             },
+             
+             categories: {
+                 type: Array,
+                 reflectToAttribute: true,
+                 notify: true,
+                 value: function() { return []; }
 
-        
-        _categories.forEach(function(_item, _i){
-            
-            _item._model = (_item._model !== undefined) ? _item._model : {};
-            _item._model._selected = (_item._model._selected !== undefined) ? _item._model._selected : false;
+             }
+         }
+       }
+       
+       
+       constructor() {
+         super();
+//          this.textContent = "I'm a custom-element.";
+       }
+       
+       connectedCallback() {
+         super.connectedCallback();
+       }
+       
+       
+       _category_Class(_selected) {
 
-            _this.push('categories', _item);
-        });
-        
-        
-    },  // EndOf set_categories
-    
-    
-    _orderCategories: function(_event) {
-        
-        var _this = this;
-        var _data = _this.data;
+           return (_selected === true) ? 'bg-success' : 'btn-link';
+           
+       }    // EndOf _category_Class
 
-//         var _rss = _this.get('data.topic._model._rss');
-//         var _categories = _rss.categories;
-        
-        var _categories = _this.get('categories');
+       
+       set_topic(_options) {
+           
+           var _this = this;
+           
+           // Check options
+           _options = (_options === undefined) ? {} : _options;
+           
+           // Check options.topic
+           var _topic = (_options.topic !== undefined) ? _options.topic : _this.get('data.topic');
 
-        
-        var _JQ = jQuery;
-        
-        var _orderType = "count"
-        if (_event !== undefined && _event.srcElement !== undefined) {
-            _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
-        } else if (_event !== undefined && _event.orderType !== undefined) {
-            _orderType = _event.orderType;
-        } else if (_data._orderType !== undefined) {
-            _orderType = _data._orderType;
-        }
-        
-        _data._orderType = _orderType;
-        
-        
-        switch(_orderType) {
-        
-          case "name":
-              _categories.sort(function(a, b) {
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
-            });
-            break;
-                
-          case "count":
-              _categories.sort(function(a, b) {
-                if (a.count > b.count) return -1;
-                if (a.count < b.count) return 1;
-                return 0;
-            });
-            break;
-              
-          default:
-              break;
-        }
+           _this.set('data.topic', {});
+           _this.set('data.topic', _topic);
 
-        _this.set_categories({
-            'categories': _categories
-        });
-        
-    },   // EndOf orderCategories
-    
-    
-    _clickcategory: function(_event) {
-        
-        var _this = this;
+           // Refresh categories
+           _this.set_categories({
+               'categories': _topic._model._rss.categories
+           });
+           
+           _this._orderCategories();
+           
 
-        var _category = _event.model.__data._category;
+       }  // EndOf set_topic       
+       
+       
+       set_categories(_options) {
+           
+           var _this = this;
+           
+           // Check options
+           _options = (_options === undefined) ? {} : _options;
+           
+           // Check options.categories
+           var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
 
-        _category._model = (_category._model === undefined) ? {} : _category._model;
+           // clear an array and add new values
+           _this.set('categories', []);
+           _this.$.categories_list.render();
 
-        var _JQ = jQuery;
-        
-        var _button = _JQ(_event.srcElement).closest('button');
-        
-        if (_category._model._selected !== true) {
-            
-            _JQ(_button).removeClass( 'btn-link' );
-            _JQ(_button).addClass( 'bg-success' );
-            _category._model._selected = true;
-            
-        } else {
-            
-            _JQ(_button).removeClass( 'bg-success' );
-            _JQ(_button).addClass( 'btn-link' );
-            _category._model._selected = false;
-        }
-        
-        
-        _this.fire('catepgoryclicked', {
-            'category': _category
-            });
-        
-        
-    },   // EndOf _clickcategory
-    
-  });
+           
+           _categories.forEach(function(_item, _i){
+               
+               _item._model = (_item._model !== undefined) ? _item._model : {};
+               _item._model._selected = (_item._model._selected !== undefined) ? _item._model._selected : false;
+
+               _this.push('categories', _item);
+           });
+           
+           
+       }    // EndOf set_categories       
+       
+       
+       
+       _orderCategories(_event) {
+           
+           var _this = this;
+           var _data = _this.data;
+
+//            var _rss = _this.get('data.topic._model._rss');
+//            var _categories = _rss.categories;
+           
+           var _categories = _this.get('categories');
+
+           
+           var _JQ = jQuery;
+           
+           var _orderType = "count"
+           if (_event !== undefined && _event.srcElement !== undefined) {
+               _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
+           } else if (_event !== undefined && _event.orderType !== undefined) {
+               _orderType = _event.orderType;
+           } else if (_data._orderType !== undefined) {
+               _orderType = _data._orderType;
+           }
+           
+           _data._orderType = _orderType;
+           
+           
+           switch(_orderType) {
+           
+             case "name":
+                 _categories.sort(function(a, b) {
+                   if (a.name < b.name) return -1;
+                   if (a.name > b.name) return 1;
+                   return 0;
+               });
+               break;
+                   
+             case "count":
+                 _categories.sort(function(a, b) {
+                   if (a.count > b.count) return -1;
+                   if (a.count < b.count) return 1;
+                   return 0;
+               });
+               break;
+                 
+             default:
+                 break;
+           }
+
+           _this.set_categories({
+               'categories': _categories
+           });
+           
+       }    // EndOf orderCategories
+       
+       
+       _clickcategory(_event) {
+           
+           var _this = this;
+
+           var _category = _event.model.__data._category;
+
+           _category._model = (_category._model === undefined) ? {} : _category._model;
+
+           var _JQ = jQuery;
+           
+           var _button = _JQ(_event.srcElement).closest('button');
+           
+           if (_category._model._selected !== true) {
+               
+               _JQ(_button).removeClass( 'btn-link' );
+               _JQ(_button).addClass( 'bg-success' );
+               _category._model._selected = true;
+               
+           } else {
+               
+               _JQ(_button).removeClass( 'bg-success' );
+               _JQ(_button).addClass( 'btn-link' );
+               _category._model._selected = false;
+           }
+           
+           
+           
+           var _event_Detail = {
+               'category': _category
+           };
+
+           _this.dispatchEvent(new CustomEvent('catepgoryclicked', {
+               'detail': _event_Detail
+           }));
+           
+//            _this.fire('catepgoryclicked', {
+//                'category': _category
+//                });
+           
+           
+       }    // EndOf _clickcategory
+       
+       
+       
+   }
+
+   
+   
+   // Register the new element with the browser
+   customElements.define(WAW_BlogProperties.is, WAW_BlogProperties);
+   
+   
   </script>
   
   

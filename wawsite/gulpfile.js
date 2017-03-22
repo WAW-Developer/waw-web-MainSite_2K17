@@ -344,10 +344,40 @@ gulp.task('copyLib_bootstrap', function (_done) {
     gulp.src(_filePath)
     .pipe(gulp.dest(_defaultDestinationPath))
     .on('end', function () { 
-        _done()
+        
+        gulp.src(['bower_components/tether/dist/css/tether.min.css',
+            'bower_components/tether/dist/js/tether.min.js'])
+        .pipe(gulp.dest('../html/js/tether/'))
+        .on('end', function () { 
+            _done();
         });
+
+//    _done();
+    });
     
 });
+
+
+/**
+ * Gulp task 'copyLib_bootstrapComponents'
+ *
+ * Copy bootstrap components library
+ *
+ */
+gulp.task('copyLib_bootstrapComponents', function (_done) {
+    
+    var _filePath = ['bower_components/bs4-custom-elements/dist/html/*'];
+    
+    var _defaultDestinationPath = '../html/webcomponents/bs4/';
+    
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        _done();
+    });
+    
+});
+
 
 
 /**
@@ -375,6 +405,41 @@ gulp.task('copyLib_bootstrap_glyphicons', function (_done) {
 });
 
 
+
+
+/**
+ * Gulp task 'copyLib_fontawesome'
+ *
+ * Copy fontawesome library
+ *
+ */
+gulp.task('copyLib_fontawesome', function (_done) {
+    
+    var _filePath = ['bower_components/font-awesome/fonts/*'];
+    
+    var _defaultDestinationPath = '../html/js/font-awesome/fonts/';
+    
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+        
+        gulp.src(['bower_components/font-awesome/css/font-awesome.min.css'])
+        .pipe(gulp.dest('../html/js/font-awesome/css/'))
+        .on('end', function () { 
+           
+            
+          _done();
+        });
+
+        
+    // _done();
+    });
+
+
+});
+
+
+
 /**
  * Gulp task 'copyLibs'
  *
@@ -385,7 +450,11 @@ gulp.task('copyLib_bootstrap_glyphicons', function (_done) {
  */
 gulp.task('copyLibs', function (_done) {
     
-    runSequence(['copyLib_jQuery', 'copyLib_polymer', 'copyLib_bootstrap', 'copyLib_bootstrap_glyphicons'], _done);
+    runSequence(['copyLib_jQuery', 
+        'copyLib_polymer', 
+        'copyLib_bootstrap', 
+        'copyLib_fontawesome', 
+        'copyLib_bootstrapComponents'], _done);
     
 });
 
