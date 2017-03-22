@@ -1,0 +1,350 @@
+<script>
+
+class WAW_PostsList extends Polymer.Element {
+    
+    static get is() { return "waw-posts-list"; }
+    
+    static get properties() {
+      return {
+          mode: {
+            type: String,
+            value: 'auto'
+          },
+
+          posts: {
+            type: Array,
+            reflectToAttribute: true,
+            notify: true,
+            value: function() { return []; }
+
+          },
+          
+          categories: {
+            type: Array,
+            reflectToAttribute: true,
+            notify: true,
+            value: function() { return []; }
+
+          },
+          
+          categories_selected: {
+            type: Array,
+            reflectToAttribute: true,
+            notify: true,
+            value: function() { return []; }
+
+          },
+          
+          data: {
+            type: Object,
+            reflectToAttribute: true,
+            notify: true,
+            value: function() { return {}; }
+          }
+        }
+    }
+
+    
+    constructor() {
+      super();
+    }
+    
+    
+    connectedCallback() {
+      super.connectedCallback();
+    }
+    
+    _init_pagination(_options) {
+        var _this = this;
+        
+        var _data = _this.get('data');
+        
+        // Init pagination properties
+        _data.pagination = {
+          'currentPage': 1,
+          'itemsForPage': 5,
+          '_pages': [],
+          '_page': {},
+          '_items': []
+        
+        };
+        
+    }   // EndOF _init_pagination
+    
+    set_posts(_options) {
+        
+        var _this = this;
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.posts
+        var _posts = (_options.posts !== undefined) ? _options.posts : _this.get('posts');
+            
+        // clear an array and add new values
+        _this.set('posts', []);  
+        _posts.forEach(function(_item, _id){
+            _this.push('posts', _item);
+        });
+        
+        _this._paginate();
+        _this._paginate_gotoPage();
+
+
+    }   // EndOf set_posts
+    
+    
+    set_categories(_options) {
+        
+        var _this = this;
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.categories
+        var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
+        
+        // clear an array and add new values
+        _this.set('categories', []);
+        _categories.forEach(function(_item, _i){
+            _this.push('categories', _item);
+        });
+            
+        _this._get_categories_selected();
+        
+    }   // EndOf set_categories
+
+
+    _get_categories_selected(_options) {
+        
+        var _this = this;
+        var _dom = Polymer.dom(_this).node.root;
+        var _categories = _this.categories;
+
+        var _JQ = jQuery;
+        
+        
+        var _categories_selected =_categories.filter(function(_category, _i) {
+           
+            if (_category._model !== undefined &&
+                    _category._model._selected === true) {
+                return true;
+            }
+        });
+        
+        
+        // clear an array and add new values
+        _this.set('categories_selected', []);
+        _categories_selected.forEach(function(_item, _i) {
+            _this.push('categories_selected', _item);
+        });
+        
+        
+        // Show or hide categories layer
+        var _layer_categories = _JQ(_dom).find('nav[data-name="toolbar"] div[data-name="categories"]');
+        
+        if (_categories_selected.length > 0) {
+            _JQ(_layer_categories).show();
+        } else {
+            _JQ(_layer_categories).hide();
+        }
+
+
+    }   // EnfOf _get_categories_selected
+    
+    
+    _categoriesSelected_Reset(_event) {
+        
+        var _this = this;
+
+        var _categories = _this.get('categories');
+        
+        _categories.forEach(function(_category, _i) {
+            
+            if (_category._model !== undefined) {
+                _category._model._selected = false;
+            }
+        });
+        
+        
+        _this.set_categories(
+                { 'categories': _categories });
+        
+        _this.dispatchEvent(new CustomEvent('selectedcategoriesreset', {
+            'detail': {}
+        }));
+
+
+    }   // EndOf categoriesSelected_Reset
+    
+    
+    
+    _clickcategoryselected(_event) {
+        
+        var _this = this;
+
+        var _category = _event.model.__data._catagory_selected;
+
+        _category._model._selected = false;
+        _this.set_categories();
+        
+        _this.dispatchEvent(new CustomEvent('catepgoryclicked', {
+            'detail': {
+                'category': _category
+            }
+        }));
+
+        
+    }   // EndOf _clickcategoryselected
+    
+    
+    _showHideProperties(_event) {
+        
+        var _JQ = jQuery;
+        
+        var _div_properties = _JQ(_event.srcElement).closest('div.list-group-item').find('div[data-name="properties"]');
+        var _hidden = _JQ(_div_properties).attr('hidden');
+        
+        var _div_button = _JQ(_event.srcElement).closest('div.list-group-item').find('button[data-name="properties"]');
+        var _span_button = _JQ(_div_button).find('span[data-name="icon"]');
+
+
+        if (_hidden === 'hidden') {
+            
+          _JQ(_div_properties).removeAttr( 'hidden' );
+          _JQ(_div_button).addClass( 'active' );
+          _JQ(_span_button).removeClass( 'fa-eye' );
+          _JQ(_span_button).addClass( 'fa-eye-slash' );
+            
+        } else {
+            _JQ(_div_properties).attr('hidden', "true");
+            _JQ(_div_button).removeClass( 'active' );
+            _JQ(_span_button).removeClass( 'fa-eye-slash' );
+            _JQ(_span_button).addClass( 'fa-eye' );
+
+        }
+        
+        
+    }   // EndOf _showHideProperties
+    
+    
+    _showHideDetail(_event) {
+        
+        var _JQ = jQuery;
+        
+        var _div_detail = _JQ(_event.srcElement).closest('div.list-group-item').find('div[data-name="detail"]');
+        var _hidden = _JQ(_div_detail).attr('hidden');
+        
+        var _div_button = _JQ(_event.srcElement).closest('div.list-group-item').find('button[data-name="detail"]');
+        var _span_button = _JQ(_div_button).find('span[data-name="icon"]');
+        
+        // Paint detail content
+        if (_JQ(_div_detail).attr('data-loaded') === 'false') {
+            
+            var _post = _event.model.__data._post;
+            _JQ(_div_detail).find('div[data-name="content"]').html(_post.content);
+            _JQ(_div_detail).attr('data-loaded', "true")
+        } 
+        
+        
+        if (_hidden === 'hidden') {
+            
+            _JQ(_div_detail).removeAttr( 'hidden' );
+            _JQ(_div_button).addClass( 'active' );
+            _JQ(_span_button).removeClass( 'fa-eye' );
+            _JQ(_span_button).addClass( 'fa-eye-slash' );
+              
+        } else {
+            _JQ(_div_detail).attr('hidden', "true");
+            _JQ(_div_button).removeClass( 'active' );
+            _JQ(_span_button).removeClass( 'fa-eye-slash' );
+            _JQ(_span_button).addClass( 'fa-eye' );
+
+        }
+
+        
+    }   // EndOf _showHideDetail
+    
+    
+    _paginate(_options) {
+        
+        var _this = this;
+        var _pagination = _this.get('data.pagination');
+        
+        if (_pagination === undefined) {
+            _this._init_pagination();
+            _pagination = _this.get('data.pagination');
+        }
+        
+        console.log('waw-posts-list _paginate');   // TODO: REMOVE DEBUG LOG
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.itemsForPage
+        var _itemsForPage = (_options.itemsForPage !== undefined) ? _options.itemsForPage : _pagination.itemsForPage;
+
+        var _posts = _this.get('posts');
+        
+        
+        _pagination.currentPage = 1;
+        _pagination._pages = {};
+        
+        var _i,_j,_k=0;
+        for (_i=0, _j=_posts.length; _i<_j; _i+=_itemsForPage) {
+            _k++;
+            _pagination._pages['page_'+ _k] = {
+              'pageNum': _k,
+              'items': _posts.slice(_i, _i+_itemsForPage)
+            };
+        }
+        
+        console.log(_pagination);   // TODO: REMOVE DEBUG LOG
+
+        
+    }   // EndOf _paginate
+    
+    _paginate_gotoPage(_options) {
+        
+        var _this = this;
+        var _pagination = _this.get('data.pagination');
+        
+        console.log('waw-posts-list _paginate_goToPage');   // TODO: REMOVE DEBUG LOG
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.currentPage
+        var _currentPage = (_options.currentPage !== undefined) ? _options.currentPage : _pagination.currentPage;
+        
+
+        if ( (_currentPage <= _pagination._pages.length) && 
+                (_currentPage >= 1) ) {
+            _pagination._page = _pagination._pages['page_' + _currentPage];
+        } else {
+            _pagination._page = _pagination._pages['page_1'];
+        }
+        
+        console.log(_pagination);   // TODO: REMOVE DEBUG LOG
+
+        // clear an array and add new values
+        _this.set('data.pagination._items', []);
+        
+        for (var _key in _pagination._pages) {
+            _this.push('data.pagination._items', _pagination._pages[_key]);
+        }
+        
+        
+        // _this.$.pages_top.render();
+
+        
+    }   // EndOf _paginate_goToPage
+
+
+}
+
+
+// Register the new element with the browser
+customElements.define(WAW_PostsList.is, WAW_PostsList);
+
+</script>
