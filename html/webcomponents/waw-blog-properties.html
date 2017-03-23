@@ -203,8 +203,13 @@
 
            // clear an array and add new values
            _this.set('categories', []);
-           _this.$.categories_list.render();
-
+           
+           
+           // _this.$.categories_list.render();
+           // Polymer.dom(_this).querySelector('#categories_list').render();
+           _this.shadowRoot.querySelector('#categories_list').render();
+           // _this.shadowRoot.querySelector('#categories_list').render();
+           
            
            _categories.forEach(function(_item, _i){
                
@@ -213,6 +218,7 @@
 
                _this.push('categories', _item);
            });
+           
            
            
        }    // EndOf set_categories       
@@ -233,8 +239,14 @@
            var _JQ = jQuery;
            
            var _orderType = "count"
-           if (_event !== undefined && _event.srcElement !== undefined) {
-               _orderType = _JQ(_event.srcElement).closest('button').attr('data-order');
+           
+           if (_event !== undefined && 
+                   ((_event.srcElement !== undefined) ||
+                     _event.originalTarget !== undefined)) {
+               
+               var _event_source = (_event.srcElement !== undefined) ? _event.srcElement : _event.originalTarget;
+               _orderType = _JQ(_event_source).closest('button').attr('data-order');
+               
            } else if (_event !== undefined && _event.orderType !== undefined) {
                _orderType = _event.orderType;
            } else if (_data._orderType !== undefined) {
@@ -277,13 +289,16 @@
            
            var _this = this;
 
+           
+           var _event_source = (_event.srcElement !== undefined) ? _event.srcElement : _event.originalTarget;
+           
            var _category = _event.model.__data._category;
 
            _category._model = (_category._model === undefined) ? {} : _category._model;
 
            var _JQ = jQuery;
            
-           var _button = _JQ(_event.srcElement).closest('button');
+           var _button = _JQ(_event_source).closest('button');
            
            if (_category._model._selected !== true) {
                
@@ -298,7 +313,9 @@
                _category._model._selected = false;
            }
            
-           
+//            _JQ(_button).refresh();
+//            _this.set_categories();
+//            _this.shadowRoot.querySelector('#categories_list').render();
            
            var _event_Detail = {
                'category': _category

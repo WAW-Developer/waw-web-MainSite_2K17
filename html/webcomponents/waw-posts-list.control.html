@@ -202,11 +202,17 @@ class WAW_PostsList extends Polymer.Element {
         
         var _JQ = jQuery;
         
-        var _div_properties = _JQ(_event.srcElement).closest('div.list-group-item').find('div[data-name="properties"]');
+        var _event_source = (_event.srcElement !== undefined) ? _event.srcElement : _event.originalTarget;
+        
+        var _div_properties = _JQ(_event_source).closest('div.list-group-item').find('div[data-name="properties"]');
         var _hidden = _JQ(_div_properties).attr('hidden');
         
-        var _div_button = _JQ(_event.srcElement).closest('div.list-group-item').find('button[data-name="properties"]');
+        var _div_button = _JQ(_event_source).closest('div.list-group-item').find('button[data-name="properties"]');
         var _span_button = _JQ(_div_button).find('span[data-name="icon"]');
+
+        console.log('waw-posts-list _showHideProperties');   // TODO: REMOVE DEBUG LOG
+        console.log(_event);   // TODO: REMOVE DEBUG LOG
+        console.log(_div_properties);   // TODO: REMOVE DEBUG LOG
 
 
         if (_hidden === 'hidden') {
@@ -232,10 +238,12 @@ class WAW_PostsList extends Polymer.Element {
         
         var _JQ = jQuery;
         
-        var _div_detail = _JQ(_event.srcElement).closest('div.list-group-item').find('div[data-name="detail"]');
+        var _event_source = (_event.srcElement !== undefined) ? _event.srcElement : _event.originalTarget;
+        
+        var _div_detail = _JQ(_event_source).closest('div.list-group-item').find('div[data-name="detail"]');
         var _hidden = _JQ(_div_detail).attr('hidden');
         
-        var _div_button = _JQ(_event.srcElement).closest('div.list-group-item').find('button[data-name="detail"]');
+        var _div_button = _JQ(_event_source).closest('div.list-group-item').find('button[data-name="detail"]');
         var _span_button = _JQ(_div_button).find('span[data-name="icon"]');
         
         // Paint detail content

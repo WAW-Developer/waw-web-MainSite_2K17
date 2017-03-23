@@ -214,7 +214,6 @@ let _ui = {
             let _category = _event_detail['category'];
             
             _ui.get_components().posts_list.set_categories();
-            
         });
         
         

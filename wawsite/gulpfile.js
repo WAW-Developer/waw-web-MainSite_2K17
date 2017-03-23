@@ -285,8 +285,9 @@ gulp.task('copyLib_polymer', function (_done) {
     .pipe(gulp.dest(_defaultDestinationPath))
     .on('end', function () { 
         
-        gulp.src(['bower_components/webcomponentsjs/webcomponents-lite.js',
-            'bower_components/webcomponentsjs/webcomponents-loader.js'])
+        gulp.src(['node_modules/webcomponents.js/webcomponents-lite.js',
+            'node_modules/webcomponents.js/webcomponents-loader.js',
+            'node_modules/webcomponents.js/custom-elements-es5-adapter.js'])
         .pipe(gulp.dest('../html/js/webcomponents'))
         .on('end', function () {
             

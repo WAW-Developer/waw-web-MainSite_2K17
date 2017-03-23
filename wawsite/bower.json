@@ -31,7 +31,8 @@
     "polymer": "Polymer/polymer#2.0.0-rc.2",
     "bootstrap": "^4.0.0-alpha.6",
     "bs4-custom-elements": "^0.0.3",
-    "font-awesome": "Font-Awesome#^4.7.0"
+    "font-awesome": "Font-Awesome#^4.7.0",
+    "webcomponents.js": "^1.0.0-rc.6"
   },
   "devDependencies": {}
 }
