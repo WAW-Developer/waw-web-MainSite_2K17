@@ -439,13 +439,10 @@ let _ui = {
         if (_topic._model._rss.loaded === true ) {
             
             let _components = _ui.get_components();
-            _components.posts_list.set_posts({
-                'posts': _topic._model._rss.feed.entries
-            });
-            _components.posts_list.set_categories({
-                'categories': _topic._model._rss.categories
-            });
 
+            _components.posts_list.set_topic({
+                'topic': _topic
+            });
             
         } else {
             
@@ -458,11 +455,9 @@ let _ui = {
                 _topic._model._rss.feed = _data.feed;
                 
                 let _components = _ui.get_components();
-                _components.posts_list.set_posts({
-                    'posts': _topic._model._rss.feed.entries
-                });
-                _components.posts_list.set_categories({
-                    'categories': _topic._model._rss.categories
+                
+                _components.posts_list.set_topic({
+                    'topic': _topic
                 });
                 
                 _components.blog_properties.set_topic({

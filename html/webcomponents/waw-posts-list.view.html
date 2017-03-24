@@ -96,26 +96,32 @@
         <nav>
           <ul class="pagination">
                 
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
+            <li class="page-item disabled" data-name="previous">
+                <a href="javascript:void(null);"
+                      class="page-link"
+                      on-click="_clickButton_pagination_Previous">
+                      Previous
+                 </a>
             </li>           
                    
             <template id="pages_top" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
               
-                <li class="page-item" 
-                  [class.active]="_page.active">
+                <li class$="page-item {{_class_forPagination(_page)}}">
                     <a href="javascript:void(null);"
                         class="page-link"
-                        [class.active]="_page.active"
-                        (click)="pagination_GotoPage(_page.pageNum)">
+                        on-click="_clickButton_pagination_GotoPage">
                         {{_page.pageNum}}
                      </a>
                 </li>
               
             </template>
             
-            <li class="page-item disabled">
-              <span class="page-link">Next</span>
+            <li class="page-item disabled" data-name="next">
+                <a href="javascript:void(null);"
+                      class="page-link"
+                      on-click="_clickButton_pagination_Next">
+                      Next
+                 </a>
             </li>
             
           </ul>
@@ -129,13 +135,14 @@
         <!-- Post Items -->
         <div class="list-group">
         
-          <template id="posts_list" is="dom-repeat" items="{{posts}}" as="_post">
+          <template id="posts_list" is="dom-repeat" items="{{posts_paginated}}" as="_post">
             
             <div class="list-group-item card w-100" data-target$="{{_post.id}}" data-name="post_item">
             
               <h3 class="card-block w-100">
                   <span class="fa fa-chevron-right" aria-hidden="true"></span> {{_post.title}}
               </h3>
+              
               <div class="card-text w-100">
                   <span class="h3"><small><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{_post.published}} </small></span>
               </div>
@@ -143,62 +150,61 @@
               <!-- Layer for Post options... -->
               <div data-name="post-options">
 
-              <!-- Button for show/hidde postProperties -->
-              <button type="button" class="btn btn-info" data-name="properties"
-                  on-click="_showHideProperties">
-                  <span class="fa fa-eye" aria-hidden="true" data-name="icon"></span> 
-                  Properties
-                  <span class="fa fa-info-circle" aria-hidden="true">
-                      </span>
-              </button> 
-            
-              <!-- Layer for postProperties -->
-              <div hidden="true" class="card card-info" data-name="properties">
+                <!-- Button for show/hidde postProperties -->
+                <button type="button" class="btn btn-info" data-name="properties"
+                    on-click="_showHideProperties">
+                    <span class="fa fa-eye" aria-hidden="true" data-name="icon"></span> 
+                    Properties
+                    <span class="fa fa-info-circle" aria-hidden="true">
+                        </span>
+                </button> 
               
-                <ul class="list-group card-block">
-                  
-                  <li class="list-group-item">
-                    <span class="glyphicon glyphicon-link" aria-hidden="true">&nbsp;</span>
-                    <span class="h4">URL blog: </span>
-                    <span class="h5"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
-                  </li>
+                <!-- Layer for postProperties -->
+                <div hidden="true" class="card card-info" data-name="properties">
                 
-                  <li class="list-group-item">
-                    <div class="btn-group-sm text-justify card-block" role="group" aria-label="...">
-                      <p>
-                      <span class="fa fa-tags" aria-hidden="true">&nbsp;</span>
-                      <span class="h4"> Categories: </span>
-                      </p>
+                  <ul class="list-group card-block">
                     
-                      <template is="dom-repeat" items="{{_post.categories}}" as="_catagory" index-as="_catagory_no">
-                        <button class="btn btn-sm btn-link" type="button">
-                            {{_catagory}}
-                        </button>                    
-                      </template>
-                    </div>
-                  </li>
+                    <li class="list-group-item">
+                      <span class="glyphicon glyphicon-link" aria-hidden="true">&nbsp;</span>
+                      <span class="h4">URL blog: </span>
+                      <span class="h5"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
+                    </li>
                   
-                </ul>
-              </div>
-            
-            
-            
-              <!-- Button for show/hidde postDetail -->
-              <button type="button" class="btn btn-success" data-name="detail"
-                  on-click="_showHideDetail">
-                  <span class="fa fa-eye" aria-hidden="true" data-name="icon">
-                      </span>
-                  Content
-                  <span class="fa fa-file" aria-hidden="true">
-                      </span>
-              </button>            
-              
-              <!-- Layer for postDetail -->
-              <div hidden="true" class="card card-outline-success" data-name="detail" 
-                  data-loaded="false">
-                <div class="card-block" data-name="content">
+                    <li class="list-group-item">
+                      <div class="btn-group-sm text-justify card-block" role="group" aria-label="...">
+                        <p>
+                        <span class="fa fa-tags" aria-hidden="true">&nbsp;</span>
+                        <span class="h4"> Categories: </span>
+                        </p>
+                      
+                        <template is="dom-repeat" items="{{_post.categories}}" as="_catagory" index-as="_catagory_no">
+                          <button class="btn btn-sm btn-link" type="button">
+                              {{_catagory}}
+                          </button>                    
+                        </template>
+                      </div>
+                    </li>
+                    
+                  </ul>
                 </div>
-              </div>            
+              
+              
+                <!-- Button for show/hidde postDetail -->
+                <button type="button" class="btn btn-success" data-name="detail"
+                    on-click="_showHideDetail">
+                    <span class="fa fa-eye" aria-hidden="true" data-name="icon">
+                        </span>
+                    Content
+                    <span class="fa fa-file" aria-hidden="true">
+                        </span>
+                </button>            
+                
+                <!-- Layer for postDetail -->
+                <div hidden="true" class="card card-outline-success" data-name="detail" 
+                    data-loaded="false">
+                  <div class="card-block" data-name="content">
+                  </div>
+                </div>            
             
               </div>    <!-- EndOf post-options -->
             
@@ -207,6 +213,51 @@
           </template>
           
         </div>   <!-- EndOf Post Items -->
+      
+
+        <br />
+
+        <!-- Pagination -->
+        <nav>
+          <ul class="pagination">
+                
+            <li class="page-item disabled" data-name="previous">
+                <a href="javascript:void(null);"
+                      class="page-link"
+                      on-click="_clickButton_pagination_Previous">
+                      Previous
+                 </a>
+            </li>           
+                   
+            <template id="pages_down" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
+              
+                <li class$="page-item {{_class_forPagination(_page)}}">
+                    <a href="javascript:void(null);"
+                        class="page-link"
+                        on-click="_clickButton_pagination_GotoPage">
+                        {{_page.pageNum}}
+                     </a>
+                </li>
+              
+            </template>
+            
+            <li class="page-item disabled" data-name="next">
+                <a href="javascript:void(null);"
+                      class="page-link"
+                      on-click="_clickButton_pagination_Next">
+                      Next
+                 </a>
+            </li>
+            
+          </ul>
+
+        </nav>
+        <!-- EndOf Pagination -->      
+      
+      
+      
+      
+      
       
       </div>
     </div>
