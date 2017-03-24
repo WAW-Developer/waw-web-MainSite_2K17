@@ -112,12 +112,15 @@
             'js/webcomponents/webcomponents-lite.js'
           ];
         
+        
+        var nua = navigator.userAgent;
+        // var is_android = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 &&     nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+        
         // Chrome 1+
-        var _isChrome = !!window.chrome && !!window.chrome.webstore;
-        
-        var _scripts = (_isChrome === true) ? _scripts_chrome : _scripts_others;
-        
-        
+        // var _isChrome = !!window.chrome && !!window.chrome.webstore;
+        var _isChrome = !!(nua.indexOf('Chrome') > -1);
+
+        var _scripts = (_isChrome === true ) ? _scripts_chrome : _scripts_others;
         
         _loadScripts(_scripts).then(function(e) {
             console.log(e);
