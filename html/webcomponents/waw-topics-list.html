@@ -116,7 +116,8 @@
 
                _item._model = (_item._model !== undefined) ? _item._model : {};
                
-               _item._model.selected = (_item._model.selected === true) ? true : false;
+               // _item._model.selected = (_item._model.selected === true) ? true : false;
+               _item._model.selected = false;
 
                _this.push('topics', _item);
            });
@@ -127,16 +128,22 @@
        set_active_topic(_options) {
            
            var _this = this;
-           var _topic_ID = _options.topic;
-           var _data = _this.data;
            var _topics = _this.topics;
 //            var _topics = _this.data.topics.slice(0);
+
+          // Check options
+          _options = (_options === undefined) ? {} : _options;
+
+          // Check options.topic
+          var _topic_ID = (_options.topic !== undefined) ? _options.topic : null;
+
+          // Check options.none
+          var _none = (_options.none !== undefined ) ? _options.none : false;
            
            _topics.forEach(function(_topic, _i) {
 //                _topic._model.selected = _topic.id === _topic_ID ? true: false;
-               _this.set('topics.' + _i + '._model.selected', _topic.id === _topic_ID ? true: false);
+               _this.set('topics.' + _i + '._model.selected', ((_topic.id === _topic_ID) && (_none !== true)) ? true : false);
            });
-           
                
        }
        

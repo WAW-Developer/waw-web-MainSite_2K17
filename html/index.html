@@ -102,14 +102,16 @@
             'js/shadycss/apply-shim.min.js',
             'js/shadycss/custom-style-interface.min.js',
             'js/shadycss/scoping-shim.min.js',
-            'js/webcomponents/webcomponents-lite.js'
+            'js/webcomponents/webcomponents-lite.js',
+            'js/mainsite-min.js'
           ];
         
         var _scripts_chrome = [
             'js/shadycss/apply-shim.min.js',
             'js/shadycss/custom-style-interface.min.js',
             'js/shadycss/scoping-shim.min.js',
-            'js/webcomponents/webcomponents-lite.js'
+            'js/webcomponents/webcomponents-lite.js',
+            'js/mainsite-min.js'
           ];
         
         
@@ -167,6 +169,7 @@
     var _init_App = function() {
       
         var _mainsite = waw.mainsite;
+        var _JQ = jQuery;
         
         _mainsite.config.initialize({
             'config': {
@@ -194,12 +197,19 @@
         _mainsite._tests.doSomeTests = function(_options) {
 //             _mainsite._tests.load_feed();
             _mainsite.ui.initialize_UI();
+            
+            
+            
         };
         
         // Load configuration
         _mainsite.config.loadConfig().then(function(_data){
             _mainsite._tests.doSomeTests();
         });
+        
+        // Hide loading and show the content
+        _JQ('article[data-name="loading"]').attr('hidden', 'true');
+        _JQ('article[data-name="content"]').removeAttr('hidden');
        
     };
     
@@ -242,15 +252,17 @@
 <!--   <link rel="import" href="js/shadycss/apply-shim.html"> -->
 <!--   <link rel="import" href="js/polymer/polymer-element.html"> -->
   
-  <script src="js/tether/tether.min.js"></script>
-  <link rel="stylesheet" href="js/tether/tether.min.css">
   
-  <script src="js/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="js/tether/tether.min.css">
+  <script src="js/tether/tether.min.js"></script>
+  
+  
   <link rel="stylesheet" href="js/bootstrap/js/bootstrap.min.css">
+  <script src="js/bootstrap/js/bootstrap.min.js"></script>
   
   <link rel="stylesheet" href="js/font-awesome/css/font-awesome.min.css">
   
-  <script src="js/mainsite-min.js"></script>
+<!--   <script src="js/mainsite-min.js"></script> -->
   
 
 <!--   <link rel="import" href="js/polymer-mini.html"> -->
@@ -287,19 +299,28 @@
 
 <body>
 
+<article class="container-fluid"
+    data-name="loading">
+    Loading
+    <span class="fa fa-cog fa-spin fa-2x fa-fw" aria-hidden="true"></span>
+    
+</article>
 
-<article>
+
+
+<article class="container-fluid" data-name="content" hidden="true">
+  
   <waw-header></waw-header>
 
-    <div class="container-fluid row">
-      <div class="col-xs-12 col-sm-7 col-md-8"><waw-topic-detail></waw-topic-detail></div>
-      <div class="col-xs-12 col-sm-5 col-md-4"><waw-topics-list></waw-topics-list></div>
-    </div>
+  <div class="container-fluid row">
+    <div class="col-xs-12 col-sm-7 col-md-8"><waw-topic-detail></waw-topic-detail></div>
+    <div class="col-xs-12 col-sm-5 col-md-4"><waw-topics-list></waw-topics-list></div>
+  </div>
   
-    <div class="container-fluid row">
-      <div class="col-xs-12 col-sm-5 col-md-4"><waw-blog-properties></waw-blog-properties></div>
-      <div class="col-xs-12 col-sm-7 col-md-8"><waw-posts-list></waw-posts-list></div>
-    </div>
+  <div class="container-fluid row">
+    <div class="col-xs-12 col-sm-5 col-md-4"><waw-blog-properties></waw-blog-properties></div>
+    <div class="col-xs-12 col-sm-7 col-md-8"><waw-posts-list></waw-posts-list></div>
+  </div>
     
 <!--     <custom-element></custom-element> -->
 
