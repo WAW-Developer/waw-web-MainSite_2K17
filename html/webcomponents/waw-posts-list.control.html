@@ -491,6 +491,9 @@ class WAW_PostsList extends Polymer.Element {
         var _span_button = _JQ(_layer_post_options).find('button span[data-name="icon"]');
         _JQ(_span_button).removeClass( 'fa-eye-slash' );
         _JQ(_span_button).addClass( 'fa-eye' );
+        
+        _JQ(_layer_detail).find('div[data-name="content"]').html('');
+        _JQ(_layer_detail).attr('data-loaded', 'false');
 
         console.log(_pagination);   // TODO: REMOVE DEBUG LOG
         

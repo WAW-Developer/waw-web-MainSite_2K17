@@ -21,40 +21,48 @@
 <!--     <span>Not much here yet.</span> -->
     
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler navbar-toggler-right" type="button" 
+        data-toggle="collapse" data-target="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent" aria-expanded="false" 
+        aria-label="Toggle navigation"
+        data-name="buttonMenuToggle"
+        on-click="_click_buttonMenuToggle">
         <span class="navbar-toggler-icon">
             <i class="fa fa-bars" aria-hidden="true"></i>
         </span>
       </button>
-      <a class="navbar-brand" href="#">Navbar</a>
+      
+      <a class="navbar-brand" href="javascript:void(null);">WAW</a>
     
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" data-name="menuCollapsable">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          
-<!--           <li class="nav-item dropdown"> -->
-          <bs4-dropdown class="nav-item dropdown" style="display: block;">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(null);"
-                id="dropdownMenuButton"
-                role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-          </bs4-dropdown>
+         
+<!--           <li class="nav-item active"> -->
+<!--             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
+<!--           </li> -->
+<!--           <li class="nav-item"> -->
+<!--             <a class="nav-link" href="#">Link</a> -->
 <!--           </li> -->
           
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
+<!--           <li class="nav-item dropdown"> -->
+<!--           <bs4-dropdown class="nav-item dropdown" style="display: block;"> -->
+<!--             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(null);" -->
+<!--                 id="dropdownMenuButton" -->
+<!--                 role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a> -->
+<!--             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
+<!--               <a class="dropdown-item" href="#">Action</a> -->
+<!--               <a class="dropdown-item" href="#">Another action</a> -->
+<!--               <a class="dropdown-item" href="#">Something else here</a> -->
+<!--               <div class="dropdown-divider"></div> -->
+<!--               <a class="dropdown-item" href="#">Separated link</a> -->
+<!--             </div> -->
+<!--           </bs4-dropdown> -->
+<!--           </li> -->
+          
+<!--           <li class="nav-item"> -->
+<!--             <a class="nav-link disabled" href="#">Disabled</a> -->
+<!--           </li> -->
+          
           
           <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic">
               <li class$="nav-item {{_topic_Class(_topic)}}">
@@ -138,6 +146,20 @@
      }
 
      
+     _click_buttonMenuToggle(_event) {
+         
+         var _this = this;
+         var _JQ = jQuery;
+         
+         
+         var _button = _JQ(_this.shadowRoot).find('button[data-name="buttonMenuToggle"]');
+         var _layer = _JQ(_this.shadowRoot).find('div[data-name="menuCollapsable"]');
+      
+         _JQ(_layer).toggleClass('collapse');
+         _JQ(_layer).toggleClass('active');
+         
+     }
+     
      set_topics(_options) {
          
          var _this = this;
@@ -179,6 +201,8 @@
 
      }
 
+     
+     
      
        
    }
