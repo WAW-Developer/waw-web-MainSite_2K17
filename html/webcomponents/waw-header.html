@@ -44,25 +44,9 @@
 <!--             <a class="nav-link" href="#">Link</a> -->
 <!--           </li> -->
           
-<!--           <li class="nav-item dropdown"> -->
-<!--           <bs4-dropdown class="nav-item dropdown" style="display: block;"> -->
-<!--             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(null);" -->
-<!--                 id="dropdownMenuButton" -->
-<!--                 role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a> -->
-<!--             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
-<!--               <a class="dropdown-item" href="#">Action</a> -->
-<!--               <a class="dropdown-item" href="#">Another action</a> -->
-<!--               <a class="dropdown-item" href="#">Something else here</a> -->
-<!--               <div class="dropdown-divider"></div> -->
-<!--               <a class="dropdown-item" href="#">Separated link</a> -->
-<!--             </div> -->
-<!--           </bs4-dropdown> -->
-<!--           </li> -->
-          
 <!--           <li class="nav-item"> -->
 <!--             <a class="nav-link disabled" href="#">Disabled</a> -->
 <!--           </li> -->
-          
           
           <template id="topics_list" is="dom-repeat" items="{{topics}}" as="_topic">
               <li class$="nav-item {{_topic_Class(_topic)}}">
@@ -89,11 +73,22 @@
                   <span class="fa fa-ellipsis-v" aria-hidden="true"></span> Settings
                 </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="javascript:void(null);" 
+                    on-click="_show_modal_aboutweb">
+                      <span class="fa fa-info-circle" aria-hidden="true" data-name="icon"></span>
+                      About this web
+                </a>
+                <a class="dropdown-item" href="javascript:void(null);" 
+                    on-click="_show_modal_aboutwaw">
+                      <span class="fa fa-info-circle" aria-hidden="true" data-name="icon"></span>
+                      About WAW
+                </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+                <a class="dropdown-item" href="javascript:void(null);"
+                    on-click="_download_config">
+                      <span class="fa fa-cog" aria-hidden="true" data-name="icon"></span>
+                      Get config (JSON)
+                </a>
               </div>
             </bs4-dropdown>
           </li>
@@ -101,6 +96,57 @@
         
       </div>
     </nav>
+    
+    <bs4-modal>
+      
+      <div class="modal fade" tabindex="-1" role="dialog"
+        data-name="aboutweb" 
+        aria-hidden="true" style="display: none;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLiveLabel">About this web</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p> This web is a HTML5 application prototype.</p>
+                  <p> All the information is stored on remote servers. This application only has a configuration file for access all the data by the client browser.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<!--                   <button type="button" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </div>
+          </div>
+      </div>
+      
+      
+      <div class="modal fade" tabindex="-1" role="dialog"
+        data-name="aboutwaw" 
+        aria-hidden="true" style="display: none;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLiveLabel">About WAW</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>What about World? (WAW).</p>
+                  <p>Is a project that unifies information technologies and the mosts importants topics in life. Of course is only a point of view.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<!--                   <button type="button" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </div>
+          </div>
+      </div>
+            
+  </bs4-modal>
     
     
   </template>
@@ -180,6 +226,33 @@
          _JQ(_layer).toggleClass('active');
          
      }
+     
+     
+     _show_modal_aboutweb(_event) {
+         
+         var _this = this;
+         var _JQ = jQuery;
+         
+         var _modal = _JQ(_this.shadowRoot).find('div[role="dialog"][data-name="aboutweb"]');
+         _modal.modal('show');
+         
+     }
+
+     _show_modal_aboutwaw(_event) {
+         
+         var _this = this;
+         var _JQ = jQuery;
+         
+         var _modal = _JQ(_this.shadowRoot).find('div[role="dialog"][data-name="aboutwaw"]');
+         _modal.modal('show');
+         
+     }
+     
+     _download_config() {
+       // window.location.href = "js/config.json";
+       window.open('js/config.json');
+     }
+     
      
      set_topics(_options) {
          

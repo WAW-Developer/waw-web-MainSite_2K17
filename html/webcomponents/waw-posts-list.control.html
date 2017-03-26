@@ -19,6 +19,14 @@ class WAW_PostsList extends Polymer.Element {
 
           },
           
+          posts_filtered: {
+            type: Array,
+            reflectToAttribute: true,
+            notify: true,
+            value: function() { return []; }
+
+          },
+          
           posts_paginated: {
             type: Array,
             reflectToAttribute: true,
@@ -94,18 +102,37 @@ class WAW_PostsList extends Polymer.Element {
 
         // Check options.data
         var _data = (_options.data !== undefined) ? _options.data : _this.get('data');
-        // var _data = _this.get('data');
         
         // Init filter properties
         _data.filter = {
           'enabled': false,
-          'type': 'count'
+          'type': 'categories'
         };
         
         _this.set('data.filter', _data.filter);
         
     }   // EndOF _init_filter
 
+    
+    
+    _update_list() {
+        
+        var _this = this;
+        var _JQ = jQuery;
+
+        _this._filter();
+        _this._paginate();
+        _this._paginate_gotoPage();
+        
+        var _filter = _this.get('data.filter');
+        
+        var _button = _JQ(_this.shadowRoot).find('button[data-name="filterby_Categories"]');
+
+        _JQ(_button).toggleClass( 'btn-success', _filter.enabled );
+        _JQ(_button).toggleClass( 'active', _filter.enabled );
+
+        
+    }   // // EndOF _update_list
     
     
     set_topic(_options) {
@@ -142,6 +169,9 @@ class WAW_PostsList extends Polymer.Element {
         _this.set('data.topic', {});
         _this.set('data.topic', _topic);
 
+        console.log(_topic);   // TODO: REMOVE DEBUG LOG
+
+        
         // Refresh posts
         _this.set_posts({
             'posts': _topic._model._rss.feed.entries
@@ -152,8 +182,7 @@ class WAW_PostsList extends Polymer.Element {
             'categories': _topic._model._rss.categories
         });
         
-        console.log(_topic);   // TODO: REMOVE DEBUG LOG
-
+        
     }  // EndOf set_topic
     
     
@@ -183,9 +212,6 @@ class WAW_PostsList extends Polymer.Element {
             _this.push('posts', _item);
         });
         
-        _this._paginate();
-        _this._paginate_gotoPage();
-
 
     }   // EndOf set_posts
     
@@ -205,8 +231,15 @@ class WAW_PostsList extends Polymer.Element {
         _categories.forEach(function(_item, _i) {
             _this.push('categories', _item);
         });
-            
+        
         _this._get_categories_selected();
+        
+        var _cat_selected =  this.get('categories_selected');
+        if (_cat_selected.length === 0) {
+            _this.data.filter.enabled = false;
+        }
+        
+        _this._update_list();
         
     }   // EndOf set_categories
 
@@ -244,8 +277,7 @@ class WAW_PostsList extends Polymer.Element {
         } else {
             _JQ(_layer_categories).hide();
         }
-
-
+        
     }   // EnfOf _get_categories_selected
     
     
@@ -308,7 +340,6 @@ class WAW_PostsList extends Polymer.Element {
 
         console.log('waw-posts-list _showHideProperties');   // TODO: REMOVE DEBUG LOG
         console.log(_event);   // TODO: REMOVE DEBUG LOG
-        console.log(_div_properties);   // TODO: REMOVE DEBUG LOG
 
 
         if (_hidden === 'hidden') {
@@ -372,20 +403,84 @@ class WAW_PostsList extends Polymer.Element {
     
     _class_forPagination(_page) {
         return _page.selected === true ? 'active' : '';
-    }
+    }   // EndOf _class_forPagination
+    
+    
+    _class_forButtonFilterByCategories() {
+        
+        var _this = this;
+        var _filter = _this.get('data.filter');
+
+        return _filter.enabled === true ? 'btn-success active' : '';
+    }   // EndOf _class_forButtonFilterByCategories
+    
+    
+    _filter(_options) {
+        
+        var _this = this;
+        var _JQ = jQuery;
+
+        var _filter = _this.get('data.filter');
+        var _filter_type = _filter.type;
+
+        
+        _this.set('posts_filtered', []);
+        var _posts_filtered = [];
+        
+        
+        if (_filter.enabled !== true) {
+//             _posts_filtered = _this.get('posts');
+            _filter_type = '';
+        }
+
+        
+        switch (_filter_type) {
+          
+          case 'categories':
+                  
+            var _posts = _this.get('posts');
+            var _categories_selected = _this.get('categories_selected');
+            var _categories_list = [];
+              
+            _categories_selected.forEach(function(_cat, _i) {
+              _categories_list.push(_cat.name);
+            });
+              
+            _posts_filtered = _posts.filter(function(_post, _i) {
+                return _post.categories.some(function(_cat, _j) {
+                    return (_categories_list.indexOf(_cat) >= 0);
+                });
+            });
+            
+            break;
+  
+          default:
+              _posts_filtered = _this.get('posts');
+              break;
+        }
+        
+        
+        _filter._posts_filtered = _posts_filtered;
+        
+        _posts_filtered.forEach(function(_item, _i) {
+            _this.push('posts_filtered', _item);
+        });
+        
+        
+    }   // EndOf _filter
+    
     
     _paginate(_options) {
         
         var _this = this;
         var _pagination = _this.get('data.pagination');
-        
+        var _filter = _this.get('data.filter');
+
         // Check pagination
         if (_pagination === undefined) {
             _this._init_pagination();
             _pagination = _this.get('data.pagination');
         }
-        
-        console.log('waw-posts-list _paginate');   // TODO: REMOVE DEBUG LOG
         
         // Check options
         _options = (_options === undefined) ? {} : _options;
@@ -393,8 +488,7 @@ class WAW_PostsList extends Polymer.Element {
         // Check options.itemsForPage
         var _itemsForPage = (_options.itemsForPage !== undefined) ? _options.itemsForPage : _pagination.itemsForPage;
 
-        var _posts = _this.get('posts');
-        
+        var _posts = _this.get('posts_filtered');
         
         // _pagination.currentPage = 1;
         _pagination._pages = {};
@@ -408,6 +502,10 @@ class WAW_PostsList extends Polymer.Element {
             };
         }
         
+        // check correct current page
+        if (_pagination.currentPage > _k) {
+            _pagination.currentPage = 1;
+        }
 
     }   // EndOf _paginate
     
@@ -419,8 +517,6 @@ class WAW_PostsList extends Polymer.Element {
         
         var _pagination = _this.get('data.pagination');
         
-        console.log('waw-posts-list _paginate_goToPage');   // TODO: REMOVE DEBUG LOG
-        
         // Check options
         _options = (_options === undefined) ? {} : _options;
         
@@ -429,11 +525,20 @@ class WAW_PostsList extends Polymer.Element {
         
         _pagination._page.selected = false;
         
+        
         if ( (_currentPage <= _pagination._items.length) && 
                 (_currentPage >= 1) ) {
             _pagination._page = _pagination._pages['page_' + _currentPage];
         } else {
             _pagination._page = _pagination._pages['page_1'];
+        }
+        
+        
+        //_pagination._page = (_pagination._page !== undefined) ? _pagination._page : {};
+        if (_pagination._page === undefined) {
+            _pagination._page = {
+                'items': []
+            }
         }
         
         _pagination._page.selected = true;
@@ -457,6 +562,8 @@ class WAW_PostsList extends Polymer.Element {
             _this.push('data.pagination._items', _pagination._pages[_key]);
         }
         
+        _this.shadowRoot.querySelector('#pages_top').render();
+        _this.shadowRoot.querySelector('#pages_down').render();
         
         // Update 'next' and 'prev' buttons
         var _prev = _JQ(_this.shadowRoot).find('ul.pagination li[data-name="previous"]');
@@ -495,8 +602,6 @@ class WAW_PostsList extends Polymer.Element {
         _JQ(_layer_detail).find('div[data-name="content"]').html('');
         _JQ(_layer_detail).attr('data-loaded', 'false');
 
-        console.log(_pagination);   // TODO: REMOVE DEBUG LOG
-        
     }   // EndOf _paginate_goToPage
 
     
@@ -540,6 +645,17 @@ class WAW_PostsList extends Polymer.Element {
         });
         
     }   // EndOf _clickButton_pagination_Next
+
+    
+    _clickButton_Filter(_event) {
+        
+        var _this = this;
+        var _filter = _this.get('data.filter');
+        
+        _filter.enabled = !_filter.enabled;
+        
+        _this._update_list();
+    }
 
 
 }

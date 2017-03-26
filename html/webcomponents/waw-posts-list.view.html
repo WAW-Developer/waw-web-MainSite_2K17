@@ -49,10 +49,11 @@
                 <div class="nav nav-pills">
                 
                     <button type="button" 
-                      class="btn btn-default navbar-btn"
+                      class$="btn btn-default navbar-btn {_class_forButtonFilterByCategories()}"
                       [class.active]="showFiltered"
                       [class.btn-success]="showFiltered"
-                      (click)="click_FilterPosts()">
+                      on-click="_clickButton_Filter"
+                      data-name="filterby_Categories">
                         <span class="fa fa-inbox" aria-hidden="true"></span>
                         <span class="fa fa-filter" aria-hidden="true"></span>
                     </button>                
