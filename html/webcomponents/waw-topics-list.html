@@ -5,6 +5,9 @@
   
   <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
   
+  <link rel="import" type="css" href="../resources/styles/waw_styles.css">
+  
+  
   <template>
     <style>
       /* local styles go here */
@@ -28,8 +31,10 @@
             on-click="_itemclicked">
           
             <div>
-              <div class="img-thumbnail w-25 float-right" style="max-height: 172px;">
-                <img alt="..." class="img-fluid"  style="max-height: 172px;" 
+              <div class="img-thumbnail w-25 float-right" 
+                style="max-height: 172px;">
+                <img alt="..." class$="img-fluid {{_topicImage_Class(_topic._model.selected)}}"
+                  style="max-height: 172px;" 
                   src$="resources/images/{{_topic.iconImage}}">
               </div>
             
@@ -113,6 +118,11 @@
            return _selected === true ? 'active' : '';
        }
 
+       
+       _topicImage_Class(_selected) {
+
+           return _selected === true ? 'blinking' : '';
+       }
        
        set_topics(_options) {
            

@@ -1,0 +1,89 @@
+/* body { margin: 2em; } */
+
+
+.cogLoading {
+
+	opacity: 1.0;
+
+/* -webkit-transform: rotate(20deg); Safari */
+/* 	-moz-transform: rotate(20deg); */
+/*   		-ms-transform: rotate(20deg); IE 9 */
+/* 	    	transform: rotate(20deg); */
+
+
+  -webkit-animation: 3s linear 0s infinite alternate move_cogLoading;
+     -moz-animation: 3s linear 0s infinite alternate move_cogLoading;
+       -o-animation: 3s linear 0s infinite alternate move_cogLoading;
+          animation: 3s linear 0s infinite alternate move_cogLoading;
+}
+
+
+
+.blinking {
+	
+	opacity: 1.0;
+	
+	-webkit-animation: 2s linear 0s infinite alternate move_globeLoading;
+		-moz-animation: 2s linear 0s infinite alternate move_globeLoading;
+			-o-animation: 2s linear 0s infinite alternate move_globeLoading;
+				-ms-animation: 2s linear 0s infinite alternate move_globeLoading;
+					animation: 2s linear 0s infinite alternate move_globeLoading;
+	
+}
+
+
+
+
+/* Keyframes move_cogLoading  -------------------------- */
+
+@-webkit-keyframes move_cogLoading { from { -webkit-transform: rotate(0deg); } to { -webkit-transform: rotate(359deg); }  }
+	@-moz-keyframes move_eye { from { -moz-transform: rotate(0deg); } to { -moz-transform: rotate(359deg); }  }
+		@-o-keyframes move_eye { from { -o-transform: rotate(0deg); } to { -o-transform: rotate(359deg); }  }
+			@-ms-keyframes move_eye { from { -ms-transform: rotate(0deg); } to { -ms-transform: rotate(359deg); }  }
+				@keyframes move_eye { from { transform: rotate(0deg); } to { transform: rotate(359deg); }  }
+/* EndOf Keyframes move_cogLoading  -------------------------- */
+
+
+			
+/* Keyframes move_globeLoading  -------------------------- */
+@-webkit-keyframes move_globeLoading {
+  0% { opacity: 1.0; }
+  25% { opacity: 0.75; }
+  75% { opacity: 0.60; }
+  100% { opacity: 1.0; }
+	
+}
+
+@-moz-keyframes move_globeLoading {
+  0% { opacity: 1.0; }
+  25% { opacity: 0.75; }
+  75% { opacity: 0.60; }
+  100% { opacity: 1.0; }
+	
+}
+
+@-o-keyframes move_globeLoading {
+  0% { opacity: 1.0; }
+  25% { opacity: 0.75; }
+  75% { opacity: 0.60; }
+  100% { opacity: 1.0; }
+	
+}
+
+@-ms-keyframes move_globeLoading {
+  0% { opacity: 1.0; }
+  25% { opacity: 0.75; }
+  75% { opacity: 0.60; }
+  100% { opacity: 1.0; }
+	
+}
+	
+@keyframes move_globeLoading {
+  0% { opacity: 1.0; }
+  25% { opacity: 0.75; }
+  75% { opacity: 0.60; }
+  100% { opacity: 1.0; }
+	
+}
+
+/* EndOf Keyframes move_globeLoading  -------------------------- */
