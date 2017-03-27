@@ -1,0 +1,146 @@
+<dom-module id="waw-footer">
+  
+  <!-- special import with type=css used to load remote CSS
+       Note: this style of importing CSS is deprecated -->
+  <link rel="import" type="css" href="../js/tether/tether.min.css">
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  
+  <link rel="import" type="css" href="../js/font-awesome/css/font-awesome.min.css">
+  
+  
+  <template>
+    <style>
+      /* local styles go here */
+/*       :host { */
+/*         display: block; */
+/*       } */
+    </style>
+    
+    <div class="card">
+      
+      <div class="card-header">
+        <h3>How it was made...</h3>
+      </div>
+      
+      <div class="card-body">
+      
+        <div class="row card-block">
+      
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid" 
+                    src="resources/images/html5_Logo.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>HTML5</small></h4>
+                  </div>
+                </div>
+            </div>
+        
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid" 
+                    src="resources/images/html5_Styling_512.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>CSS3</small></h4>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid" 
+                    src="resources/images/RSS_button_1021.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>RSS</small></h4>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+      
+      
+        <div class="row card-block">
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid" 
+                    src="resources/images/polymer_logo.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>Polymer</small></h4>
+                  </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid" 
+                    src="resources/images/bootstrap_Logo.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>Bootstrap</small></h4>
+                  </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xs-4">
+                <div class="img-thumbnail">
+                  <img alt="..." class="img-fluid"  
+                    src="resources/images/blogger_Logo.png">
+                  <div class="caption" style="text-align:center">
+                    <h4><small>Blogger</small></h4>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+        
+        
+      </div>
+      
+      
+      <div class="card-footer">
+        <small class="float-right">WAW 2017</small>
+      </div>
+      
+    </div>
+    
+    
+  </template>
+  
+  <script>
+  
+  class WAW_Footer extends Polymer.Element {
+      static get is() { return "waw-footer"; }
+      static get properties() {
+        return {
+          mode: {
+              type: String,
+              value: 'auto'
+            },
+
+          topics: {
+              type: Array,
+              reflectToAttribute: true,
+              notify: true,
+              value: function() { return []; }
+
+          }
+        }
+      }
+      
+      
+      constructor() {
+        super();
+      }
+      
+      connectedCallback() {
+        super.connectedCallback();
+      }
+      
+      
+  }
+  
+  
+  // Register the new element with the browser
+  customElements.define(WAW_Footer.is, WAW_Footer);
+  
+  </script>
+  
+  
+</dom-module>
