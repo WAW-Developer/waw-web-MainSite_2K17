@@ -112,7 +112,11 @@
               </div>
               <div class="modal-body">
                   <p> This web is a HTML5 application prototype.</p>
-                  <p> All the information is stored on remote servers. This application only has a configuration file for access all the data by the client browser.</p>
+                  <p> 
+                    All the information is stored on remote servers. This application only has a configuration file for access all the data by the client browser. 
+                    <br/> <br/>
+                    <span class="fa fa-code-fork" aria-hidden="true"></span> version: {{data.version}}
+                  </p>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -162,7 +166,14 @@
          mode: {
              type: String,
              value: 'auto'
-           },
+         },
+         
+         data: {
+           type: Object,
+           reflectToAttribute: true,
+           notify: true,
+           value: function() { return {}; }
+         },
 
          topics: {
              type: Array,
@@ -178,6 +189,14 @@
      constructor() {
        super();
 //        this.textContent = "I'm a custom-element.";
+
+       var _this = this;
+       
+       var _mainsite = waw.mainsite;
+
+       
+       _this.set('data.version', _mainsite._version)
+
      }
      
      connectedCallback() {

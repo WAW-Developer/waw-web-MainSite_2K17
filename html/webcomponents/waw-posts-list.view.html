@@ -141,7 +141,7 @@
               </h3>
               
               <div class="card-text w-100">
-                  <span class="h3"><small><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{_post.published}} </small></span>
+                  <span class="h3"><small><span class="fa fa-calendar" aria-hidden="true"></span> {{_post.published}} </small></span>
               </div>
             
               <!-- Layer for Post options... -->
@@ -157,22 +157,46 @@
                 </button> 
               
                 <!-- Layer for postProperties -->
-                <div hidden="true" class="card card-info" data-name="properties">
+                <div hidden="true" class="card card-outline-info" data-name="properties">
                 
-                  <ul class="list-group card-block">
+<!--                   <ul class="list-group card-block"> -->
                     
-                    <li class="list-group-item">
-                      <span class="glyphicon glyphicon-link" aria-hidden="true">&nbsp;</span>
-                      <span class="h4">URL blog: </span>
-                      <span class="h5"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
-                    </li>
+<!--                     <li class="list-group-item"> -->
+<!--                       <span class="fa fa-hand-o-right" aria-hidden="true">&nbsp;</span> -->
+<!--                       <span class="h4">URL blog: </span> -->
+<!--                       <span class="h5"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span> -->
+<!--                     </li> -->
                   
-                    <li class="list-group-item">
-                      <div class="btn-group-sm text-justify card-block" role="group" aria-label="...">
-                        <p>
+<!--                     <li class="list-group-item"> -->
+<!--                       <div class="btn-group-sm text-justify card-block" role="group" aria-label="..."> -->
+<!--                         <p> -->
+<!--                         <span class="fa fa-tags" aria-hidden="true">&nbsp;</span> -->
+<!--                         <span class="h4"> Categories: </span> -->
+<!--                         </p> -->
+                      
+<!--                         <template is="dom-repeat" items="{{_post.categories}}" as="_catagory" index-as="_catagory_no"> -->
+<!--                           <button class="btn btn-sm btn-link" type="button"> -->
+<!--                               {{_catagory}} -->
+<!--                           </button>                     -->
+<!--                         </template> -->
+<!--                       </div> -->
+<!--                     </li> -->
+                    
+<!--                   </ul> -->
+                  
+                    <div class="card-block">
+                      <span class="fa fa-hand-o-right" aria-hidden="true">&nbsp;</span>
+                      <span class="h4">URL blog: </span> <br/>
+                      <span class="h5 small"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
+                    </div>
+                    
+                    <div class="card-block w-100">
+                       <p>
                         <span class="fa fa-tags" aria-hidden="true">&nbsp;</span>
                         <span class="h4"> Categories: </span>
-                        </p>
+                      </p>
+                    
+                      <div class="btn-group-sm text-justify" role="group" aria-label="...">
                       
                         <template is="dom-repeat" items="{{_post.categories}}" as="_catagory" index-as="_catagory_no">
                           <button class="btn btn-sm btn-link" type="button">
@@ -180,9 +204,9 @@
                           </button>                    
                         </template>
                       </div>
-                    </li>
+                    </div>
                     
-                  </ul>
+                  
                 </div>
               
               
@@ -250,10 +274,6 @@
 
         </nav>
         <!-- EndOf Pagination -->      
-      
-      
-      
-      
       
       
       </div>

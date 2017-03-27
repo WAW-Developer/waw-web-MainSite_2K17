@@ -229,10 +229,17 @@ let _rss = {
                     
                     function(_data_load_feed) {
                         
+                        // Make changes for each entry of feed
+                        let _feed = _data_load_feed.feed;
+                        _feed.entries.forEach(function(_item, _i) {
+                            _item.published_raw = _item.published;
+                            _item.published = _item.published_raw.split('T')[0];
+                        });
+                        
                         _rss.get_detailForCategories({
                             'feed': _data_load_feed.feed
                         }).then(
-                            
+                                
                             function(_data_categories) {
                                 
                                 _resolve({
