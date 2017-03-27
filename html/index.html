@@ -60,7 +60,7 @@
 
 
       
-      var _loadLinks = function(src) {
+      var _loadLinks = function(src, _options) {
           'use strict';
 
           var paths = Array.isArray(src) ? src : [src];
@@ -68,12 +68,17 @@
 
           var _dateNow = Date.now();
           
+          var _options = (_options !== undefined) ? _options : {};
+          var _op_cache = (_options.cache === true) ? true : false;
+
+          
           paths.forEach((path) => {
               
               promise.push(new Promise((resolve, reject) => {
                   var _link = document.createElement('link');
                   _link.rel = "import";
-                  _link.href = path + '?' + _dateNow;
+                  
+                  _link.href = (_op_cache === true) ? path : path + '?' + _dateNow;
 
                   _link.onload = () => {
                       resolve({
@@ -137,14 +142,19 @@
       
       var _init_elements = function() {
         
-        var _elements = [
+          
+        var _elements_base = [
             'js/shadycss/apply-shim.html',
             'js/polymer/polymer.html',
             'js/polymer/polymer-element.html',
             
             'webcomponents/bs4/bs4-dropdown.html',
             'webcomponents/bs4/bs4-tabs.html',
-            'webcomponents/bs4/bs4-modal.html',
+            'webcomponents/bs4/bs4-modal.html'
+            ];
+
+          
+        var _elements = [
 
             'webcomponents/waw-header.html',
             'webcomponents/waw-topic-detail.html',
@@ -165,8 +175,13 @@
         });
         */
         
-        _loadLinks(_elements).then(function(e) {
-            _init_App();
+        _loadLinks(_elements_base, {'cache':true}).then(function(e) {
+            
+            _loadLinks(_elements).then(function(e) {
+                _init_App();
+            });
+            
+            // _init_App();
         });
         
     };
