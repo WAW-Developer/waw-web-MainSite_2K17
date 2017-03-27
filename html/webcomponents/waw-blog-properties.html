@@ -35,7 +35,7 @@
                 role="tab" data-toggle="tab">Categories
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" hidden="true">
             <a href="#search" aria-controls="search"
                 id="search-tab"
                 class="nav-link"
@@ -102,13 +102,41 @@
           
           </div>
           <div role="tabpanel" class="tab-pane card-block" id="search" data-name="search" aria-labelledby="search-tab">... Search</div>
+          
           <div role="tabpanel" class="tab-pane card-block" id="properties" data-name="properties" aria-labelledby="properties-tab">
-        ... Properties
             <ul class="list-group">
-              <li class="list-group-item"><strong>Name:</strong> {{data.topic.name}}</li>
-              <li class="list-group-item"><strong>Description:</strong> {{data.topic.description}}</li>
-              <li class="list-group-item"><strong>URL main:</strong> {{data.topic.url_main}}</li>
-              <li class="list-group-item"><strong>URL blog:</strong> {{data.topic.url_blog}}</li>
+              <li class="list-group-item">
+                <div>
+                    <span class="fa fa-leaf" aria-hidden="true"></span>
+                    <strong>Name</strong> <br /> 
+                    {{data.topic.name}}
+                </div> 
+              </li>
+              <li class="list-group-item">
+                <div>
+                    <span class="fa fa-info-circle" aria-hidden="true"></span>
+                    <strong>Description:</strong> <br /> 
+                    {{data.topic.description}}
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div>
+                    <span class="fa fa-linkx" aria-hidden="true"></span>
+                    <strong>URL main:</strong> <br />
+                    <a href$="{{data.topic.url_main}}">
+                    {{data.topic.url_main}}
+                    </a>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div>
+                    <span class="fa fa-hand-o-right" aria-hidden="true"></span>
+                    <strong>URL blog:</strong> <br /> 
+                    <a href$="{{data.topic.url_blog}}">
+                    {{data.topic.url_blog}}
+                    </a>
+                </div>
+              </li>
             </ul>
 
           </div>
