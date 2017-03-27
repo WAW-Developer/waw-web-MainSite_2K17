@@ -139,8 +139,6 @@ class WAW_PostsList extends Polymer.Element {
         
         var _this = this;
         
-        console.log('waw-posts-list set_topic');   // TODO: REMOVE DEBUG LOG
-        
         // Check options
         _options = (_options === undefined) ? {} : _options;
         
@@ -168,8 +166,6 @@ class WAW_PostsList extends Polymer.Element {
 
         _this.set('data.topic', {});
         _this.set('data.topic', _topic);
-
-        console.log(_topic);   // TODO: REMOVE DEBUG LOG
 
         
         // Refresh posts
@@ -337,9 +333,6 @@ class WAW_PostsList extends Polymer.Element {
         
         var _div_button = _JQ(_event_source).closest('div.list-group-item').find('button[data-name="properties"]');
         var _span_button = _JQ(_div_button).find('span[data-name="icon"]');
-
-        console.log('waw-posts-list _showHideProperties');   // TODO: REMOVE DEBUG LOG
-        console.log(_event);   // TODO: REMOVE DEBUG LOG
 
 
         if (_hidden === 'hidden') {
