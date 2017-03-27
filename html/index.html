@@ -27,11 +27,13 @@
           var paths = Array.isArray(src) ? src : [src];
           var promise = [];
 
+          var _dateNow = Date.now();
+          
           paths.forEach((path) => {
               
               promise.push(new Promise((resolve, reject) => {
                   var js = document.createElement('script');
-                  js.src = path;
+                  js.src = path + '?' + _dateNow;
 
                   js.onload = () => {
                       resolve({
@@ -64,12 +66,14 @@
           var paths = Array.isArray(src) ? src : [src];
           var promise = [];
 
+          var _dateNow = Date.now();
+          
           paths.forEach((path) => {
               
               promise.push(new Promise((resolve, reject) => {
                   var _link = document.createElement('link');
                   _link.rel = "import";
-                  _link.href = path;
+                  _link.href = path + '?' + _dateNow;
 
                   _link.onload = () => {
                       resolve({
@@ -257,6 +261,7 @@
 
     <!-- Block scale -->  
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' /> 
+  
   
   <meta http-equiv="cache-control" content="max-age=1" />
   <meta http-equiv="Cache-control" content="no-cache" />
