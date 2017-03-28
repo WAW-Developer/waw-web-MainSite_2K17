@@ -13,6 +13,22 @@
   <meta http-equiv="expires" content="1" />
 <!--  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" /> -->
   <meta http-equiv="pragma" content="no-cache" />
+ 
+  <script src="./js/jquery.min.js"></script>
+  
+  
+  <link rel="stylesheet" href="./js/tether/tether.min.css">
+  <script src="./js/tether/tether.min.js"></script>
+  
+  
+  <link rel="stylesheet" href="./js/bootstrap/js/bootstrap.min.css">
+  <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="./js/font-awesome/css/font-awesome.min.css">
+  
+  
+  <link rel="stylesheet" href="./resources/styles/waw_styles.css">
+
   
   <script>
   (function () {
@@ -167,22 +183,20 @@
       var _init_polyfill = function(_done) {
         
         var _scripts_others = [
-            './js/jquery.min.js',
             './js/webcomponents/custom-elements-es5-adapter.js',
             './js/shadycss/apply-shim.min.js',
             './js/shadycss/custom-style-interface.min.js',
             './js/shadycss/scoping-shim.min.js',
             './js/webcomponents/webcomponents-lite.js',
-            './js/mainsite-min.js'
+            './js/mainsite-min.js',
           ];
         
         var _scripts_chrome = [
-            './js/jquery.min.js',
             './js/shadycss/apply-shim.min.js',
             './js/shadycss/custom-style-interface.min.js',
             './js/shadycss/scoping-shim.min.js',
             './js/webcomponents/webcomponents-lite.js',
-            './js/mainsite-min.js'
+            './js/mainsite-min.js',
           ];
         
         
@@ -203,20 +217,6 @@
       };
       
       var _init_elements = function() {
-        
-          
-        var _styles_base = [
-          './js/tether/tether.min.css',
-          './js/bootstrap/js/bootstrap.min.css',
-          './js/font-awesome/css/font-awesome.min.css',
-          './resources/styles/waw_styles.css'
-        ];
-          
-        var _scripts_base = [
-          './js/tether/tether.min.js',
-          './js/bootstrap/js/bootstrap.min.js'
-            
-        ];
         
         
         var _elements_base = [
@@ -241,26 +241,12 @@
         ];
         
         
-        /*
-        _elements.forEach(function(_item, _i) {
-          var _link = document.createElement('link');
-          _link.rel = "import";
-          _link.href = _item;
-          document.head.appendChild(_link);
-        });
-        */
         
-        _loadStyles(_styles_base).then(function(_e1) {
-          _loadScripts(_scripts_base).then(function(_e2) {
-            _loadLinks(_elements_base, {'cache':true}).then(function(_e3) {
-              _loadLinks(_elements).then(function(_e4) {
-                  _init_App();
-              });
-            });
-          });            
+        _loadLinks(_elements_base, {'cache':true}).then(function(_e3) {
+          _loadLinks(_elements).then(function(_e4) {
+              _init_App();
+          });
         });
-        
-
         
     };
       
