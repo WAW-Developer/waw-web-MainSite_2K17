@@ -127,9 +127,13 @@ class WAW_PostsList extends Polymer.Element {
         var _filter = _this.get('data.filter');
         
         var _button = _JQ(_this.shadowRoot).find('button[data-name="filterby_Categories"]');
+        var _layer_filtered = _JQ(_this.shadowRoot).find('div[data-name="posts_count"] span[data-name="filtered"]');
+
 
         _JQ(_button).toggleClass( 'btn-success', _filter.enabled );
         _JQ(_button).toggleClass( 'active', _filter.enabled );
+
+        _JQ(_layer_filtered).toggle( _filter.enabled );
 
         
     }   // // EndOF _update_list

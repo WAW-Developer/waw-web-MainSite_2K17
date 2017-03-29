@@ -27,14 +27,20 @@
         <!-- Toolbar -->
         <nav class="card" data-name="toolbar">
             
-            <div class="card-block">
+            <!-- Number of Posts -->
+            <div class="card-block" data-name="posts_count">
               <span class="fa fa-inbox" aria-hidden="true" 
                   style="margin-right: 6px; display: none;">
               </span>
   
-              <!-- Number of Posts -->
               <span class="fa fa-file" aria-hidden="true"></span>
-              <span class="nav-text">Posts: <span class="badge badge-pill badge-default small">{{posts.length}}</span> </span>
+              <span class="nav-text">Posts: 
+                
+                <span data-name="filtered" style="display: none;">
+                    <span class="badge badge-pill badge-default small">{{posts_filtered.length}}</span> of 
+                </span>
+                <span class="badge badge-pill badge-default small">{{posts.length}}</span> 
+              </span>
   
               <span class="glyphicon glyphicon-cog cogLoading"
                   style="display:none;" 
