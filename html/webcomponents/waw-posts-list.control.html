@@ -559,8 +559,12 @@ class WAW_PostsList extends Polymer.Element {
         _this.shadowRoot.querySelector('#pages_down').render();
         
         // Update 'next' and 'prev' buttons
-        var _prev = _JQ(_this.shadowRoot).find('ul.pagination li[data-name="previous"]');
-        var _next = _JQ(_this.shadowRoot).find('ul.pagination li[data-name="next"]');
+        // var _prev = _JQ(_this.shadowRoot).find('ul.pagination li[data-name="previous"]');
+        // var _next = _JQ(_this.shadowRoot).find('ul.pagination li[data-name="next"]');
+        
+        var _prev = _JQ(_this.shadowRoot).find('div[data-name="pagination"] a[data-name="previous"]');
+        var _next = _JQ(_this.shadowRoot).find('div[data-name="pagination"] a[data-name="next"]');
+        
         
         if (_currentPage > 1) {
             _JQ(_prev).removeClass('disabled');

@@ -46,10 +46,10 @@
             <!-- Filter by Categories -->
             <div class="card-block" data-name="categories" style="display: none;">
             
-                <div class="card-block">
+                <div class="card-text">
                 
                     <button type="button" 
-                      class$="btn btn-default navbar-btn {_class_forButtonFilterByCategories()}"
+                      class$="btn btn-outline-secondary {_class_forButtonFilterByCategories()}"
                       on-click="_clickButton_Filter"
                       data-name="filterby_Categories">
                         <span class="fa fa-inbox" aria-hidden="true"></span>
@@ -61,14 +61,14 @@
                     <span>of <span class="badge badge-pill badge-default small">{{categories.length}}</span></span>
                     
                     <button type="button" 
-                      class="btn btn-default navbar-btn"
+                      class="btn btn-default navbar-btn btn-outline-danger"
                       on-click="_categoriesSelected_Reset">
                       <span class="fa fa-remove" aria-hidden="true"></span>
                     </button>                
                 
                 </div>
                 
-                <div class="card-block" aria-label="...">
+                <div class="card-text" aria-label="...">
                     
                     <template is="dom-repeat" items="{{categories_selected}}" as="_catagory_selected" index-as="_catagory_no">
                     
@@ -91,40 +91,33 @@
 
 
         <!-- Pagination -->
-        <nav>
-          <ul class="pagination">
+        <div class="card-block" data-name="pagination">
                 
-            <li class="page-item disabled" data-name="previous">
                 <a href="javascript:void(null);"
-                      class="page-link"
-                      on-click="_clickButton_pagination_Previous">
-                      Previous
+                    data-name="previous"
+                    class="btn btn-outline-primary disabled"
+                    on-click="_clickButton_pagination_Previous">
+                    Previous
                  </a>
-            </li>           
                    
-            <template id="pages_top" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
+                <template id="pages_top" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
               
-                <li class$="page-item {{_class_forPagination(_page)}}">
                     <a href="javascript:void(null);"
-                        class="page-link"
+                        class$="btn btn-outline-primary {{_class_forPagination(_page)}}"
                         on-click="_clickButton_pagination_GotoPage">
                         {{_page.pageNum}}
                      </a>
-                </li>
               
-            </template>
+                </template>
             
-            <li class="page-item disabled" data-name="next">
                 <a href="javascript:void(null);"
-                      class="page-link"
-                      on-click="_clickButton_pagination_Next">
-                      Next
-                 </a>
-            </li>
-            
-          </ul>
+                    class="btn btn-outline-primary disabled"
+                    data-name="next"
+                    on-click="_clickButton_pagination_Next">
+                    Next
+               </a>
 
-        </nav>
+        </div>
         <!-- EndOf Pagination -->
         
         
@@ -146,7 +139,7 @@
               </div>
             
               <!-- Layer for Post options... -->
-              <div data-name="post-options">
+              <div data-name="post-options" class="card-text w-100">
 
                 <!-- Button for show/hidde postProperties -->
                 <button type="button" class="btn btn-info" data-name="properties"
@@ -158,7 +151,9 @@
                 </button> 
               
                 <!-- Layer for postProperties -->
-                <div hidden="true" class="card card-outline-info" data-name="properties">
+                <div hidden="true" class="card card-text card-outline-info"
+                    style="padding: 3px;" 
+                    data-name="properties">
                 
 <!--                   <ul class="list-group card-block"> -->
                     
@@ -185,13 +180,13 @@
                     
 <!--                   </ul> -->
                   
-                    <div class="card-block">
+                    <div class="card-text">
                       <span class="fa fa-hand-o-right" aria-hidden="true">&nbsp;</span>
                       <span class="h4">URL blog: </span> <br/>
                       <span class="h5 small"><a href="{{_post.link}}" target="_blank">{{_post.link}}</a></span>
                     </div>
                     
-                    <div class="card-block w-100">
+                    <div class="card-text">
                        <p>
                         <span class="fa fa-tags" aria-hidden="true">&nbsp;</span>
                         <span class="h4"> Categories: </span>
@@ -222,9 +217,11 @@
                 </button>            
                 
                 <!-- Layer for postDetail -->
-                <div hidden="true" class="card card-outline-success" data-name="detail" 
+                <div hidden="true" class="card card-text card-outline-success"
+                    style="padding: 3px" 
+                    data-name="detail" 
                     data-loaded="false">
-                  <div class="card-block" data-name="content">
+                  <div class="card-text" data-name="content">
                   </div>
                 </div>            
             
@@ -240,41 +237,34 @@
         <br />
 
         <!-- Pagination -->
-        <nav>
-          <ul class="pagination">
+        <div class="card-block" data-name="pagination">
                 
-            <li class="page-item disabled" data-name="previous">
                 <a href="javascript:void(null);"
-                      class="page-link"
-                      on-click="_clickButton_pagination_Previous">
-                      Previous
+                    data-name="previous"
+                    class="btn btn-outline-primary disabled"
+                    on-click="_clickButton_pagination_Previous">
+                    Previous
                  </a>
-            </li>           
                    
-            <template id="pages_down" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
+                <template id="pages_down" is="dom-repeat" items="{{data.pagination._items}}" as="_page" index-as="_page_no">
               
-                <li class$="page-item {{_class_forPagination(_page)}}">
                     <a href="javascript:void(null);"
-                        class="page-link"
+                        class$="btn btn-outline-primary {{_class_forPagination(_page)}}"
                         on-click="_clickButton_pagination_GotoPage">
                         {{_page.pageNum}}
                      </a>
-                </li>
               
-            </template>
+                </template>
             
-            <li class="page-item disabled" data-name="next">
                 <a href="javascript:void(null);"
-                      class="page-link"
-                      on-click="_clickButton_pagination_Next">
-                      Next
-                 </a>
-            </li>
-            
-          </ul>
+                    class="btn btn-outline-primary disabled"
+                    data-name="next"
+                    on-click="_clickButton_pagination_Next">
+                    Next
+               </a>
 
-        </nav>
-        <!-- EndOf Pagination -->      
+        </div>
+        <!-- EndOf Pagination -->
       
       
       </div>
