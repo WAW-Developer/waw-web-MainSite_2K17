@@ -25,26 +25,28 @@
       <div class="card-block">
         
         <!-- Toolbar -->
-        <nav class="nav nav-pills" data-name="toolbar">
-            <span class="fa fa-inbox" aria-hidden="true" 
-                style="margin-right: 6px; display: none;">
-            </span>
-
-            <!-- Number of Posts -->
-            <span class="fa fa-file" aria-hidden="true"></span>
-            <span class="nav-text">Posts: <span class="badge badge-pill badge-default small">{{posts.length}}</span> </span>
-
-            <span class="glyphicon glyphicon-cog cogLoading"
-                style="display:none;" 
-                aria-hidden="true">
-            </span>
+        <nav class="card" data-name="toolbar">
             
-            <br />
+            <div class="card-block">
+              <span class="fa fa-inbox" aria-hidden="true" 
+                  style="margin-right: 6px; display: none;">
+              </span>
+  
+              <!-- Number of Posts -->
+              <span class="fa fa-file" aria-hidden="true"></span>
+              <span class="nav-text">Posts: <span class="badge badge-pill badge-default small">{{posts.length}}</span> </span>
+  
+              <span class="glyphicon glyphicon-cog cogLoading"
+                  style="display:none;" 
+                  aria-hidden="true">
+              </span>
+            </div>
+            
             
             <!-- Filter by Categories -->
-            <div class="panel panel-info" data-name="categories" style="display: none;">
+            <div class="card-block" data-name="categories" style="display: none;">
             
-                <div class="nav nav-pills">
+                <div class="card-block">
                 
                     <button type="button" 
                       class$="btn btn-default navbar-btn {_class_forButtonFilterByCategories()}"
@@ -66,17 +68,16 @@
                 
                 </div>
                 
-                <div class="btn-group btn-group-sm text-justify" role="group" aria-label="...">
+                <div class="card-block" aria-label="...">
                     
                     <template is="dom-repeat" items="{{categories_selected}}" as="_catagory_selected" index-as="_catagory_no">
                     
-                      <span>
-                          <button type="button"
+                          <a type="button"
                               on-click="_clickcategoryselected"
+                              href="javascript:void(null);"
                               class="btn btn-outline-secondary text-primary">
                               {{_catagory_selected.name}} <span class="badge badge-pill badge-default small">{{_catagory_selected.count}}</span>
-                          </button>
-                      </span>
+                          </a>
                         
                     </template>
                     
