@@ -29,7 +29,7 @@
           <li class="nav-item">
             <a href="#categories" aria-controls="categories"
                 id="categories-tab"
-                class="nav-link"
+                class="nav-link active"
                 data-toggle="tab"
                 data-name="categories"
                 role="tab" data-toggle="tab">Categories
@@ -56,13 +56,18 @@
         </ul>
       
         <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane card-block active" id="categories" data-name="categories" aria-labelledby="categories-tab">
+        <div class="tab-content card-text">
+          
+          <div role="tabpanel" id="categories" 
+            class="tab-pane card-text active"
+            style="padding: 3px;" 
+            data-name="categories" 
+            aria-labelledby="categories-tab">
           
           <!-- Panel Toolbar -->
-          <nav class="nav nav-pills">
+          <div class="card-text">
               <span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-right: 6px;">
-                <i class="fa fa-tags" aria-hidden="true"></i> 
+                <span class="fa fa-tags" aria-hidden="true"></span> 
               </span>
               <span>Categories <span class="badge badge-pill badge-default small">{{data.topic._model._rss.categories.length}}</span></span>
               
@@ -81,7 +86,7 @@
               <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
             </button>
             
-          </nav>
+          </div>
           <!-- EnfOf Panel Toolbar -->
 
           
@@ -92,18 +97,22 @@
 <!--             <span class="label label-default">{{_category.name}}<span class="badge">{{_category.posts.length}}</span></span> -->
 <!--             </a> -->
             
-            <button class$="btn btn-secondary {{_category_Class(_category._model._selected)}}" type="button" 
+            <a class$="btn {{_category_Class(_category._model._selected)}}"
+                href="javascript:void(null);"
+                style="margin: 2px;"
                 on-click="_clickcategory">
-              {{_category.name}} <span class="badge badge-pill badge-default small">{{_category.posts.length}}</span>
-            </button>
+              {{_category.name}} 
+              <span class="badge badge-pill badge-default small" 
+                style="color: black; background-color: #F1F1F1;">{{_category.posts.length}}</span>
+            </a>
             
           </template>
           
           
           </div>
-          <div role="tabpanel" class="tab-pane card-block" id="search" data-name="search" aria-labelledby="search-tab">... Search</div>
+          <div role="tabpanel" class="tab-pane card-text" id="search" data-name="search" aria-labelledby="search-tab">... Search</div>
           
-          <div role="tabpanel" class="tab-pane card-block" id="properties" data-name="properties" aria-labelledby="properties-tab">
+          <div role="tabpanel" class="tab-pane card-text" id="properties" data-name="properties" aria-labelledby="properties-tab">
             <ul class="list-group">
               <li class="list-group-item">
                 <div>
@@ -190,7 +199,7 @@
        
        _category_Class(_selected) {
 
-           return (_selected === true) ? 'bg-success' : 'btn-link';
+           return (_selected === true) ? 'btn-success' : 'btn-secondary';
            
        }    // EndOf _category_Class
 
@@ -323,11 +332,13 @@
            var _category = _event.model.__data._category;
 
            _category._model = (_category._model === undefined) ? {} : _category._model;
+           _category._model._selected = (_category._model._selected === undefined) ? false : _category._model._selected;
 
            var _JQ = jQuery;
            
-           var _button = _JQ(_event_source).closest('button');
+           var _button = _JQ(_event_source).closest('a');
            
+           /*
            if (_category._model._selected !== true) {
                
                _JQ(_button).removeClass( 'btn-link' );
@@ -340,6 +351,16 @@
                _JQ(_button).addClass( 'btn-link' );
                _category._model._selected = false;
            }
+           */
+           
+//            _JQ(_button).toggleClass( 'btn-outline-warning', !!_category._model._selected );
+//            _JQ(_button).toggleClass( 'btn-outline-secondary', !_category._model._selected );
+           
+           _category._model._selected = !_category._model._selected;
+           
+           _this.set_categories();
+           
+//            _this.shadowRoot.querySelector('#categories_list').render();
            
 //            _JQ(_button).refresh();
 //            _this.set_categories();
