@@ -25,10 +25,11 @@ let _rss = {
                 }
                 let _url = _options.url;
                 
-                let _config = config_mod.get_current_config();
-                if (_options.config !== undefined) {
-                    _config = _options.config;
-                }
+                // Check option config
+                let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
+                
+                // Check option max_results
+                let _max_results = (_options.max_results !== undefined) ? _options.max_results : 500;
                 
                 let _JQ = _config.jquery_Lib;
                 
@@ -52,9 +53,11 @@ let _rss = {
 //                    _resolve(_data);
 //                });
                 
+                let _url_Feed = _url + '?max-results=' + _max_results;
+                
                 _JQ.ajax({
                     type: 'GET',
-                    url: _url,
+                    url: _url_Feed,
                     dataType: 'jsonp',
                     success: function (_data) {
                         
