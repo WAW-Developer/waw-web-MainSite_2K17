@@ -136,18 +136,50 @@ class WAW_PostsList extends Polymer.Element {
         _JQ(_layer_filtered).toggle( _filter.enabled );
 
         
-    }   // // EndOF _update_list
+    }   // EndOF _update_list
+    
+    
+    _loading(_options) {
+        var _this = this;
+        var _JQ = jQuery;
+        
+        // Check options
+        _options = (_options === undefined) ? {} : _options;
+        
+        // Check options.loading
+        var _loading = (_options.loading !== undefined) ? _options.loading : false;
+
+        var _layer_loading = _JQ(_this.shadowRoot).find('div[data-name="loading"]');
+        var _layer_pagination = _JQ(_this.shadowRoot).find('div[data-name="pagination"]');
+        var _layer_posts_list = _JQ(_this.shadowRoot).find('div[data-name="posts_list"]');
+
+        _JQ(_layer_loading).toggle(_loading);
+        _JQ(_layer_pagination).toggle(!_loading);
+        _JQ(_layer_posts_list).toggle(!_loading);
+
+    }   // EndOF _loading
     
     
     set_topic(_options) {
         
         var _this = this;
-        
+        var _JQ = jQuery;
+
         // Check options
         _options = (_options === undefined) ? {} : _options;
         
         // Check options.topic
         var _topic = (_options.topic !== undefined) ? _options.topic : _this.get('data.topic');
+        
+        // Check options.loading
+        var _loading = (_options.loading !== undefined) ? _options.loading : false;
+        _this._loading({
+            'loading': _loading
+        });
+        
+        if (_topic === undefined) {
+            return;
+        }
         
         // Check post list properties
         if (_topic._model._rss._posts_list === undefined) {

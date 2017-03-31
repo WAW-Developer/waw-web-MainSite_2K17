@@ -446,6 +446,12 @@ let _ui = {
             
         } else {
             
+            let _components = _ui.get_components();
+
+            _components.posts_list.set_topic({
+                'loading': true
+            });
+            
             rss_mod.get_TopicBlogEntries({
                 'topic': _topic
             }).then(
@@ -454,10 +460,9 @@ let _ui = {
                 _topic._model._rss.categories = _data.categories;
                 _topic._model._rss.feed = _data.feed;
                 
-                let _components = _ui.get_components();
-                
                 _components.posts_list.set_topic({
-                    'topic': _topic
+                    'topic': _topic,
+                    'loading': false
                 });
                 
                 _components.blog_properties.set_topic({

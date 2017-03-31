@@ -60,6 +60,11 @@
               </span>
             </div>
             
+            <!-- Loading layer -->
+            <div class="card-text" data-name="loading" style="display: none; float: right;">
+              Loading <span class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></span>
+            </div>
+            
             
             <!-- Filter by Categories -->
             <div class="card-block" data-name="categories" style="display: none;">
@@ -142,7 +147,7 @@
         <br />
       
         <!-- Post Items -->
-        <div class="list-group">
+        <div class="list-group" data-name="posts_list">
         
           <template id="posts_list" is="dom-repeat" items="{{posts_paginated}}" as="_post">
             
