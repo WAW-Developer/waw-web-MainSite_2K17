@@ -5,7 +5,6 @@
   <title>WAW</title>
 
 
- 
   <script src="./js/jquery.min.js"></script>
   
   <link rel="stylesheet" href="./js/tether/tether.min.css">
@@ -33,8 +32,7 @@
   <script>
   
   
-  jQuery(document).ready(function () {
-      
+  jQuery(window).on('load', function () {
       
       var _laod_style = function(src, done) {
         var _link = document.createElement('link');
@@ -42,12 +40,13 @@
         _link.href = src;
 
         _link.onload = function() {
-          done();
+            document.head.appendChild(_link);
+            done();
         };
         _link.onerror = function() {
           done(new Error('Failed to load style ' + src));
         };
-        document.head.appendChild(_link);
+        
       };
       
       
@@ -79,7 +78,6 @@
                       });
                   };
                   document.head.appendChild(_link);
-
               }));
           });
 
@@ -90,30 +88,35 @@
         var js = document.createElement('script');
         js.src = src;
         js.onload = function() {
+          document.head.appendChild(js);
           done();
         };
         js.onerror = function() {
           done(new Error('Failed to load script ' + src));
         };
-        document.head.appendChild(js);
+        
       };
       
       
-      var _loadScripts = function(src) {
+      var _loadScripts = function(src, _options) {
           'use strict';
 
           var paths = Array.isArray(src) ? src : [src];
           var promise = [];
 
           var _dateNow = Date.now();
+          var _options = (_options !== undefined) ? _options : {};
+          var _op_cache = (_options.cache === true) ? true : false;
+
           
           paths.forEach((path) => {
               
               promise.push(new Promise((resolve, reject) => {
                   var js = document.createElement('script');
-                  js.src = path + '?' + _dateNow;
+                  js.src = (_op_cache === true) ? path : path + '?' + _dateNow;
 
                   js.onload = () => {
+                      document.head.appendChild(js);
                       resolve({
                           path,
                           status: 'ok',
@@ -175,6 +178,7 @@
                   };
 
                   document.head.appendChild(_link);
+                  
               }));
           });
 
@@ -182,24 +186,61 @@
       };
       
       
+      var _init_bootStrap = function(_done) {
+          
+          var _styles_required = [
+              './js/tether/tether.min.css'
+          ];
+          
+          var _scripts_required = [
+              './js/tether/tether.min.js'
+          ];
+          
+          var _styles = [
+              './js/bootstrap/js/bootstrap.min.css'
+          ];
+          
+          var _scripts = [
+              './js/bootstrap/js/bootstrap.min.js'
+          ];
+          
+          _loadStyles(_styles_required).then( function(_e1) {
+              _loadScripts(_scripts_required).then( function(_e2) {
+                  _loadStyles(_styles).then( function(_e3) {
+                      _loadScripts(_scripts).then( function(_e4) {
+                          console.log("Bootstrap loaded"); // TODO: REMOVE DEBUG LOG
+                          _done();
+                      });
+                  });
+              });
+          });
+      };
+      
+      
+      
       var _init_polyfill = function(_done) {
         
+        var _scripts_required = [
+          './js/shadycss/apply-shim.min.js',
+        ];
+        
+        var _scripts_all = [
+          './js/shadycss/custom-style-interface.min.js',
+          './js/shadycss/scoping-shim.min.js'
+        ];
+        
         var _scripts_others = [
-            './js/webcomponents/custom-elements-es5-adapter.js',
-            './js/shadycss/apply-shim.min.js',
-            './js/shadycss/custom-style-interface.min.js',
-            './js/shadycss/scoping-shim.min.js',
-            './js/webcomponents/webcomponents-lite.js',
-            './js/mainsite-min.js',
-          ];
+          './js/webcomponents/custom-elements-es5-adapter.js',
+          './js/webcomponents/webcomponents-lite.js',
+        ];
         
         var _scripts_chrome = [
-            './js/shadycss/apply-shim.min.js',
-            './js/shadycss/custom-style-interface.min.js',
-            './js/shadycss/scoping-shim.min.js',
-            './js/webcomponents/webcomponents-lite.js',
-            './js/mainsite-min.js',
-          ];
+          './js/webcomponents/webcomponents-lite.js'
+        ];
+        
+        var _scripts_site = [
+            './js/mainsite-min.js'
+        ];
         
         
         var nua = navigator.userAgent;
@@ -211,26 +252,35 @@
 
         var _scripts = (_isChrome === true ) ? _scripts_chrome : _scripts_others;
         
-        _loadScripts(_scripts).then(function(e) {
-            console.log(e);
-            _done();
+        _loadScripts(_scripts_required, {'cache':true}).then(function(e1) {
+          _loadScripts(_scripts_all, {'cache':true}).then(function(e2) {
+            _loadScripts(_scripts, {'cache':true}).then(function(e3) {
+              _loadScripts(_scripts_site).then(function(e4) {
+                  _done();
+                });
+              });
+            });
         });
           
       };
       
+      
       var _init_elements = function() {
-        
+          
+        var _elements_required = [
+            './js/shadycss/apply-shim.html'
+        ];
         
         var _elements_base = [
-          './js/shadycss/apply-shim.html',
           './js/polymer/polymer.html',
           './js/polymer/polymer-element.html',
-          
+        ];
+
+        var _elements_used = [
           './webcomponents/bs4/bs4-dropdown.html',
           './webcomponents/bs4/bs4-tabs.html',
           './webcomponents/bs4/bs4-modal.html'
-        ];
-
+        ];        
           
         var _elements = [
           './webcomponents/waw-header.html',
@@ -243,12 +293,23 @@
         ];
         
         
-        
+        _loadLinks(_elements_required, {'cache':true}).then(function(_e1) {
+            _loadLinks(_elements_base, {'cache':true}).then(function(_e2) {
+                _loadLinks(_elements_used, {'cache':true}).then(function(_e2) {
+                    _loadLinks(_elements).then(function(_e4) {
+                        _init_App();
+                    });
+                });
+            });
+        });
+
+        /*
         _loadLinks(_elements_base, {'cache':true}).then(function(_e3) {
           _loadLinks(_elements).then(function(_e4) {
               _init_App();
           });
         });
+       */
         
     };
       
@@ -319,7 +380,13 @@
     }
     */
     
+    
+//     _init_bootStrap(function() {
+//         _init_polyfill(_init_elements);
+//     });
+    
     _init_polyfill(_init_elements);
+
     
   });
   
