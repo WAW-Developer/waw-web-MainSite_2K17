@@ -17,6 +17,15 @@
   
   <link rel="stylesheet" href="./resources/styles/waw_styles.css">
   
+  
+  <script src="./js/shadycss/apply-shim.min.js"></script>
+  <script src="./js/shadycss/scoping-shim.min.js"></script>
+  
+
+  <!-- Load polyfills; note that "loader" will load these async -->
+  <script src="./js/webcomponents/webcomponents-loader.js"></script>
+
+
     <!-- Block scale -->  
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' /> 
   
@@ -31,211 +40,184 @@
   
   <script>
   
-  
-  jQuery(window).on('load', function () {
-      
-      var _laod_style = function(src, done) {
-        var _link = document.createElement('link');
-        _link.rel = 'stylesheet';
-        _link.href = src;
+  var _laod_style = function(src, done) {
+      var _link = document.createElement('link');
+      _link.rel = 'stylesheet';
+      _link.href = src;
 
-        _link.onload = function() {
-            document.head.appendChild(_link);
-            done();
-        };
-        _link.onerror = function() {
-          done(new Error('Failed to load style ' + src));
-        };
-        
-      };
-      
-      
-      var _loadStyles = function(src) {
-          'use strict';
-
-          var paths = Array.isArray(src) ? src : [src];
-          var promise = [];
-
-          var _dateNow = Date.now();
-          
-          paths.forEach((path) => {
-              
-              promise.push(new Promise((resolve, reject) => {
-                  var _link = document.createElement('link');
-                  _link.rel = 'stylesheet';
-                  _link.href = path;
-
-                  _link.onload = function() {
-                      resolve({
-                          path,
-                          status: 'ok',
-                      });
-                  };
-                  _link.onerror = function() {
-                      resolve({
-                          path,
-                          status: 'error',
-                      });
-                  };
-                  document.head.appendChild(_link);
-              }));
-          });
-
-          return Promise.all(promise);
-      };
-      
-      var _loadScript = function(src, done) {
-        var js = document.createElement('script');
-        js.src = src;
-        js.onload = function() {
-          document.head.appendChild(js);
+      _link.onload = function() {
+          document.head.appendChild(_link);
           done();
-        };
-        js.onerror = function() {
-          done(new Error('Failed to load script ' + src));
-        };
+      };
+      _link.onerror = function() {
+        done(new Error('Failed to load style ' + src));
+      };
+      
+    };
+    
+    
+    var _loadStyles = function(src) {
+        'use strict';
+
+        var paths = Array.isArray(src) ? src : [src];
+        var promise = [];
+
+        var _dateNow = Date.now();
         
+        paths.forEach((path) => {
+            
+            promise.push(new Promise((resolve, reject) => {
+                var _link = document.createElement('link');
+                _link.rel = 'stylesheet';
+                _link.href = path;
+
+                _link.onload = function() {
+                    resolve({
+                        path,
+                        status: 'ok',
+                    });
+                };
+                _link.onerror = function() {
+                    resolve({
+                        path,
+                        status: 'error',
+                    });
+                };
+                document.head.appendChild(_link);
+            }));
+        });
+
+        return Promise.all(promise);
+    };
+    
+    var _loadScript = function(src, done) {
+      var js = document.createElement('script');
+      js.src = src;
+      js.onload = function() {
+        document.head.appendChild(js);
+        done();
+      };
+      js.onerror = function() {
+        done(new Error('Failed to load script ' + src));
       };
       
-      
-      var _loadScripts = function(src, _options) {
-          'use strict';
+    };
+    
+    
+    var _loadScripts = function(src, _options) {
+        'use strict';
 
-          var paths = Array.isArray(src) ? src : [src];
-          var promise = [];
+        var paths = Array.isArray(src) ? src : [src];
+        var promise = [];
 
-          var _dateNow = Date.now();
-          var _options = (_options !== undefined) ? _options : {};
-          var _op_cache = (_options.cache === true) ? true : false;
+        var _dateNow = Date.now();
+        var _options = (_options !== undefined) ? _options : {};
+        var _op_cache = (_options.cache === true) ? true : false;
 
-          
-          paths.forEach((path) => {
-              
-              promise.push(new Promise((resolve, reject) => {
-                  var js = document.createElement('script');
-                  js.src = (_op_cache === true) ? path : path + '?' + _dateNow;
+        
+        paths.forEach((path) => {
+            
+            promise.push(new Promise((resolve, reject) => {
+                var js = document.createElement('script');
+                js.src = (_op_cache === true) ? path : path + '?' + _dateNow;
 
-                  js.onload = () => {
-                      document.head.appendChild(js);
-                      resolve({
-                          path,
-                          status: 'ok',
-                      });
-                  };
+                js.onload = () => {
+                    document.head.appendChild(js);
+                    resolve({
+                        path,
+                        status: 'ok',
+                    });
+                };
 
-                  // Call `resolve` even if the image fails to load. If we were to
-                  // call `reject`, the whole "system" would break
-                  js.onerror = () => {
-                      resolve({
-                          path,
-                          status: 'error',
-                      });
-                  };
+                // Call `resolve` even if the image fails to load. If we were to
+                // call `reject`, the whole "system" would break
+                js.onerror = () => {
+                    resolve({
+                        path,
+                        status: 'error',
+                    });
+                };
 
-                  document.head.appendChild(js);
-              }));
-          });
+                document.head.appendChild(js);
+            }));
+        });
 
-          return Promise.all(promise);
-      };
+        return Promise.all(promise);
+    };
 
 
-      
-      var _loadLinks = function(src, _options) {
-          'use strict';
+    
+    var _loadLinks = function(src, _options) {
+        'use strict';
 
-          var paths = Array.isArray(src) ? src : [src];
-          var promise = [];
+        var paths = Array.isArray(src) ? src : [src];
+        var promise = [];
 
-          var _dateNow = Date.now();
-          
-          var _options = (_options !== undefined) ? _options : {};
-          var _op_cache = (_options.cache === true) ? true : false;
+        var _dateNow = Date.now();
+        
+        var _options = (_options !== undefined) ? _options : {};
+        var _op_cache = (_options.cache === true) ? true : false;
 
-          
-          paths.forEach((path) => {
-              
-              promise.push(new Promise((resolve, reject) => {
-                  var _link = document.createElement('link');
-                  _link.rel = "import";
-                  
-                  _link.href = (_op_cache === true) ? path : path + '?' + _dateNow;
+        
+        paths.forEach((path) => {
+            
+            promise.push(new Promise((resolve, reject) => {
+                var _link = document.createElement('link');
+                _link.rel = "import";
+                
+                _link.href = (_op_cache === true) ? path : path + '?' + _dateNow;
 
-                  _link.onload = () => {
-                      resolve({
-                          path,
-                          status: 'ok',
-                      });
-                  };
+                _link.onload = () => {
+                    resolve({
+                        path,
+                        status: 'ok',
+                    });
+                };
 
-                  // Call `resolve` even if the image fails to load. If we were to
-                  // call `reject`, the whole "system" would break
-                  _link.onerror = () => {
-                      resolve({
-                          path,
-                          status: 'error',
-                      });
-                  };
+                // Call `resolve` even if the image fails to load. If we were to
+                // call `reject`, the whole "system" would break
+                _link.onerror = () => {
+                    resolve({
+                        path,
+                        status: 'error',
+                    });
+                };
 
-                  document.head.appendChild(_link);
-                  
-              }));
-          });
+                document.head.appendChild(_link);
+                
+            }));
+        });
 
-          return Promise.all(promise);
-      };
-      
-      
-      var _init_bootStrap = function(_done) {
-          
-          var _styles_required = [
-              './js/tether/tether.min.css'
-          ];
-          
-          var _scripts_required = [
-              './js/tether/tether.min.js'
-          ];
-          
-          var _styles = [
-              './js/bootstrap/js/bootstrap.min.css'
-          ];
-          
-          var _scripts = [
-              './js/bootstrap/js/bootstrap.min.js'
-          ];
-          
-          _loadStyles(_styles_required).then( function(_e1) {
-              _loadScripts(_scripts_required).then( function(_e2) {
-                  _loadStyles(_styles).then( function(_e3) {
-                      _loadScripts(_scripts).then( function(_e4) {
-                          console.log("Bootstrap loaded"); // TODO: REMOVE DEBUG LOG
-                          _done();
-                      });
-                  });
-              });
-          });
-      };
-      
-      
-      
+        return Promise.all(promise);
+    };
+    
+    
+    
+    
       var _init_polyfill = function(_done) {
         
         var _scripts_required = [
           './js/shadycss/apply-shim.min.js',
+          './js/shadycss/scoping-shim.min.js'
+        ];
+        
+        
+        var _scripts_required_others = [
+          './js/webcomponents/custom-elements-es5-adapter.js'
         ];
         
         var _scripts_all = [
           './js/shadycss/custom-style-interface.min.js',
-          './js/shadycss/scoping-shim.min.js'
+          './js/webcomponents/webcomponents-lite.js'
         ];
         
         var _scripts_others = [
           './js/webcomponents/custom-elements-es5-adapter.js',
-          './js/webcomponents/webcomponents-lite.js',
+          './js/webcomponents/webcomponents-lite.js'
         ];
         
         var _scripts_chrome = [
-          './js/webcomponents/webcomponents-lite.js'
+            './js/webcomponents/webcomponents-lite.js'
         ];
         
         var _scripts_site = [
@@ -250,16 +232,13 @@
         // var _isChrome = !!window.chrome && !!window.chrome.webstore;
         var _isChrome = !!(nua.indexOf('Chrome') > -1);
 
-        var _scripts = (_isChrome === true ) ? _scripts_chrome : _scripts_others;
-        
+        // var _scripts = (_isChrome === true ) ? _scripts_chrome : _scripts_others;
+        var _scripts = (_isChrome === true ) ? [] : _scripts_required_others;
+
         _loadScripts(_scripts_required, {'cache':true}).then(function(e1) {
-          _loadScripts(_scripts_all, {'cache':true}).then(function(e2) {
-            _loadScripts(_scripts, {'cache':true}).then(function(e3) {
-              _loadScripts(_scripts_site).then(function(e4) {
-                  _done();
-                });
-              });
-            });
+          _loadScripts(_scripts_site).then(function(e4) {
+              _done();
+          });
         });
           
       };
@@ -359,6 +338,18 @@
        
     };
     
+    
+    
+  
+  window.addEventListener('WebComponentsReady', function() {
+    // At this point we are guaranteed that all required polyfills have loaded,
+    // all HTML imports have loaded, and all defined custom elements have upgraded
+    _init_polyfill(_init_elements);
+
+  });  
+  
+  jQuery(window).on('load', function () {
+      
     /*
     if ('registerElement' in document
       && 'import' in document.createElement('link')
@@ -385,8 +376,8 @@
 //         _init_polyfill(_init_elements);
 //     });
     
-    _init_polyfill(_init_elements);
-
+    
+    // _init_polyfill(_init_elements);
     
   });
   
