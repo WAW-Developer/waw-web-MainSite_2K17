@@ -448,6 +448,29 @@ gulp.task('copyLib_fontawesome', function (_done) {
 
 
 /**
+ * Gulp task 'copyLib_ChartJS'
+ *
+ * Copy ChartJS library
+ *
+ */
+gulp.task('copyLib_ChartJS', function (_done) {
+    
+    var _filePath = ['bower_components/chart.js/dist/Chart.min.js'];
+    
+    var _defaultDestinationPath = '../html/js/chart.js/';
+    
+    gulp.src(_filePath)
+    .pipe(gulp.dest(_defaultDestinationPath))
+    .on('end', function () { 
+      _done();
+    });
+
+});
+
+
+
+
+/**
  * Gulp task 'copyLibs'
  *
  * Copy waw site
@@ -461,7 +484,9 @@ gulp.task('copyLibs', function (_done) {
         'copyLib_polymer', 
         'copyLib_bootstrap', 
         'copyLib_fontawesome', 
-        'copyLib_bootstrapComponents'], _done);
+        'copyLib_bootstrapComponents',
+        'copyLib_ChartJS'], 
+        _done);
     
 });
 

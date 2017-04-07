@@ -1,0 +1,497 @@
+<dom-module id="waw-blog-data">
+
+  <link rel="import" type="css" href="../js/bootstrap/js/bootstrap.min.css">
+  <link rel="import" type="css" href="../js/font-awesome/css/font-awesome.min.css">
+
+
+  <template>
+    <style>
+      /* local styles go here */
+      :host {
+        display: block;
+      }
+      
+      
+         
+      @media (max-width: 575px) { 
+      
+/*        div.card, div.card-block { */
+/*         padding: 2px; */
+/*        } */
+
+
+          .waw-chart {
+            min-height: none;
+            max-height: none;
+          }
+          
+          .waw-chart canvas {
+            
+            height: auto;
+            width: auto;
+          }
+            
+      }
+      
+      /* Small devices (landscape phones, less than 768px) */
+      @media (max-width: 767px) {
+       
+       
+      }
+      
+      /* Medium devices (tablets, less than 992px) */
+      @media (max-width: 991px) { 
+  
+          .waw-chart {
+/*             min-height: 400px !important; */
+              max-height: none  ;
+          }
+  
+      }
+      
+      
+      .waw-chart {
+        max-height: 470px !important;
+      }
+      
+    </style>
+    
+    
+    <div class="container-fluid row" style="padding: 0px;">
+    
+      <div class="col-xs-12 col-sm-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="panel-title">Categories used</h3>
+          </div>
+          <div class="card-block waw-chart">
+            <div class="card-text" data-name="loading" style="display: none; float: left;">
+              Loading <span class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></span>
+            </div>
+            <div class="card-text" data-name="content">
+                <canvas width="90%" height="90%" data-name="chart_CategoriesUsed">
+                </canvas>            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-sm-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="panel-title">Categories linked</h3>
+          </div>
+          <div class="card-block waw-chart">
+            <div class="card-text" data-name="loading" style="display: none; float: left;">
+              Loading <span class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></span>
+            </div>
+            <div class="card-text" data-name="content">
+                <canvas width="90%" height="90%" data-name="chart_CategoriesLinked">
+                </canvas>            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-sm-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="panel-title">Posts over time</h3>
+          </div>
+          <div class="card-block waw-chart">
+            <div class="card-text" data-name="loading" style="display: none; float: left;">
+              Loading <span class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></span>
+            </div>
+            <div class="card-text" data-name="content">
+                <canvas width="90%" height="90%" data-name="chart_PostsOverTime">
+                </canvas>            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    
+  </template>
+  
+  <script>
+
+  class WAW_BlogData extends Polymer.Element {
+      static get is() { return "waw-blog-data"; }
+      static get properties() {
+        return {
+          mode: {
+              type: String,
+              value: 'auto'
+            },
+
+            data: {
+              type: Object,
+              reflectToAttribute: true,
+              notify: true,
+              value: function() { return {}; }
+            },
+            
+            categories: {
+                type: Array,
+                reflectToAttribute: true,
+                notify: true,
+                value: function() { return []; }
+
+            }
+        }
+      }
+      
+      
+      constructor() {
+        super();
+//         this.textContent = "I'm a custom-element.";
+
+//         var _this = this;
+//         _this._initCharts();
+
+      }
+      
+      connectedCallback() {
+        super.connectedCallback();
+      }
+      
+      
+      _init_chart_CategoriesUsed(_options) {
+          
+          var _this = this;
+          var _JQ = jQuery;
+          
+          // Check options
+          _options = (_options === undefined) ? {} : _options;
+          
+          var _topic = _this.get('data.topic');
+          var _feed_DATA = _topic._model._rss.feed_DATA; 
+
+          var _categories = _this.get('categories');
+          
+          // Destroy chart if exists...
+          var _chart_CategoriesUsed_cache = _this.get('data.chart_CategoriesUsed');
+          if (_chart_CategoriesUsed_cache !== undefined) { _chart_CategoriesUsed_cache.destroy(); }
+          
+          _categories.sort(function(_a, _b) {
+              if (_a.count > _b.count) return -1;
+              if (_a.count < _b.count) return 1;
+              return 0;
+          });
+          
+          var _categories_Used = _categories.slice(0,10);
+          
+          var _chart_labels = [];
+          var _chart_data = [];
+
+          var _others = 0;
+          
+          _categories_Used.forEach(function(_item, _i) {
+              _chart_labels.push(_item.name);
+              _chart_data.push(_item.count);
+              _others += _item.count;
+          });
+          
+          _others = _feed_DATA.categories_total_entries - _others;
+          _chart_labels.push('others');
+          _chart_data.push(_others);
+          
+          var _layer_chart_CategoriesUsed = _JQ(_this.shadowRoot).find('canvas[data-name="chart_CategoriesUsed"]');
+
+          var _data = {
+              labels: _chart_labels,
+              datasets: [
+                {
+                  data: _chart_data,
+                  backgroundColor: [
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB",
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB"
+                  ],
+                  hoverBackgroundColor: [
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB",
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB"
+                  ]
+              }]
+          };
+          
+          var _chart_CategoriesUsed = new Chart(_layer_chart_CategoriesUsed, {
+              type: 'pie',
+              data: _data
+          });
+          
+          _this.set('data.chart_CategoriesUsed', _chart_CategoriesUsed);
+          
+      }
+      
+      
+      _init_chart_CategoriesLinked(_options) {
+          
+          var _this = this;
+          var _JQ = jQuery;
+          
+          var _topic = _this.get('data.topic');
+          var _feed_DATA = _topic._model._rss.feed_DATA; 
+          
+          // Check options
+          _options = (_options === undefined) ? {} : _options;
+          
+          // Destroy chart if exists...
+          var _chart_CategoriesLinked_cache = _this.get('data.chart_CategoriesLinked');
+          if (_chart_CategoriesLinked_cache !== undefined) { _chart_CategoriesLinked_cache.destroy(); }
+
+          var _categories_Linked = _feed_DATA.top_categories_linked.slice(0,10);
+          
+          var _chart_labels = [];
+          var _chart_data = [];
+          
+          _categories_Linked.forEach(function(_item, _i) {
+              _chart_labels.push(_item.name);
+              _chart_data.push(_item._model._rss_data.related_categories.length);
+          });
+
+          
+          var _layer_chart_CategoriesLinked = _JQ(_this.shadowRoot).find('canvas[data-name="chart_CategoriesLinked"]');
+          
+          var _data = {
+              datasets: [{
+                data: _chart_data,
+                backgroundColor: [
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB",
+                    "#FF6384",
+                    "#4BC0C0",
+                    "#FFCE56",
+                    "#E7E9ED",
+                    "#36A2EB"
+
+                ],
+                label: 'Categories linked' // for legend
+              }],
+              labels: _chart_labels
+          };
+
+          
+          var _chart_CategoriesLinked = new Chart(_layer_chart_CategoriesLinked, {
+              type: 'polarArea',
+              data: _data
+          });
+          
+          _this.set('data.chart_CategoriesLinked', _chart_CategoriesLinked);
+          
+      }
+      
+      
+      
+      _init_chart_PostsOverTime(_options) {
+          
+          var _this = this;
+          var _JQ = jQuery;
+          
+          var _topic = _this.get('data.topic');
+          var _feed_DATA = _topic._model._rss.feed_DATA; 
+
+          // Check options
+          _options = (_options === undefined) ? {} : _options;
+          
+          // Destroy chart if exists...
+          var _chart_PostsOverTime_cache = _this.get('data.chart_PostsOverTime');
+          if (_chart_PostsOverTime_cache !== undefined) { _chart_PostsOverTime_cache.destroy(); }
+
+          
+          var _chart_labels = [];
+          var _chart_data = [];
+          
+          for (var _i_year in _feed_DATA.entries_by_year) {
+             _chart_labels.push(_i_year);
+             _chart_data.push(_feed_DATA.entries_by_year[_i_year].length);
+          }
+          
+          
+          var _layer_chart_PostsOverTime = _JQ(_this.shadowRoot).find('canvas[data-name="chart_PostsOverTime"]');
+
+          var _data = {
+              labels: _chart_labels,
+              datasets: [
+                  {
+                      label: "Posts over time",
+                      fill: false,
+                      lineTension: 0.1,
+                      backgroundColor: "rgba(75,192,192,0.4)",
+                      borderColor: "rgba(75,192,192,1)",
+                      borderCapStyle: 'butt',
+                      borderDash: [],
+                      borderDashOffset: 0.0,
+                      borderJoinStyle: 'miter',
+                      pointBorderColor: "rgba(75,192,192,1)",
+                      pointBackgroundColor: "#fff",
+                      pointBorderWidth: 1,
+                      pointHoverRadius: 5,
+                      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                      pointHoverBorderColor: "rgba(220,220,220,1)",
+                      pointHoverBorderWidth: 2,
+                      pointRadius: 1,
+                      pointHitRadius: 10,
+                      data: _chart_data,
+                      spanGaps: false,
+                  }
+              ]
+          };
+          
+          var _chart_PostsOverTime = new Chart(_layer_chart_PostsOverTime, {
+              type: 'line',
+              data: _data
+          });
+          
+          _this.set('data.chart_PostsOverTime', _chart_PostsOverTime);
+
+      }
+
+      
+      
+      _init_charts(_options) {
+          var _this = this;
+          _this._init_chart_CategoriesUsed();
+          _this._init_chart_CategoriesLinked();
+          _this._init_chart_PostsOverTime();
+      }
+
+      
+      
+      _loading(_options) {
+          
+          var _this = this;
+          var _JQ = jQuery;
+          
+          return new Promise(function(_resolve, _reject) {
+            try {
+                
+                // Check options
+                _options = (_options === undefined) ? {} : _options;
+                
+                // Check options.loading
+                var _loading = (_options.loading !== undefined) ? _options.loading : false;
+
+                // Update layer for loading
+                var _layer_loading = _JQ(_this.shadowRoot).find('div.waw-chart div[data-name="loading"]');
+                var _layer_content = _JQ(_this.shadowRoot).find('div.waw-chart div[data-name="content"]');
+                
+                
+                _JQ(_layer_loading).toggle(_loading);
+                _JQ(_layer_content).toggle(!_loading);
+                
+                // resolve with some time extra for animations...
+                setTimeout(function() { 
+                    _resolve({
+                        'result': 'OK'
+                    });
+                    
+                }, 200);
+              
+                
+            } catch (_e) {
+                _reject(_e);
+            }
+          });
+
+      }   // EndOF _loading
+
+      
+      set_topic(_options) {
+          
+          var _this = this;
+          var _JQ = jQuery;
+
+          // Check options.topic
+          var _topic = (_options.topic !== undefined) ? _options.topic : _this.get('data.topic');
+          
+          var _rss_loaded;
+
+          _this.set('data.topic', {});
+          _this.set('data.topic', _topic);
+
+          // Check options.loading
+          var _loading = (_options.loading !== undefined) ? _options.loading : false;
+          
+          _this._loading({
+              'loading': _loading
+          }).then(function(_data) {
+              
+              if (_topic === undefined) {
+                  return;
+              }
+
+              // Refresh categories
+              if (_topic._model._rss.loaded === true) {
+                  
+                  _this._set_categories({
+                      'categories': _topic._model._rss.categories
+                  });
+                  
+                  if (_loading === false) {
+                      _this._init_charts();
+                  }
+                  
+              } else {
+                  _this._set_categories({
+                      'categories': []
+                  });
+              }
+              
+          });
+          
+      }
+      
+      
+      _set_categories(_options) {
+          
+          var _this = this;
+          
+          // Check options
+          _options = (_options === undefined) ? {} : _options;
+          
+          // Check options.categories
+          var _categories = (_options.categories !== undefined) ? _options.categories : _this.get('categories');
+
+          // clear an array and add new values
+          _this.set('categories', []);
+          
+          
+          _categories.forEach(function(_item, _i){
+              
+              _this.push('categories', _item);
+          });
+          
+          
+      }    // EndOf set_categories       
+      
+      
+      
+  }
+  
+  customElements.define(WAW_BlogData.is, WAW_BlogData);
+  
+  </script>
+
+
+</dom-module>

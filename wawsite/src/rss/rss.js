@@ -6,7 +6,7 @@
  * @ignore
  */
 import * as config_mod from "../config/config.js";
-
+import * as rss_data_mod from "./rss_data.js";
 
 
 
@@ -208,15 +208,16 @@ let _rss = {
         return new Promise(function(_resolve, _reject) {
            
             try {
-                
-                if (_options === undefined) {
-                    _options = {};
-                }
+                // Check options
+                _options = (_options !== undefined) ? _options : {};
                 
                 if (_options.topic === undefined) {
                     throw ('topic option is required.');
                 }
                 let _topic = _options.topic;
+                
+                // Check option analize
+                let _analize = (_options.analize !== undefined) ? _options.analize : false;
                 
                 let _config = config_mod.get_current_config();
                 if (_options.config !== undefined) {
@@ -244,15 +245,34 @@ let _rss = {
                         }).then(
                                 
                             function(_data_categories) {
-                                
-                                _resolve({
+
+                                let _result = {
                                     'categories': _data_categories.categories,
                                     'feed': _data_load_feed.feed
-                                });
+                                };
+                                
+                                // Analize the data of the feed (optional)
+                                if (_analize === true) {
+                                    
+                                    rss_data_mod.analize_feed({
+                                        'categories': _data_categories.categories,
+                                        'feed': _data_load_feed.feed
+                                    }).then(function(_feed_DATA) {
+                                        _result.feed_DATA = _feed_DATA;
+                                        _resolve(_result);
+                                    }, 
+                                    function(_feed_DATA_error) {
+                                        _reject(_feed_DATA_error);
+                                    }); // EndOf analize_feed
+                                    
+                                } else {
+                                    _resolve(_result);
+                                }
+                                
                             },
                             function(_error_categories) {
                                 _reject(_error_categories);
-                            }); // EndOf // EndOf get_detailForCategories
+                            }); // EndOf get_detailForCategories
                         
                     },
                     function(_error_load_feed) {

@@ -19,7 +19,8 @@ let _ui = {
       'topic_detail': null,
       'topics_list': null,
       'blog_properties': null,
-      'posts_list': null
+      'posts_list': null,
+      'blog_data': null
     },
     
     '_current_topic': {
@@ -183,21 +184,12 @@ let _ui = {
     
     '_initialize_blog_properties': function(_options) {
 
-        if (_options === undefined) {
-            _options = {};
-        }
+        _options = (_options !== undefined) ? _options : {};
         
         if (_options.component === undefined) {
             throw ('component option is required.');
         }
         let _component = _options.component;
-        
-        /*
-        let _config = config_mod.get_current_config();
-        if (_options.config !== undefined) {
-            _config = _options.config;
-        }
-        */
         
         let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
         
@@ -224,9 +216,7 @@ let _ui = {
     
     '_initialize_posts_list': function(_options) {
 
-        if (_options === undefined) {
-            _options = {};
-        }
+        _options = (_options !== undefined) ? _options : {};
         
         if (_options.component === undefined) {
             throw ('component option is required.');
@@ -255,6 +245,27 @@ let _ui = {
         _ui._components.posts_list = _element;
         
     },  // EndOf _initialize_posts_list
+
+    
+    '_initialize_blog_data': function(_options) {
+
+        _options = (_options !== undefined) ? _options : {};
+        
+        if (_options.component === undefined) {
+            throw ('component option is required.');
+        }
+        let _component = _options.component;
+        
+        let _config = (_options.config !== undefined) ? _options.config : config_mod.get_current_config();
+        
+        let _JQ = _config.jquery_Lib;
+        
+        let _element = _JQ(_component)[0];
+        
+        _ui._components.blog_data = _element;
+
+        
+    },  // EndOf _initialize_blog_data
 
         
     'initialize_UI': function(_options) {
@@ -296,6 +307,11 @@ let _ui = {
         _ui._initialize_posts_list({
             'config': _config,
             'component': 'waw-posts-list'
+        });
+        
+        _ui._initialize_blog_data({
+            'config': _config,
+            'component': 'waw-blog-data'
         });
         
         _ui.set_current_topic({
@@ -342,9 +358,6 @@ let _ui = {
         let _topic = null;
         let _current_topic = _ui.get_current_topic();
         
-        console.log('set_current_topic');     // TODO: REMOVE DEBUG LOG
-        console.log(_options);     // TODO: REMOVE DEBUG LOG
-
         
         if (_isRootTopic === true) {
             
@@ -388,6 +401,7 @@ let _ui = {
         });
         
         if (_isMainTopic === true) {
+            
             _components.header.set_active_topic({
                 'topic': _topic.id
             });
@@ -400,7 +414,9 @@ let _ui = {
             _components.blog_properties.set_topic({
                 'topic': _topic
             });
+            
         }
+        
         
         if (_topic.subtopics !== undefined) {
             _components.topics_list.set_topics({
@@ -444,6 +460,11 @@ let _ui = {
                 'topic': _topic
             });
             
+            _components.blog_data.set_topic({
+                'topic': _topic
+            });
+
+            
         } else {
             
             let _components = _ui.get_components();
@@ -452,14 +473,20 @@ let _ui = {
                 'loading': true
             });
             
+            _components.blog_data.set_topic({
+                'loading': true
+            });
+            
             rss_mod.get_TopicBlogEntries({
-                'topic': _topic
+                'topic': _topic,
+                'analize': true
             }).then(
             function(_data){
                 _topic._model._rss.loaded = true;
                 _topic._model._rss.categories = _data.categories;
                 _topic._model._rss.feed = _data.feed;
-                
+                _topic._model._rss.feed_DATA = _data.feed_DATA;
+
                 _components.posts_list.set_topic({
                     'topic': _topic,
                     'loading': false
@@ -468,13 +495,18 @@ let _ui = {
                 _components.blog_properties.set_topic({
                     'topic': _topic
                 });
+                
+                _components.blog_data.set_topic({
+                    'topic': _topic,
+                    'loading': false
+                });
 
             }, 
             function(_error){
                 _topic._model._rss.loaded = false;
                 _topic._model._rss._error = _error;
                 console.log(_error); // TODO: REMOVE DEBUG LOG
-            });
+            }); // EndOf get_TopicBlogEntries
 
         }
 

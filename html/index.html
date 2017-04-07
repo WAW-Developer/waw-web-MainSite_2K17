@@ -21,6 +21,9 @@
   <script src="./js/shadycss/apply-shim.min.js"></script>
   <script src="./js/shadycss/scoping-shim.min.js"></script>
   
+  <script src="./js/chart.js/Chart.min.js"></script>
+  
+  
 
   <!-- Load polyfills; note that "loader" will load these async -->
   <script src="./js/webcomponents/webcomponents-loader.js"></script>
@@ -262,6 +265,7 @@
         ];        
           
         var _elements = [
+          './webcomponents/waw-blog-data.html',
           './webcomponents/waw-header.html',
           './webcomponents/waw-topic-detail.html',
           './webcomponents/waw-topics-list.html',
@@ -274,7 +278,7 @@
         
         _loadLinks(_elements_required, {'cache':true}).then(function(_e1) {
             _loadLinks(_elements_base, {'cache':true}).then(function(_e2) {
-                _loadLinks(_elements_used, {'cache':true}).then(function(_e2) {
+                _loadLinks(_elements_used, {'cache':true}).then(function(_e3) {
                     _loadLinks(_elements).then(function(_e4) {
                         _init_App();
                     });
@@ -413,12 +417,15 @@
   </div>
     
     
+  <div class="container-fluid" style="padding: 0px;">
+    <waw-blog-data></waw-blog-data>
+  </div>
+  
   <div class="container-fluid row justify-content-end" style="padding: 0px;">
 <!--     <div class="col-xs-12 col-sm-7 col-md-8">b</div> -->
     <div class="col-xs-6 col-sm-5 col-md-5"><waw-footer></waw-footer></div>
   </div>
     
-<!--     <custom-element></custom-element> -->
 
 </article>
 
