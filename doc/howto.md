@@ -17,6 +17,7 @@ vagrant ssh
 
 ## How to start service (in VM)
 sudo service nginx start
+
 and then access to http://localhost:8932/html/
 or https://localhost:8933/html/
 
@@ -29,15 +30,18 @@ All the software is running on the VM.
 
 ## How to install node packages
 cd wawsite
+
 npm install --no-bin-links
 
 ## How to install bower packages
 cd wawsite
+
 bower install
 
 
 ## How to build wawsite
 cd wawsite
+
 gulp buildandcopyWAWSite
 
 ## How to copy libraries

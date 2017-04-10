@@ -3,7 +3,7 @@
 This is the source code for the WAW main site version 2017
 
 ## About this code
-- The technology used is baesd on HTML web components and a EcmaScript library 'transpiled' using 'gulp'.
+- The technology used is based on HTML web components and a EcmaScript library 'transpiled' using 'gulp'.
 - The frameworks used are Polymer2 and Bootstrap4
 - Also used the libraries JQuery and ChartJS. 
 
