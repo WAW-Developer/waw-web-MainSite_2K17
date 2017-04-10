@@ -1,48 +1,49 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-  
+
   <title>WAW</title>
 
 
   <script src="./js/jquery.min.js"></script>
-  
+
   <link rel="stylesheet" href="./js/tether/tether.min.css">
   <script src="./js/tether/tether.min.js"></script>
-    
+
   <link rel="stylesheet" href="./js/bootstrap/js/bootstrap.min.css">
   <script src="./js/bootstrap/js/bootstrap.min.js"></script>
-  
+
   <link rel="stylesheet" href="./js/font-awesome/css/font-awesome.min.css">
-  
+
   <link rel="stylesheet" href="./resources/styles/waw_styles.css">
-  
-  
+
+
   <script src="./js/shadycss/apply-shim.min.js"></script>
   <script src="./js/shadycss/scoping-shim.min.js"></script>
-  
+
   <script src="./js/chart.js/Chart.min.js"></script>
-  
-  
+
+
 
   <!-- Load polyfills; note that "loader" will load these async -->
   <script src="./js/webcomponents/webcomponents-loader.js"></script>
 
 
-    <!-- Block scale -->  
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' /> 
-  
-  
+    <!-- Block scale -->
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
   <meta http-equiv="cache-control" content="max-age=1" />
   <meta http-equiv="Cache-control" content="no-cache" />
   <meta http-equiv="expires" content="1" />
 <!--  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" /> -->
   <meta http-equiv="pragma" content="no-cache" />
-  
-  
-  
+
+
+
   <script>
-  
+
   var _laod_style = function(src, done) {
       var _link = document.createElement('link');
       _link.rel = 'stylesheet';
@@ -55,10 +56,10 @@
       _link.onerror = function() {
         done(new Error('Failed to load style ' + src));
       };
-      
+
     };
-    
-    
+
+
     var _loadStyles = function(src) {
         'use strict';
 
@@ -66,9 +67,9 @@
         var promise = [];
 
         var _dateNow = Date.now();
-        
+
         paths.forEach((path) => {
-            
+
             promise.push(new Promise((resolve, reject) => {
                 var _link = document.createElement('link');
                 _link.rel = 'stylesheet';
@@ -92,7 +93,7 @@
 
         return Promise.all(promise);
     };
-    
+
     var _loadScript = function(src, done) {
       var js = document.createElement('script');
       js.src = src;
@@ -103,10 +104,10 @@
       js.onerror = function() {
         done(new Error('Failed to load script ' + src));
       };
-      
+
     };
-    
-    
+
+
     var _loadScripts = function(src, _options) {
         'use strict';
 
@@ -117,9 +118,9 @@
         var _options = (_options !== undefined) ? _options : {};
         var _op_cache = (_options.cache === true) ? true : false;
 
-        
+
         paths.forEach((path) => {
-            
+
             promise.push(new Promise((resolve, reject) => {
                 var js = document.createElement('script');
                 js.src = (_op_cache === true) ? path : path + '?' + _dateNow;
@@ -149,7 +150,7 @@
     };
 
 
-    
+
     var _loadLinks = function(src, _options) {
         'use strict';
 
@@ -157,17 +158,17 @@
         var promise = [];
 
         var _dateNow = Date.now();
-        
+
         var _options = (_options !== undefined) ? _options : {};
         var _op_cache = (_options.cache === true) ? true : false;
 
-        
+
         paths.forEach((path) => {
-            
+
             promise.push(new Promise((resolve, reject) => {
                 var _link = document.createElement('link');
                 _link.rel = "import";
-                
+
                 _link.href = (_op_cache === true) ? path : path + '?' + _dateNow;
 
                 _link.onload = () => {
@@ -187,50 +188,50 @@
                 };
 
                 document.head.appendChild(_link);
-                
+
             }));
         });
 
         return Promise.all(promise);
     };
-    
-    
-    
-    
+
+
+
+
       var _init_polyfill = function(_done) {
-        
+
         var _scripts_required = [
           './js/shadycss/apply-shim.min.js',
           './js/shadycss/scoping-shim.min.js'
         ];
-        
-        
+
+
         var _scripts_required_others = [
           './js/webcomponents/custom-elements-es5-adapter.js'
         ];
-        
+
         var _scripts_all = [
           './js/shadycss/custom-style-interface.min.js',
           './js/webcomponents/webcomponents-lite.js'
         ];
-        
+
         var _scripts_others = [
           './js/webcomponents/custom-elements-es5-adapter.js',
           './js/webcomponents/webcomponents-lite.js'
         ];
-        
+
         var _scripts_chrome = [
             './js/webcomponents/webcomponents-lite.js'
         ];
-        
+
         var _scripts_site = [
             './js/mainsite-min.js'
         ];
-        
-        
+
+
         var nua = navigator.userAgent;
         // var is_android = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 &&     nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
-        
+
         // Chrome 1+
         // var _isChrome = !!window.chrome && !!window.chrome.webstore;
         var _isChrome = !!(nua.indexOf('Chrome') > -1);
@@ -243,16 +244,16 @@
               _done();
           });
         });
-          
+
       };
-      
-      
+
+
       var _init_elements = function() {
-          
+
         var _elements_required = [
             './js/shadycss/apply-shim.html'
         ];
-        
+
         var _elements_base = [
           './js/polymer/polymer.html',
           './js/polymer/polymer-element.html',
@@ -262,8 +263,8 @@
           './webcomponents/bs4/bs4-dropdown.html',
           './webcomponents/bs4/bs4-tabs.html',
           './webcomponents/bs4/bs4-modal.html'
-        ];        
-          
+        ];
+
         var _elements = [
           './webcomponents/waw-blog-data.html',
           './webcomponents/waw-header.html',
@@ -274,8 +275,8 @@
           './webcomponents/waw-posts-list.control.html',
           './webcomponents/waw-footer.html'
         ];
-        
-        
+
+
         _loadLinks(_elements_required, {'cache':true}).then(function(_e1) {
             _loadLinks(_elements_base, {'cache':true}).then(function(_e2) {
                 _loadLinks(_elements_used, {'cache':true}).then(function(_e3) {
@@ -293,100 +294,100 @@
           });
         });
        */
-        
+
     };
-      
-      
+
+
     var _init_App = function() {
-      
+
         var _mainsite = waw.mainsite;
         var _JQ = jQuery;
-        
+
         _mainsite.config.initialize({
             'config': {
                 'jquery_Lib': jQuery,
                 'config_file': './js/config.json'
             }
         });
-        
+
         _mainsite._tests = {};
-        
+
         _mainsite._tests.load_feed = function(_options) {
             _mainsite.rss.load_feed({
                 'url': 'https://wabout-justice.blogspot.com/feeds/posts/default'
             }).then(
                 function(_data){
-                    console.log(_data); // TODO: REMOVE DEBUG LOG 
-                }, 
+                    console.log(_data); // TODO: REMOVE DEBUG LOG
+                },
                 function(_error){
                     console.log(_error); // TODO: REMOVE DEBUG LOG
                 });
         };
-        
-        
+
+
         // Do some tests
         _mainsite._tests.doSomeTests = function(_options) {
 //             _mainsite._tests.load_feed();
             _mainsite.ui.initialize_UI();
-            
+
         };
-        
+
         // Load configuration
         _mainsite.config.loadConfig().then(function(_data){
             _mainsite._tests.doSomeTests();
         });
-        
+
         // Hide loading and show the content
         _JQ('article[data-name="loading"]').attr('hidden', 'true');
         _JQ('article[data-name="content"]').removeAttr('hidden');
-       
+
     };
-    
-    
-    
-  
+
+
+
+
   window.addEventListener('WebComponentsReady', function() {
     // At this point we are guaranteed that all required polyfills have loaded,
     // all HTML imports have loaded, and all defined custom elements have upgraded
     _init_polyfill(_init_elements);
 
-  });  
-  
+  });
+
   jQuery(window).on('load', function () {
-      
+
     /*
     if ('registerElement' in document
       && 'import' in document.createElement('link')
       && 'content' in document.createElement('template')) {
       // platform is good!
-      
+
         _init_elements();
-      
+
     } else {
-        
+
       // polyfill the platform!
-      
+
       // var e = document.createElement('script');
       // e.src = 'js/webcomponents/webcomponents-lite.js';
       // document.head.appendChild(e);
-      
+
       _init_polyfill();
       _init_elements();
     }
     */
-    
-    
+
+
 //     _init_bootStrap(function() {
 //         _init_polyfill(_init_elements);
 //     });
-    
-    
+
+
     // _init_polyfill(_init_elements);
-    
+
   });
-  
+
 </script>
-    
+
 
 </head>
 
@@ -398,34 +399,34 @@
     Loading
     <span class="fa fa-cog fa-spin fa-2x fa-fw" aria-hidden="true"></span>
     <span class="fa fa-globe fa-2x fa-fw blinking" aria-hidden="true"></span>
-    
+
 </article>
 
 <waw-header></waw-header>
 
 <article class="container-fluid" data-name="content" hidden="true">
-  
+
 
   <div class="container-fluid row" style="padding: 0px;">
     <div class="col-xs-12 col-sm-7 col-md-8"><waw-topic-detail></waw-topic-detail></div>
     <div class="col-xs-12 col-sm-5 col-md-4"><waw-topics-list></waw-topics-list></div>
   </div>
-  
+
   <div class="container-fluid row" style="padding: 0px;">
     <div class="col-xs-12 col-sm-5 col-md-4"><waw-blog-properties></waw-blog-properties></div>
     <div class="col-xs-12 col-sm-7 col-md-8"><waw-posts-list></waw-posts-list></div>
   </div>
-    
-    
+
+
   <div class="container-fluid" style="padding: 0px;">
     <waw-blog-data></waw-blog-data>
   </div>
-  
+
   <div class="container-fluid row justify-content-end" style="padding: 0px;">
 <!--     <div class="col-xs-12 col-sm-7 col-md-8">b</div> -->
     <div class="col-xs-6 col-sm-5 col-md-5"><waw-footer></waw-footer></div>
   </div>
-    
+
 
 </article>
 

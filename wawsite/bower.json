@@ -8,10 +8,10 @@
     }
   ],
   "private": true,
-  "version": "0.0.1-alpha00-build005",
+  "version": "0.0.1-alpha00-build001",
   "license": "MIT",
   "main": [
-    "dist/stforBrowser/stforBrowser.js"
+    "html/index.html"
   ],
   "moduleType": [
     "amd",
