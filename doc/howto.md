@@ -47,9 +47,6 @@ gulp buildandcopyWAWSite
 ## How to copy libraries
 gulp copyLibs
 
-## How to copy web components
-gulp copy_WebComponents
-
 ## How to build and copy all the necessary files at once...
 gulp buildAndDeployAll
 
