@@ -28,7 +28,8 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8932, host_ip: "127.0.0.1", auto_correct: true
   config.vm.network :forwarded_port, guest: 22, host: 8922, host_ip: "127.0.0.1", auto_correct: true
   config.vm.network :forwarded_port, guest: 443, host: 8933, host_ip: "127.0.0.1", auto_correct: true
-  
+
+  config.vm.network :forwarded_port, guest: 80, host: 8932, host_ip: "192.168.1.34", auto_correct: true  
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -103,5 +104,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :preserve_order => true, :path => "provision/setup.sh"
   config.vm.provision :shell, :preserve_order => true, :path => "provision/setup_nodejs.sh"
   config.vm.provision :shell, :preserve_order => true, :path => "provision/setup_bower.sh"
+  config.vm.provision :shell, :preserve_order => true, :path => "provision/setup_gulp.sh"
  
 end
